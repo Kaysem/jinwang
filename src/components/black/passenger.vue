@@ -1,7 +1,7 @@
 <template>
     <div id="blackadd">
         <div class="b_top">
-            <h4 class="page_title">客流分析</h4>
+            <h4 class="page_title">客流报表</h4>
             <div class="top_content time">
                 <span>时间：</span>
                 <el-radio-group v-model="top.valueTimeS" @change="changeTimes()">
@@ -49,222 +49,18 @@
             <div class="top_content operaty">
                 <span>操作：</span>
                 <div class="todo_search" @click.stop="usercomein_list()"> <span class="search_icon"></span> 查询 </div>
-                <div class="add_black" @click.stop="dialogShow( 'add' )"> <span class="black_icon"></span> 加入黑名单 </div>
-                <div class="del_btn"  @click.stop="dialogShow( 'del' )"> <span class="del_icon"></span> 删除照片 </div>
             </div>
         </div>
-        <div class="b_btm" v-if="top.kind == '按位置'">
-            <ul class="add_store clearfix">
-                <!-- <li v-for=" ( item , index ) in btm.add.list" :class="index === 0 ? 'active': ''" @click.stop="ClickAddStore( $event  )"> -->
-                <li v-for=" ( item , index ) in btm.add.list" :key="index" :class=" index === 0 ? 'active': ''" @click.stop="ClickAddStore( $event  )">
-                    {{item.name}}
-                    {{index}}
-                </li>
-            </ul>
-            <el-collapse v-model="btm.add.collapse" @change="collapseChange()">
-                <!-- <el-collapse-item v-for="( item , index ) in btm.add.listContent" :name="''+index+''"> -->
-                <el-collapse-item v-for="( item , index ) in btm.add.listContent" :key="index" :name="''+index+''">
-                    <template slot="title">
-                        <el-checkbox :v-model="item.checked"> {{item.name}} </el-checkbox>
-                    </template>
-                    <div class="pic_all_box">
-                        <!-- <div class="pictrue_box" v-for="(item2 , index2) in item.children"> -->
-                        <div class="pictrue_box" v-for="(item2 , index2) in item.children" :key="index2">
-                            <div class="img_box">
-                                <el-checkbox v-model="item2.checked" class="chk_box" @change="checkBoxChange_A( item , index , item2 ,index2 )">  </el-checkbox>
-                                <img src="../../assets/images/a1.jpg" alt="" @click.stop="toPersonal(item2)">
-                            </div>
-                            <p>时间 ：{{item2.time}}   
-                                <i class="pic_icons pic_vip"></i> 
-                                <i class="pic_icons pic_black"></i>  
-                                <i class="pic_icons "></i>  
-                                 
-                            </p>
-                            <p>性别 ：{{item2.sex}} </p>
-                            <p>年龄 ：{{item2.age}} 岁 </p>
-                        </div> 
-                        <!-- 单个人 E -->
-                        
-                    </div>
-                    <div class="clickMore"> 点击加载更多 </div>
-                </el-collapse-item>
-                <!-- <el-collapse-item   name="1">
-                    <template slot="title">
-                        <el-checkbox v-model="btm.add.checked[1]"> 收银机（离线） </el-checkbox>
-                    </template>
-                    <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-                    <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
-                </el-collapse-item> -->
-                
-            </el-collapse>
-
+        <div class="b_btm">
+            
         </div>
-        <div class="b_btm" v-else>
-            <ul class="add_store clearfix">
-                <li class="active" @click.stop="ClickAddStore( $event  )">青岛一店</li>
-                <!-- <li @click.stop="ClickAddStore( $event  )">二分店</li> -->
-                <!-- <li v-for=" ( item , index ) in btm.times.list" :class=" index === 0 ? 'active': '' " @click.stop="ClickAddStore( $event  )">
-                    {{item.name}}
-                    {{index}}
-                </li> -->
-            </ul>
-            <div class="times_pic">
-                <div class="times_pic_box" v-if="btm.times.listContent.length != 0">
-                    <!-- 单个人 S -->
-                    <!-- <div class="pictrue_box" v-for=" ( item , index ) in btm.times.listContent"> -->
-                    <div class="pictrue_box" v-for=" ( item , index ) in btm.times.listContent" :key="index">
-                        <div class="img_box">
-                            <!-- <input class="chk_box"  type="checkbox" @change="checkBoxChange( $event )"> -->
-                            <el-checkbox v-model="item.checked" class="chk_box" @change="checkBoxChange_T( item , index  )">  </el-checkbox>
-                            <img :src="item.url" alt="" @click.stop="toPersonal(item)">
-                        </div>
-                        <p>时间：<i class="pic_font">{{item.ts}} </i>
-                            <i v-if="item.repoName == '金王会员库'" class="pic_icons pic_vip"></i> 
-                            <i v-else-if="item.repoName == '金王黑名单库'" class="pic_icons pic_black"></i>  
-                            <i v-else class="pic_icons "></i>
-                        </p>
-                        <p>性别：<i class="pic_font">{{item.gender}} </i> </p>
-                        <p>年龄：<i class="pic_font">{{item.age}} 岁</i></p>
-                    </div> 
-                    <!-- 单个人 E -->
-                </div>
-                <!-- <div class="clickMore"> 点击加载更多 </div> -->
-                <!-- 分页 S -->
-                <div class="add_pages">
-                    <span @click="tochagePage('L')">首页</span>
-                    <el-pagination
-                        background
-                        layout="prev, pager, next"
-                        :page-size = "page.pageSize"
-                        :total= "page.total"
-                        :current-page = "page.currentPage"
-                        @current-change="changePage"
-                        >
-                    </el-pagination>
-                    <span @click="tochagePage('R')">尾页</span>
-                </div>
-                <!-- 分页 E -->
-
-            </div> 
-
-        </div>
-        <!-- 模态框 S -->
-        <el-dialog
-            :title="tip.title"
-            :visible.sync="tip.dialogVisible"
-            width="30%"
-            show-close:false
-            >
-            <div v-if="tip.state === 'add' " class="dialog_text_center">
-                <div class="dialog_content dialog_add_black">
-                    <p id="isBlack">是否确定添加该人员到黑名单？</p>
-                    <p id="black_commit">
-                        <span id="beiZhu">备注&nbsp;&nbsp;: </span>
-                        <el-autocomplete
-                          popper-class="my-autocomplete"
-                          v-model="state3"
-                          :fetch-suggestions="querySearch"
-                          placeholder="对人员描述型总结"
-                          @select="handleSelect">
-                          <i
-                            class="el-icon-edit el-input__icon"
-                            slot="suffix"
-                            @click="handleIconClick">
-                          </i>
-                          <template slot-scope="{ item }">
-                            <div class="name">{{ item.value }}</div>
-                          </template>
-                        </el-autocomplete>
-                    </p>
-                </div>
-                <div slot="footer" class="dialog-footer">
-                    <input class="footer_btn sure_btn" type="button" value="确定" @click="toBlackPic()">
-                    <input class="footer_btn back_btn" type="button" value="取消" @click="tip.dialogVisible = false"> 
-                </div>
-            </div>
-            <!-- 判断勾选的会员类型  Start-->
-            <div v-if="tip.state === 'repoName_vip' " class="dialog_text_center">
-                <div class="dialog_content dialog_add_black">
-                    <p id="isBlack">小主,该人员是<span style="color:#FFB90F"> VIP会员 </span>,请再次确认是否要加入到黑名单？</p>
-                    <p id="black_commit">
-                        <span id="beiZhu">备注&nbsp;&nbsp;: </span>
-                        <el-autocomplete
-                          popper-class="my-autocomplete"
-                          v-model="state3"
-                          :fetch-suggestions="querySearch"
-                          placeholder="对人员描述型总结"
-                          @select="handleSelect">
-                          <i
-                            class="el-icon-edit el-input__icon"
-                            slot="suffix"
-                            @click="handleIconClick">
-                          </i>
-                          <template slot-scope="{ item }">
-                            <div class="name">{{ item.value }}</div>
-                          </template>
-                        </el-autocomplete>
-                    </p>
-                </div>
-                <div slot="footer" class="dialog-footer">
-                    <input class="footer_btn sure_btn" type="button" value="确定" @click="toBlackPic()">
-                    <input class="footer_btn back_btn" type="button" value="取消" @click="tip.dialogVisible = false"> 
-                </div>
-            </div>
-            <div v-else-if ="tip.state === 'repoName_black'" >
-                <div class="dialog_content dialog_black_error">
-                    <!-- 如果状态为repoName_black 则执行已在黑名单提示 -->
-                    <p>小主,该人员已是黑名单人员,无需重复添加!</p>
-                </div> 
-            </div>
-            <div v-else-if ="tip.state === 'greater_addBlackPic'" >
-                <div class="dialog_content dialog_black_error">
-                    <!-- 如果状态为addBlackPic 则执行多选添加提示 -->
-                    <p>小主,每次仅可勾选一张照片添加至黑名单哦!</p>
-                </div> 
-            </div>
-            <div v-else-if ="tip.state === 'del' " >
-                <div class="dialog_content dialog_del_pic">
-                    您即将删除照片，删除的照片不可恢复，谢谢！
-                </div>
-                <div slot="footer" class="dialog-footer">
-                    <input class="footer_btn sure_btn" type="button" value="确定" @click="delList()"> 
-                    <input class="footer_btn back_btn" type="button" value="取消" @click="tip.dialogVisible = false"> 
-                </div>
-            </div>
-            <div v-else-if ="tip.state === 'greater_delPic'" >
-                <div class="dialog_content dialog_black_error">
-                    <!-- 如果状态为delPic 则执行多选删除提示 -->
-                    <p>小主,每次仅可勾选一张照片进行删除哦!</p>
-                </div> 
-            </div>
-            <!-- <div v-else-if = "tip.state === 'success'" >
-                <div class="dialog_black_success"> 
-                    <span>添加成功</span>
-                     <div>
-                        <img src="../../assets/images/success.png" alt="" class="inline_block">
-                     </div>
-                     <span>添加成功</span>
-                </div> 
-            </div>
-            <div v-else-if = "tip.state === 'error'" >
-                <div class="dialog_content dialog_black_error">
-                    <div>
-                        <img src="../../assets/images/error.png" alt="">
-                     </div>
-                    <p>您的“加入黑名单”操作失败，请稍后再试</p>
-                </div> 
-            </div> -->
-            <div v-else ></div>
-        </el-dialog>
         
-        <!-- 模态框 E -->
-
     </div>
 </template>
 
 <script>
 export default {
-    name: 'Browse',
+    name: 'Passenger',
     data () {
         return {
             top:{
@@ -278,138 +74,15 @@ export default {
                 kind: "按时间", //位置按时不需要
 
             },
-            page:{
-                total: 0 ,      //总条数
-                pageSize: 10,    //1页条数
-                currentPage:1 , //当前页面位置
-                allPages:  0  , //总页数
-            },
-            btm : {
-                add: {
-                    collapse: [ ],
-                    checked: [ true , false ],
-                    list :[
-                        {
-                            name:"一分店", 
-                        },
-                        {
-                            name:"二分店" 
-                        },
-                        {
-                            name:"三分店" 
-                        },
-                    ],
-                    listContent: [
-                        {
-                            name: "入口（在线）",
-                            checked: false,
-                            children: [
-                                {
-                                    img:"",
-                                    time: "12:20",
-                                    sex: "男",
-                                    age: "23",
-                                    checked: false,
-                                }
-                            ]
-                        },
-                        {
-                            name: "收银口（在线）",
-                            checked: false,
-                            children: [
-                                {
-                                    img:"",
-                                    time: "12:20",
-                                    sex: "男",
-                                    age: "23",
-                                    checked: false,
-                                } ,
-                            ]
-                        }
-                    ]
-                } ,
-                times:{
-                    list :[
-                        {
-                            name:"全部", 
-                        },
-                        {
-                            name:"一分店", 
-                        }
-                    ],
-                    listContent: [
-                        // {
-                        //     img:"",
-                        //     time: "12:20",
-                        //     sex: "男",
-                        //     age: "23",
-                        //     checked: false,
-                        // } 
-                    ]
-                }
-            },
-            tip: {
-                state: "" ,
-                title: "" , 
-                dialogVisible: false, 
-            },
-            // 添加黑名单时弹框备注输入框内容 S
-            restaurants: [],
-            state3: ''
-            // E
         }
     }, 
     beforeMount() {
         let _this = this;
         console.log('挂载前执行');
-        _this.usercomein_list();
     },
     mounted:function() { 
         let _this = this;
-        for(let i = 0; i < _this.btm.add.listContent.length; i++) {
-            _this.btm.add.collapse.push(i.toString());
-        }
-        $('#startage').keyup(function(){
-            let c  =$(this) ;
-            if(/[^\d]/.test(c.val())){//替换非数字字符
-              let temp_amount=c.val().replace(/[^\d]/g,'');
-              $(this).val(temp_amount);
-            }
-            if( $(this).val().length >= 3 ){
-                $(this).val( $(this).val().substr(0,3) )
-            }
-            _this.top.age.startAge = $(this).val();
-        });
-        $('#endage').keyup(function(){
-            let c=$(this);
-            if(/[^\d]/.test(c.val())){//替换非数字字符
-              let temp_amount=c.val().replace(/[^\d]/g,'');
-              if(temp_amount.length >= 3 ){
-                  temp_amount = temp_amount.slice(0,3);
-              }
-              $(this).val(temp_amount);
-            }
-            if( $(this).val().length >= 3 ){
-                $(this).val( $(this).val().substr(0,3) )
-            }
-            _this.top.age.endAge = $(this).val();
-            
-        });
-
-        $('#startage').blur(function(){
-            $('#endage').focus();
-        });
-        $('#endage').blur(function(){
-        });
         
-        window.addEventListener("resize", function () {
-            _this.Address_picsMargin();    
-            _this.Time_picsMargin();
-        });
-        /**
-         * 点击添加黑名单后备注输入框相关
-         */
-        _this.restaurants = this.loadAll();
     },
     watch:{
         "top.kind": {
@@ -831,7 +504,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    #browse{
+    #passenger{
         width: 100%;
         /* min-height: 539px; */
         color: #fff;

@@ -16,8 +16,8 @@
             <div class="top_content inline_block time">
                 <span>时间：</span>
                 <el-radio-group v-model="top.valueTimeS" @change="changeTimes()">
-                    <el-radio label="half">最近半小时</el-radio>
-                    <el-radio label="hour">最近一小时</el-radio>
+                    <el-radio label="three">最近3个月</el-radio>
+                    <el-radio label="six">最近6个月</el-radio>
                     <el-radio class="custom" label="custom">自定义
                         <el-date-picker 
                             v-model="top.valueTime"
@@ -38,14 +38,14 @@
                     <el-radio label="女">女性</el-radio>
                 </el-radio-group>
             </div>
-            <div class="top_content inline_block times">
+            <div class="top_content inline_block timesCount">
                 <span>次数：</span>
                 <div>
-                    <el-radio-group v-model="top.valueSex" @change="changeSex()">
+                    <el-radio-group v-model="top.valueCount" @change="changeSex()">
                         <el-radio label="ALL">全部</el-radio>
                         <el-radio label="once">1次</el-radio>
                         <el-radio label="two">2次</el-radio>
-                        <el-radio label="twoAll">2次以上</el-radio>
+                        <el-radio label="threeAll">3次及以上</el-radio>
                     </el-radio-group>   
                 </div>
             </div>
@@ -56,14 +56,53 @@
             </div>
         </div>
         <div class="b_btm">
-            
+            <div class="analyse_top">
+                <div class="analyse_top_left inline_block">
+                    <div class="analyse_top_name">Key Point</div>
+                    <div class="analyse_top_content">
+                        <img src="../../assets/images/jinwang01.jpg" alt="用户照片">
+                        <div class="analyse_top_content_period">
+                            <div>日期: 周三/周四</div>
+                            <div>时间: 上午10点</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="analyse_top_center inline_block">
+                    <div class="analyse_top_name">年龄</div>
+                    <div class="analyse_top_content">
+                        
+                    </div>
+                </div>
+                <div class="analyse_top_right inline_block">
+                    <div class="analyse_top_name">性别</div>
+                    <div class="analyse_top_content"></div>
+                </div>
+            </div>
+            <div class="analyse_center">
+                <div class="analyse_top_name">时间</div>
+                <div class="analyse_center_content"></div>
+            </div>
+            <div class="analyse_bottom">
+                <div class="analyse_top_left inline_block">
+                    <div class="analyse_top_name">天</div>
+                    <div class="analyse_top_content"></div>
+                </div>
+                <div class="analyse_top_center inline_block">
+                    <div class="analyse_top_name">月</div>
+                    <div class="analyse_top_content"></div>
+                </div>
+                <div class="analyse_top_right inline_block">
+                    <div class="analyse_top_name">次数</div>
+                    <div class="analyse_top_content"></div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-  name: "Browse",
+  name: "Analyse",
   data() {
     return {
       // 门店下拉选择框 s
@@ -94,15 +133,16 @@ export default {
       // 门店下拉选择框 end
 
       top: {
-        valueTimeS: "half",
+        valueTimeS: "three",
         valueTime: [], //时间
         valueSex: "ALL", //性别
-        age: {
-          startAge: "1",
-          endAge: "99"
-        },
-        kind: "按时间" //位置按时不需要
+        valueCount: "ALL", // 出现次数
       },
+
+      // 详情部分 top 部分 年龄图表
+    //   analyse_top_content: {
+          
+    //   }
     };
   },
   beforeMount() {
@@ -118,28 +158,18 @@ export default {
     });
   },
   watch: {
-    "top.kind": {
-      handler: function(val, oldval) {
-        let _this = this;
-        if (val === "按时间") {
-          _this.$nextTick(() => {
-            _this.Time_picsMargin();
-          });
-        } else {
-          _this.$nextTick(() => {
-            
-          });
-        }
-        if (val != oldval) {
-          $(".add_store > li ")
-            .eq(0)
-            .addClass("active")
-            .siblings("li")
-            .removeClass("active");
-        }
-      },
-      deep: true
-    },
+    'top.valueTime': {
+            handler: function( val, oldval ){
+                let _this = this;
+                if( val === null ){
+                    val = [] ;
+                }
+                if( val != null && val.length != 0 ){
+                    _this.top.valueTimeS = "custom" ;
+                }
+            },
+            deep: true
+        },
   },
   methods: {
     
@@ -148,51 +178,11 @@ export default {
       if (_this.top.valueTimeS != "custom") {
         _this.top.valueTime = [];
       }
-    },
-    /**
-     * 时间更改事件
-     */
-    ClickTime(e, state) {
-      let _this = this;
-      if ($(e.target).prop("tagName") != "LI") {
-        $(".timeLis li")
-          .eq(2)
-          .addClass("active")
-          .siblings("li")
-          .removeClass("active");
-      } else {
-        $(e.target)
-          .addClass("active")
-          .siblings("li")
-          .removeClass("active");
-      }
-    },
-    /**
-     * 更改性别
-     */
-    changeSex(val) {
-      let _this = this;
+      // 时间改变发起数据列表请求
+
     },
     
-    /**
-     * 按位置 点击门店切换
-     */
-    ClickAddStore(e) {
-      let _this = this;
-      $(e.target)
-        .addClass("active")
-        .siblings("li")
-        .removeClass("active");
-    },
-    /**@augments
-     * 折叠面板
-     */
-    collapseChange(val) {
-      let _this = this;
-      _this.$nextTick(() => {
-        
-      });
-    },
+
     getMyDate(str) {
       let _this = this;
       var oDate = new Date(str),
@@ -282,7 +272,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#browse {
+#analyse {
   width: 100%;
   /* min-height: 539px; */
   color: #fff;
@@ -295,7 +285,7 @@ export default {
   min-width: 1021px;
   overflow-x: auto;
 }
-#browse > div {
+#analyse > div {
   /* width: 98%; */
   padding: 20px;
 }
@@ -306,7 +296,7 @@ export default {
 .b_btm {
   background: rgba(255, 255, 255, 0.1);
   margin-top: 20px;
-  padding: 20px;
+  padding: 20px 20px 168px 20px;
 }
 .page_title {
   font-size: 20px;
@@ -317,12 +307,13 @@ export default {
   margin-top: 15px;
   /* display: inline-block;
     margin-right: 134px; */
+    margin-right: 120px;
 }
 
 /* 设置元素为行内块元素 */
 .inline_block {
   display: inline-block;
-  margin-right: 120px;
+  
 }
 
 /* 门店下拉框*/
@@ -335,7 +326,7 @@ export default {
   margin-right: 10px;
 }
 /* 出现次数 */ 
-.times > div {
+.timesCount > div {
   display: inline-block;
   vertical-align: middle;
   margin: 0px 10px;
@@ -372,11 +363,64 @@ export default {
   cursor: pointer;
 }
 
-/* 虚拟操作日期选择框DOM样式 */
-/* .el-range-editor.el-input__inner {
-  background: #1a1f37;
-  border-radius: 20px;
-  border-color: #91a2eb;
-} */
+/* 详情块css  start  */ 
+.analyse_top {
+    margin-top: 30px;
+}
+.analyse_top_left {
+    margin-left: 20px;
+}
+.analyse_top_center {
+    margin: 0 106px;
+}
+.analyse_top_right {
+    
+}
+.analyse_top_content {
+    overflow: hidden;
+    width: 458px;
+	height: 360px;
+	background-color: #313856;
+	box-shadow: 1px 1px 18px 0px 
+		rgba(64, 128, 255, 0.2);
+	border-radius: 16px;
+}
+.analyse_top_content img {
+    width: 162px;
+    height: 187px;
+    margin: 84px 0 0 47px;
+    box-shadow: 8px 8px 8px  rgba(0, 0, 0, 0.5);
+}
 
+.analyse_top_content_period {
+    float: right;
+    display: inline-block;
+    margin: 160px 90px 0 0;
+    font-size: 14px;
+    font-family: '微软雅黑';
+    font-weight: 700;
+}
+.analyse_top_content_period div {
+    margin: 10px 0;
+}
+
+/* 详情部分-top部分-标题*/
+.analyse_top_name {
+    margin: 0 0 22px 14px;
+}
+/* 按时段分析图表部分 */
+.analyse_center {
+    margin: 40px 0 0 24px;
+}
+.analyse_center_content {
+    width: 1581px;
+	height: 360px;
+	background-color: #313856;
+	box-shadow: 1px 1px 18px 0px 
+		rgba(64, 128, 255, 0.2);
+	border-radius: 20px;
+}
+.analyse_bottom {
+    margin-top: 40px;
+}
 </style>
