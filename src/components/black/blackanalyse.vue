@@ -413,7 +413,7 @@ export default {
     margin: 40px 0 0 24px;
 }
 .analyse_center_content {
-    width: 1581px;
+    width: 98%;
 	height: 360px;
 	background-color: #313856;
 	box-shadow: 1px 1px 18px 0px 

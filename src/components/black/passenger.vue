@@ -2,7 +2,7 @@
     <div id="blackadd">
         <div class="b_top">
             <h4 class="page_title">客流报表</h4>
-            <div class="top_content time">
+            <div class="top_content inline_block time">
                 <span>时间：</span>
                 <el-radio-group v-model="top.valueTimeS" @change="changeTimes()">
                     <el-radio label="half">最近半小时</el-radio>
@@ -19,7 +19,7 @@
                     </el-radio>
                 </el-radio-group>
             </div>
-            <div class="top_content sex">
+            <div class="top_content inline_block sex">
                 <span>性别：</span>
                 <el-radio-group v-model="top.valueSex" @change="changeSex()">
                     <el-radio label="ALL">全部</el-radio>
@@ -27,7 +27,16 @@
                     <el-radio label="女">女性</el-radio>
                 </el-radio-group>
             </div>
-            <div class="top_content age">
+            <div class="top_content inline_block sex">
+                <span>身份：</span>
+                <el-radio-group v-model="top.valueStatus" @change="changeSex()">
+                    <el-radio label="ALL">全部</el-radio>
+                    <el-radio label="vip">VIP</el-radio>
+                    <el-radio label="buy">消费顾客</el-radio>
+                    <el-radio label="notBuy">未消费顾客</el-radio>
+                </el-radio-group>
+            </div>
+            <div class="top_content inline_block age">
                 <span>年龄：</span>
                 <div>
                     <div class="startage">
@@ -46,13 +55,42 @@
                     <el-radio-button label="按时间"></el-radio-button>
                 </el-radio-group>
             </div> -->
-            <div class="top_content operaty">
+            <div class="top_content inline_block operaty">
                 <span>操作：</span>
                 <div class="todo_search" @click.stop="usercomein_list()"> <span class="search_icon"></span> 查询 </div>
             </div>
         </div>
         <div class="b_btm">
-            
+            <div class="passenger_top">
+                <div class="passenger_top_name">客流分析</div>
+                <div class="passenger_top_content">
+                    <div class="passenger_top_content_charts"></div>
+                    <div class="passenger_top_content_charts"></div>
+                    <div class="passenger_top_content_charts"></div>
+                </div>
+            </div>
+            <div class="passenger_bottom">
+                <div class="passenger_bottom_content">
+                    <div class="passenger_bottom_content_name">年龄</div>
+                    <div class="passenger_bottom_content_charts"></div>
+                </div>
+                <div class="passenger_bottom_content">
+                    <div class="passenger_bottom_content_name">月</div>
+                    <div class="passenger_bottom_content_charts"></div>
+                </div>
+                <div class="passenger_bottom_content">
+                    <div class="passenger_bottom_content_name">类型</div>
+                    <div class="passenger_bottom_content_charts"></div>
+                </div>
+                <div class="passenger_bottom_content">
+                    <div class="passenger_bottom_content_name">性别</div>
+                    <div class="passenger_bottom_content_charts"></div>
+                </div>
+                <div class="passenger_bottom_content">
+                    <div class="passenger_bottom_content_name">性格</div>
+                    <div class="passenger_bottom_content_charts"></div>
+                </div>
+            </div>
         </div>
         
     </div>
@@ -60,842 +98,362 @@
 
 <script>
 export default {
-    name: 'Passenger',
-    data () {
-        return {
-            top:{
-                valueTimeS: 'half',
-                valueTime: [], //时间
-                valueSex: "ALL", //性别
-                age:{
-                    startAge: '1',
-                    endAge: '99',
-                },
-                kind: "按时间", //位置按时不需要
-
-            },
-        }
-    }, 
-    beforeMount() {
+  name: "Passenger",
+  data() {
+    return {
+      top: {
+        valueTimeS: "half",
+        valueTime: [], //时间
+        valueSex: "ALL", //性别
+        valueStatus: "ALL", //身份
+        age: {
+          startAge: "1",
+          endAge: "99"
+        },
+        kind: "按时间" //位置按时不需要
+      }
+    };
+  },
+  beforeMount() {
+    let _this = this;
+    console.log("挂载前执行");
+  },
+  mounted: function() {
+    let _this = this;
+  },
+  watch: {
+    "top.valueTime": {
+      handler: function(val, oldval) {
         let _this = this;
-        console.log('挂载前执行');
-    },
-    mounted:function() { 
-        let _this = this;
-        
-    },
-    watch:{
-        "top.kind": {
-            handler: function( val, oldval ){
-                let _this = this;
-                if( val === "按时间" ){
-                    _this.$nextTick(()=>{
-                        _this.Time_picsMargin();
-                    });
-                }else {
-                    _this.$nextTick(()=>{
-                        _this.Address_picsMargin();
-                    });
-                }
-                if( val != oldval ){
-                    $(".add_store > li ").eq(0).addClass("active").siblings("li").removeClass("active");
-                }
-
-            },
-            deep: true
-        },
-        "tip.dialogVisible": {
-            handler: function( val, oldval ){
-                let _this = this;
-                if( val === false ){
-                    _this.tip.title = "";
-                    _this.tip.state = "";
-                    for( let i = 0 ; i < _this.btm.times.listContent.length ; i++ ){
-                        _this.btm.times.listContent[i]['checked'] = false ; 
-                    }
-                }
-            },
-            deep: true
-        },
-        'top.valueTime': {
-            handler: function( val, oldval ){
-                let _this = this;
-                if( val === null ){
-                    val = [] ;
-                }
-                if( val != null && val.length != 0 ){
-                    _this.top.valueTimeS = "custom" ;
-                }
-            },
-            deep: true
-        },
-        // "top.age.startAge":{
-        //     handler: function(val,oldval){
-        //         let _this = this;
-        //     },
-        //     deep: true,
-        // }
-        
-    },
-    methods:{
-         //改变页码
-        changePage(val){
-            let _this = this;
-            _this.page.currentPage = val;
-            _this.usercomein_list(_this.page.currentPage);
-        },
-        //首页
-        tochagePage(type){
-            let _this = this; 
-            if(type == "L"){
-                _this.page.currentPage = 1;
-            }else {
-                _this.page.currentPage = _this.page.allPages;
-            }
-            _this.usercomein_list(_this.page.currentPage);
-        },
-        /**
-         *时间改变
-         */
-        changeTimes( ){
-            let _this = this; 
-            if( _this.top.valueTimeS != "custom" ){
-                _this.top.valueTime = [];
-            }
-        },
-        /**
-         * 时间更改事件
-         */
-        ClickTime( e , state ){
-            let _this = this ;
-            if( $( e.target ).prop("tagName") != "LI" ){
-                $( ".timeLis li" ).eq(2).addClass("active").siblings("li").removeClass("active");
-            }else {
-                $( e.target ).addClass("active").siblings("li").removeClass("active");
-            }
-        },
-        /** 
-         * 更改性别
-         */
-        changeSex(val){
-            let _this = this;
-        } ,
-        /** 
-         * 更改更改查看方式
-         */
-        changeKind(val){
-            let _this = this;
-        },
-        /**
-         * 按位置 点击门店切换
-         */
-        ClickAddStore(e){
-            let _this = this;
-            $( e.target ).addClass("active").siblings("li").removeClass("active");
-
-        },
-        /**@augments
-         * 折叠面板 
-         */
-        collapseChange(val) {
-            let _this = this;
-            _this.$nextTick(()=>{
-                _this.Address_picsMargin();
-            });
-           
-        },
-        /**
-         * 按位置图片间距
-         */
-        Address_picsMargin(){
-            let pic_all_boxW = $(".pic_all_box ").width();
-            let N = 5 ;
-            let MarginPic = pic_all_boxW - (180*5)  - 16  ;
-            $(".pic_all_box > div").css({
-                "marginRight": MarginPic / 4 - 1 + "px",
-            });
-            for( let i = 0 ; i < $(".pic_all_box > div").length ; i++ ){
-                $(".pic_all_box > div:nth-child("+i*5+")").css({
-                    "marginRight": "0px",
-                });
-            };
-        },
-        /**
-         * 按时间图片间距
-         */
-        Time_picsMargin(){
-            let times_pic_boxW = $(".times_pic_box ").width();
-            let N = 5 ;
-            let MarginPic = times_pic_boxW - (180*5) ;
-            $(".times_pic_box > div").css({
-                "marginRight": MarginPic / 4 -1 + "px",
-            });
-            for( let i = 0 ; i < $(".times_pic_box > div").length ; i++ ){
-                $(".times_pic_box > div:nth-child("+i*5+")").css({
-                    "marginRight": "0px",
-                });
-                
-            };
-        },
-        /**
-         * 按位置多选框
-         */
-        checkBoxChange_A(  item , index , item2 ,index2 ){
-            let _this = this;
-        },
-        /**
-         * 按时间多选框
-         */
-        checkBoxChange_T( item , index  ){
-            let _this = this;
-        },
-        getMyDate(str){  
-            let _this = this;
-            var oDate = new Date(str),  
-            oYear = oDate.getFullYear(),  
-            oMonth = oDate.getMonth()+1,  
-            oDay = oDate.getDate(),  
-            oHour = oDate.getHours(),  
-            oMin = oDate.getMinutes(),  
-            oSen = oDate.getSeconds(),  
-            oTime = oYear +'-'+ _this.getzf(oMonth) +'-'+ _this.getzf(oDay) +' '+ _this.getzf(oHour) +':'+ _this.getzf(oMin) +':'+_this.getzf(oSen);//最后拼接时间  
-            return oTime;  
-        },
-        //补0操作
-        getzf(num){  
-          if(parseInt(num) < 10){  
-              num = '0'+num;  
-          }  
-          return num;  
-        }, 
-        /**
-         * 列表数据
-         */
-        usercomein_list(p=1){
-            let _this = this;
-            let timestamp = (new Date()).getTime();//当前时间
-            let timeStart = "";
-            let timeEnd = "";
-            if( _this.top.valueTimeS == 'half' ){
-                timeStart = _this.getMyDate( (timestamp/1000-1800) * 1000 ) ;
-                timeEnd = _this.getMyDate( timestamp ) ;
-            }else if( _this.top.valueTimeS == 'hour' ){
-                timeStart = _this.getMyDate( (timestamp/1000-3600) * 1000 ) ;
-                timeEnd = _this.getMyDate( timestamp ) ;
-            }else {
-                timeStart = _this.top.valueTime[0] ;
-                timeEnd = _this.top.valueTime[1] ;
-            }
-            let json = {
-                'page': p ,
-                'sex': _this.top.valueSex  ,
-                'ageStart': _this.top.age.startAge ,
-                'ageEnd': _this.top.age.endAge ,
-                'timeStart': timeStart ,
-                'timeEnd': timeEnd
-            };
-            let formdata = _this.$config.formData(json); 
-            _this.$axios.post( _this.$url.usercomein_list ,formdata).then((res)=>{
-                console.log("列表重新渲染了");
-                if( res.status == 200 ){ 
-                        let data = res.data;
-                        _this.page.currentPage = data.start ;
-                        _this.page.total = data.count ;
-                        _this.page.allPages = data.pages ;
-                        let List = [];
-                        List = data.datas;
-                        for( let i = 0 ; i < List.length ; i++ ){
-                            List[i]['checked'] = false ;
-                            List[i]['ts'] = _this.getMyDate( parseInt(List[i]['time']) ) ;
-                        }
-                        _this.btm.times.listContent = List ;
-                        _this.$nextTick(()=>{
-                            _this.Time_picsMargin();    
-                        });
-                     
-                }
-            }).catch((err)=>{
-                // _this.$message("请求出错，请稍后重试！");
-                _this.btm.times.listContent = [] ;
-            });
-        },
-        /**
-         * 删除 
-         */
-        delList(){
-            let _this = this;
-            let str = "";
-            let N = _this.btm.times.listContent.length-1 ;
-            for( let i = 0 ; i < _this.btm.times.listContent.length ; i++ ){
-                if( _this.btm.times.listContent[i]['checked'] === true ){
-                    str += _this.btm.times.listContent[i]['id'] + "," ;
-                }
-            }
-            str = str.substring(0,str.length-1);
-            _this.$axios.get(_this.$url.browse_del+"/"+str).then((res)=>{
-                if( res.status == 200 && res.data.code == 1 ){
-                    _this.$message.success("删除成功！");
-                }else {
-                    _this.$message.error("删除失败，请稍后再试！");
-                }
-                _this.usercomein_list();
-                _this.tip.dialogVisible = false ;
-            }).catch((err)=>{
-                _this.$message.error("请求失败，请稍后再试！");
-                _this.tip.dialogVisible = false ;
-            });
-        },
-        /**
-         * 模态框
-         */
-        dialogShow( state ){
-            let _this = this;
-            _this.tip.state = state ;
-            let checked_sum = 0;
-            let _repoName = "";
-            if( state === "add" ){
-                let flag = false ;
-                for( let i = 0 ; i < _this.btm.times.listContent.length ; i++ ){
-                    if( _this.btm.times.listContent[i]['checked'] === true ){
-                        console.log(_this.btm.times.listContent[i].repoName);
-                        flag = true ;
-                        checked_sum = checked_sum+1;
-                        // 获取到已被选中的照片 客户人员类型
-                        _repoName = _this.btm.times.listContent[i].repoName;
-                    }
-                }
-                // 判断勾选的数量
-                if (checked_sum == 1){
-                  if( flag === true ){
-                      // 判断勾选的照片人员会员类型
-                      // 会员库VIP会员
-                    if( _repoName == '金王会员库') {
-                        
-                        _this.tip.title = "黑名单添加"; 
-                        _this.tip.state = "repoName_vip";
-                    }else if(_repoName == '金王黑名单库') {
-                        // 黑名单会员
-                        _this.tip.state = "repoName_black";
-                    }else {
-                        // 普通会员
-                        _this.tip.state = "add"; 
-                        _this.tip.title = "黑名单添加";
-                    }
-                    _this.tip.dialogVisible = true ;
-                  }
-                }else if (checked_sum > 1){
-                    //如果勾选的数量大于1 将模态框的状态设为greater
-                    _this.tip.state = "greater_addBlackPic";
-                    // 并打开模态框
-                    _this.tip.dialogVisible = true ;
-                    _this.tip.title = "黑名单添加";
-                    // _this.$message.warning("请选择要添加黑名单的照片！");
-                }else {
-                    _this.$message.warning("请选择要添加至黑名单的照片！");
-                }
-                
-            }else if( state === "del"){
-                let flag = false ;
-                for( let i = 0 ; i < _this.btm.times.listContent.length ; i++ ){
-                    if( _this.btm.times.listContent[i]['checked'] === true ){
-                        flag = true ;
-                        checked_sum = checked_sum+1;
-                    }
-                }
-                if(checked_sum == 1 ){
-                    if( flag === true ){
-                      _this.tip.dialogVisible = true ;
-                      _this.tip.title = "删除照片";
-                    }
-                }
-                else if( checked_sum > 1 ){
-                    //如果勾选的数量大于1 将模态框的状态设为greater
-                    _this.tip.state = "greater_delPic";
-                    // 并打开模态框
-                    // _this.$message.warning("请选择要添加黑名单的照片！");
-                    _this.tip.dialogVisible = true ;
-                    _this.tip.title = "删除照片";
-                }else {
-                    _this.$message.warning("请选择要删除的照片！");
-                }
-            }else{
-                _this.tip.title = "";
-                _this.tip.dialogVisible = false ;
-            }
-        },
-        /**
-         * 添加到黑名单点击确定
-         */
-        
-        toBlackPic(){
-            // let _this = this;
-            // _this.tip.title = "";
-            // _this.tip.state = "error";
-
-            let _this = this;
-            let str = "";
-            let N = _this.btm.times.listContent.length-1 ;
-            for( let i = 0 ; i < _this.btm.times.listContent.length ; i++ ){
-                if( _this.btm.times.listContent[i]['checked'] === true ){
-                    str += _this.btm.times.listContent[i]['id'] + "," ;
-                }
-            }
-            str = str.substring(0,str.length-1);
-             let formdata = _this.$config.formData({}); 
-            _this.$axios.post(_this.$url.browse_blackAdd+"/"+str , formdata ).then((res)=>{
-                if( res.status == 200 && res.data.code == 1 ){
-                    _this.$message.success("添加成功！");
-                    _this.tip.dialogVisible = false;
-                }else {
-                    _this.$message.error("添加失败, 请稍后重试！");
-                    _this.tip.dialogVisible = false;
-                }
-                // 添加 强制使弹框隐藏
-                // clearTimeout(setTimeout);
-                // let timeOut = setTimeout(() => {
-                //     _this.tip.dialogVisible = false
-                // }, 2000);
-                _this.tip.title = "" ;
-            }).catch((err)=>{
-                _this.$message.error("请求失败，请稍后再试！");
-            });
-
-
-        },
-        /**
-         * 点击图片进入个人中心
-         */
-        toPersonal(item){
-            let _this = this;
-            let Num = item.age;
-            // _this.$router.push({ name: 'Personal',params:{ personal : Num }});
-        },
-
-        /**
-         * 添加黑名单时弹框备注输入框相关方法
-         */
-        querySearch(queryString, cb) {
-            var restaurants = this.restaurants;
-            var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-            // 调用 callback 返回建议列表的数据
-            cb(results);
-          },
-          createFilter(queryString) {
-            return (restaurant) => {
-              return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-            };
-        },
-        loadAll() {
-            return [
-              { "value": "附近小偷" },
-              { "value": "警方通缉"},
-              { "value": "会员偷东西"},
-            ];
-        },
-        handleSelect(item) {
-          console.log(item);
-        },
-        handleIconClick(ev) {
-          console.log(ev);
+        if (val === null) {
+          val = [];
         }
+        if (val != null && val.length != 0) {
+          _this.top.valueTimeS = "custom";
+        }
+      },
+      deep: true
+    }
+  },
+  methods: {
+    /**
+     *时间改变
+     */
+    changeTimes() {
+      let _this = this;
+      if (_this.top.valueTimeS != "custom") {
+        _this.top.valueTime = [];
+      }
     },
-}
+    /**
+     * 时间更改事件
+     */
+    ClickTime(e, state) {
+      let _this = this;
+      if ($(e.target).prop("tagName") != "LI") {
+        $(".timeLis li")
+          .eq(2)
+          .addClass("active")
+          .siblings("li")
+          .removeClass("active");
+      } else {
+        $(e.target)
+          .addClass("active")
+          .siblings("li")
+          .removeClass("active");
+      }
+    },
+    /**
+     * 更改性别
+     */
+    changeSex(val) {
+      let _this = this;
+    },
+
+    /**
+     * 按时间多选框
+     */
+    checkBoxChange_T(item, index) {
+      let _this = this;
+    },
+    getMyDate(str) {
+      let _this = this;
+      var oDate = new Date(str),
+        oYear = oDate.getFullYear(),
+        oMonth = oDate.getMonth() + 1,
+        oDay = oDate.getDate(),
+        oHour = oDate.getHours(),
+        oMin = oDate.getMinutes(),
+        oSen = oDate.getSeconds(),
+        oTime =
+          oYear +
+          "-" +
+          _this.getzf(oMonth) +
+          "-" +
+          _this.getzf(oDay) +
+          " " +
+          _this.getzf(oHour) +
+          ":" +
+          _this.getzf(oMin) +
+          ":" +
+          _this.getzf(oSen); //最后拼接时间
+      return oTime;
+    },
+    //补0操作
+    getzf(num) {
+      if (parseInt(num) < 10) {
+        num = "0" + num;
+      }
+      return num;
+    },
+    /**
+     * 列表数据
+     */
+    usercomein_list(p = 1) {
+      let _this = this;
+      let timestamp = new Date().getTime(); //当前时间
+      let timeStart = "";
+      let timeEnd = "";
+      if (_this.top.valueTimeS == "half") {
+        timeStart = _this.getMyDate((timestamp / 1000 - 1800) * 1000);
+        timeEnd = _this.getMyDate(timestamp);
+      } else if (_this.top.valueTimeS == "hour") {
+        timeStart = _this.getMyDate((timestamp / 1000 - 3600) * 1000);
+        timeEnd = _this.getMyDate(timestamp);
+      } else {
+        timeStart = _this.top.valueTime[0];
+        timeEnd = _this.top.valueTime[1];
+      }
+      let json = {
+        page: p,
+        sex: _this.top.valueSex,
+        ageStart: _this.top.age.startAge,
+        ageEnd: _this.top.age.endAge,
+        timeStart: timeStart,
+        timeEnd: timeEnd
+      };
+      let formdata = _this.$config.formData(json);
+      _this.$axios
+        .post(_this.$url.usercomein_list, formdata)
+        .then(res => {
+          console.log("列表重新渲染了");
+          if (res.status == 200) {
+            let data = res.data;
+            _this.page.currentPage = data.start;
+            _this.page.total = data.count;
+            _this.page.allPages = data.pages;
+            let List = [];
+            List = data.datas;
+            for (let i = 0; i < List.length; i++) {
+              List[i]["checked"] = false;
+              List[i]["ts"] = _this.getMyDate(parseInt(List[i]["time"]));
+            }
+            _this.btm.times.listContent = List;
+            _this.$nextTick(() => {
+              _this.Time_picsMargin();
+            });
+          }
+        })
+        .catch(err => {
+          // _this.$message("请求出错，请稍后重试！");
+          _this.btm.times.listContent = [];
+        });
+    }
+  }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    #passenger{
-        width: 100%;
-        /* min-height: 539px; */
-        color: #fff;
-        border-radius: 10px;
-        /* padding: 2%; */
-        margin: auto;
-        overflow: hidden;
-        position: relative;
-        margin-bottom: 20px;
-        min-width: 1021px;
-        overflow-x: auto;
-    }
-    #browse > div {
-        /* width: 98%; */
-        padding: 20px;
-    }
-    .b_top {
-        background: rgba(255,255,255,0.1);
-        padding: 20px;
-    }
-    .b_btm {
-        background: rgba(255,255,255,0.1);
-        margin-top: 20px;
-        padding: 20px;
-    } 
-    .page_title {
-        font-size: 20px;
-        font-weight: 400;
-    }
-    
-    .timeLis {
-        display: inline-block;
-        vertical-align: middle;
-    }
-    .timeLis > li {
-        float: left;
-        height: 40px;
-        line-height: 40px;
-        vertical-align: middle;
-        margin: 0px 10px;
-        color: #c5c5c5;
-        cursor: pointer;
-    }
-    .timeLis > li.active {
-        color: #fff;
-    }
-    .top_content {
-        margin-top: 15px;
-    }
-    .age>div {
-        display: inline-block;
-        vertical-align: middle;
-        margin: 0px 10px;
-    }
-    .startage input  {
-        border: 1px solid #91a2eb;
-        background: rgba(0,0,0,0);
-        border-radius: 20px;
-        color: #c5c5c5;
-        outline: none;
-        width: 100%;
-        height: 100%;
-        padding-left: 24px;
-        box-sizing: border-box;
-    }
-    .endage input {
-        border: 1px solid #91a2eb;
-        background: rgba(0,0,0,0);
-        border-radius: 20px;
-        color: #c5c5c5;
-        outline: none;
-        width: 100%;
-        height: 100%;
-        padding-left: 24px;
-        box-sizing: border-box;
-    }
-    .age_line {
-        display: inline-block;
-        vertical-align: middle;
-        width: 30px;
-        height: 1px;
-        background: #91a2eb;
-    }
-    .startage {
-        display: inline-block;
-        position: relative;
-        width: 78px;
-        height: 36px;
-    }
-    .endage  {
-        display: inline-block;
-        position: relative;
-        width: 78px;
-        height: 36px;
-    }
-    .startage:after   {
-        content: "岁";
-        display: block;
-        position: absolute;
-        right: 15px;
-        top: 47%;
-        transform: translateY(-50% );
-        color: #c5c5c5;
-        font-size: 13px;
-    }
-    .endage:after {
-         content: "岁";
-        display: block;
-        position: absolute;
-        right: 15px;
-        top: 47%;
-        transform: translateY(-50% );
-        color: #c5c5c5;
-        font-size: 13px;
-    }
-    .operaty > div {
-        display: inline-block;
-        color: #c5c5c5;
-        font-size: 14px;
-        margin: 0px 10px;
-        width: 110px;
-        height: 40px;
-        line-height: 40px;
-        border: none;
-        border-radius: 20px;
-        text-align: center; 
-    } 
-    .search_icon {
-        display: inline-block;
-        vertical-align: middle;
-        width: 20px;
-        height: 20px;
-        background: url("../../assets/images/search_icon.png") no-repeat;
-        background-size: 100% 100%;
-    }
-    .todo_search:hover .search_icon {
-        background: url("../../assets/images/search_icon_hover.png") no-repeat;
-        background-size: 100% 100%;
-    }
-    .black_icon {
-        display: inline-block;
-        vertical-align: middle;
-        width: 20px;
-        height: 20px;
-        background: url("../../assets/images/browse_black.png") no-repeat;
-        background-size: 100% 100%;
-    }
-    .add_black:hover .black_icon {
-        background: url("../../assets/images/browse_black_hover.png") no-repeat;
-        background-size: 100% 100%;
-    }
-    .operaty > div:hover{
-        background: rgb(54, 63, 104);
-        color: #fff;
-        cursor: pointer;
-    }
-    .operaty > div:active {
-        opacity: 0.8 ;
-    } 
-    .del_icon {
-        display: inline-block;
-        vertical-align: middle;
-        width: 20px;
-        height: 20px;
-        vertical-align: sub;
-        background: url("../../assets/images/del_btn.png") no-repeat;
-        background-size: 100% 100%;
-    }
-    .del_btn:hover .del_icon {
-        background: url("../../assets/images/del_btn_hover.png") no-repeat;
-        background-size: 100% 100%;
-    }
-    .add_store>li {
-        float: left;
-        width: 90px;
-        color: #c5c5c5;
-        padding: 5px 5px 10px 0px;
-        margin-right:10px;
-        cursor: pointer;
-    }
-    .add_store>li.active {
-        color: #fff;
-        border-bottom: 1px solid #fff;
-    }
-    #browse > .b_btm {
-        padding: 20px 40px 40px;
-    }
-    
-    div.clickMore {
-        background: #596085;
-        color: #d2d8fc;
-        text-align: center;
-        height: 32px;
-        line-height: 32px;
-        border: 1px solid #596085; 
-    }
-    div.clickMore:hover {
-        opacity: 0.8;
-        border: solid 1px #596085;
-        color: #596085;
-        background: rgba(0,0,0,0);
-    }
-    div.clickMore:active {
-        opacity: 0.6;
-        border: solid 1px #596085;
-        color: #596085;
-        background: rgba(0,0,0,0);
-    }
-    .img_box {
-        width: 150px;
-        height: 180px;
-        margin-bottom: 7px;
-        position: relative;
-    }
-    .img_box > .chk_box {
-        position: absolute;
-        left: 10px;
-        top: 10px;
-    }
-    .img_box img {
-        width: 100%;
-        height: 100%;
-    }
-    input[type="checkbox"]{
-        width: 16px;
-        height: 16px;
-        position: absolute;
-        left: 10px;
-        top: 10px;
-    }
-    .pictrue_box {
-        display: inline-block;
-        vertical-align: middle;
-        width: 180px;
-    }
-    .pic_all_box {
-        /* min-width: 750px; */
-        font-size: 0px;
-    }
-    .times_pic_box  {
-        /* min-width: 750px; */
-        font-size: 0px;
-    }
-    .times_pic_box p {
-        font-size: 13px;
-    }
-    .pic_all_box>div {
-        margin-bottom: 10px;
-        font-size: 13px;
-    }
-    .times_pic {
-        /* min-width: 750px; */
-        margin-top: 30px;
-        padding: 0px 20px;
-        color: #c5c5c5;
-        font-size: 13px;
-    }
-    .times_pic>div>.pictrue_box {
-        margin-bottom: 10px;
-    }
-    /* 虚拟操作日期选择框DOM样式 */
-    .el-range-editor.el-input__inner {
-        background: #1a1f37;
-        border-radius: 20px;
-        border-color: #91a2eb;
-    }
-    /* 虚拟操作分页DOM样式 */
-    .el-pagination {
-        display: inline-block;
-    }
-    .pictrue_box p {
-        font-size: 13px;
-        line-height: 1.769230769230769;
-    }
-    .footer_btn  {
-       	width: 100px;
-        height: 38px;
-        background-color: #4b77e5;
-        border-radius: 10px;
-        border: 1px solid #4b77e5;
-        outline: none;
-        color: #fff;
-        cursor: pointer;
-    }
-    .footer_btn:hover {
-        opacity: 0.8;
-    }
-    .footer_btn:active {
-        opacity: 0.6;
-    }
-    .footer_btn + .footer_btn  {
-        margin-left: 100px;
-        background-color: #87a7f6;
-        border: 1px solid #87a7f6;
-    }
-    
-    .pic_icons {
-        width: 16px;
-        height: 16px;
-        display: inline-block;
-        vertical-align: text-bottom;
-    }
-    .pic_vip {
-        background: url( " ../../assets/images/browse_vip_icon.png") no-repeat ;
-        background-size: 100% 100%;
-    }
-    .pic_black {
-        background: url( " ../../assets/images/browse_black_icon.png") no-repeat ;
-        background-size: 100% 100%;
-    }
-    .add_pages{
-        text-align: right;
-        margin-top: 20px;  
-        margin-bottom: 30px;
-    }
-    .add_pages>span {
-        display: inline-block;
-        width: 28.5px;
-        height: 28px;
-        background: rgba(255,255,255,0.2);
-        color: #fff;
-        font-size: 10px;
-        text-align: center;
-        line-height: 28px;
-        border-radius: 5px; 
-        vertical-align: text-top;
-        cursor: pointer;
-    }
-    .add_pages>span:hover{
-        background: #91a2eb;
-    }
-    .add_pages>span:last-child {
-        margin-left: -5px;
-    }
-    .pic_font {
-        font-size: 10px;
-        white-space:nowrap;
-    }
-    inline_block {
-        display: inline-block;
-    }
-    .dialog_black_success{
-        height: 200px;
-    }
-    .dialog_black_success p {
-        color: #fff;
-        text-align: center;
-    }
-    .dialog_black_error p {
-        color: #fff;
-        text-align: center;
-    }
-    
-    /**
-    模态框提示内容居中
-    */
-    .dialog_text_center {
-        text-align: center;
-    }
-    /* 虚拟操作模态框DOM样式 */
-    .el-dialog{
-        height: 275px;
-    }
-    .dialog-footer {
-        margin: 30px 0 20px 0;
-    }
-    #isBlack {
-        color: #bdc0d4;
-        font-size: 14px;
-        margin-top: 30px;
-        margin-bottom: 20px;
-    }
-    #black_commit {
-        color: #bdc0d4;
-        font-size: 14px;
-    }
-    #beiZhu {
-        margin-right: 22px;
-    }
-    /* .el-dialog__body {
-        height: 200px;
-    } */
-    .el-dialog__body .el-input__inner {
-        width: 310px;
-        height: 38px;
-        border-radius: 20px;
-    }
-    /* 虚拟操作DOM 分页按钮页码padding*/
-    .add_pages .el-pagination {
-        text-align: right;
-        padding: 2px 0;
-    }
-    
+#passenger {
+  width: 100%;
+  /* min-height: 539px; */
+  color: #fff;
+  border-radius: 10px;
+  /* padding: 2%; */
+  margin: auto;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 20px;
+  min-width: 1021px;
+  overflow-x: auto;
+}
+#browse > div {
+  /* width: 98%; */
+  padding: 20px;
+}
+.b_top {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+}
+.b_btm {
+  background: rgba(255, 255, 255, 0.1);
+  margin-top: 20px;
+  padding: 20px;
+}
+.page_title {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.timeLis {
+  display: inline-block;
+  vertical-align: middle;
+}
+.timeLis > li {
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+  margin: 0px 10px;
+  color: #c5c5c5;
+  cursor: pointer;
+}
+.timeLis > li.active {
+  color: #fff;
+}
+.top_content {
+  margin-top: 15px;
+  margin-right: 60px;
+}
+.age > div {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0px 10px;
+}
+.startage input {
+  border: 1px solid #91a2eb;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 20px;
+  color: #c5c5c5;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  padding-left: 24px;
+  box-sizing: border-box;
+}
+.endage input {
+  border: 1px solid #91a2eb;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 20px;
+  color: #c5c5c5;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  padding-left: 24px;
+  box-sizing: border-box;
+}
+.age_line {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30px;
+  height: 1px;
+  background: #91a2eb;
+}
+.startage {
+  display: inline-block;
+  position: relative;
+  width: 78px;
+  height: 36px;
+}
+.endage {
+  display: inline-block;
+  position: relative;
+  width: 78px;
+  height: 36px;
+}
+.startage:after {
+  content: "岁";
+  display: block;
+  position: absolute;
+  right: 15px;
+  top: 47%;
+  transform: translateY(-50%);
+  color: #c5c5c5;
+  font-size: 13px;
+}
+.endage:after {
+  content: "岁";
+  display: block;
+  position: absolute;
+  right: 15px;
+  top: 47%;
+  transform: translateY(-50%);
+  color: #c5c5c5;
+  font-size: 13px;
+}
+.operaty > div {
+  display: inline-block;
+  color: #c5c5c5;
+  font-size: 14px;
+  margin: 0px 10px;
+  width: 110px;
+  height: 40px;
+  line-height: 40px;
+  border: none;
+  border-radius: 20px;
+  text-align: center;
+}
+.operaty > div:hover {
+  background: rgb(54, 63, 104);
+  color: #fff;
+  cursor: pointer;
+}
+.operaty > div:active {
+  opacity: 0.8;
+}
+.search_icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  background: url("../../assets/images/search_icon.png") no-repeat;
+  background-size: 100% 100%;
+}
+.todo_search:hover .search_icon {
+  background: url("../../assets/images/search_icon_hover.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+/* 设置元素为行内块元素 */
+.inline_block {
+  display: inline-block;
+}
+
+/* 分析内容详情部分 */
+.passenger_top {
+  margin-left: 30px;
+}
+/*客流分析标题*/
+.passenger_top_name {
+  margin: 20px 0 0 40px;
+}
+
+.passenger_top_content {
+}
+.passenger_top_content_charts {
+  width: 98%;
+  height: 409px;
+  background-color: #313856;
+  box-shadow: 1px 1px 18px 0px rgba(64, 128, 255, 0.2);
+  border-radius: 16px;
+  margin-top: 21px;
+  margin-bottom: 42px;
+}
+.passenger_bottom_content {
+    display: inline-block;
+    margin: 0 40px;
+}
+.passenger_bottom_content_name {
+    margin: 0 0 22px 14px;
+}
+.passenger_bottom_content_charts {
+  width: 458px;
+  height: 360px;
+  background-color: #313856;
+  box-shadow: 1px 1px 18px 0px rgba(64, 128, 255, 0.2);
+  border-radius: 16px;
+  margin-top: 21px;
+  margin-bottom: 42px;
+}
 </style>
