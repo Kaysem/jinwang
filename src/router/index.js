@@ -45,7 +45,8 @@ import BottomPhoto from '@/components/snap/bottomPhoto'  //底库照片管理
 // 旧版顾客中心
 // import Usercenter2 from '@/components/usercenter2'  //底库照片管理
 
-
+// 图表测试
+import Ceshi  from '@/components/black/ceshi'
 
 
 Vue.use(Router)
@@ -171,6 +172,11 @@ export default new Router({
           //客流报表
           {
             path: '/black/passenger',name: 'Passenger',component: resolve => require(['@/components/black/passenger'],resolve),meta: {requireAuth: true}
+          },
+
+          //测试
+          {
+            path: '/black/ceshi',name: 'Ceshi',component: resolve => require(['@/components/black/ceshi'],resolve),meta: {requireAuth: true}
           },
         // //黑名单
         // {

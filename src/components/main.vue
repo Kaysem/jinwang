@@ -108,6 +108,11 @@
                         <a href="javascript:void(0)" @click="torouter('/black/passenger')" data-url="/black/passenger"><i v-show="big_isShow">客流报表</i></a>
                       </span>
                     </el-menu-item>
+                    <el-menu-item index="6-5">
+                      <span>
+                        <a href="javascript:void(0)" @click="torouter('/black/ceshi')" data-url="/black/ceshi"><i v-show="big_isShow">测试</i></a>
+                      </span>
+                    </el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
 

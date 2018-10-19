@@ -70,30 +70,40 @@
                 <div class="analyse_top_center inline_block">
                     <div class="analyse_top_name">年龄</div>
                     <div class="analyse_top_content">
-                        
+                        <div id="ageEcharts" ref="ageEcharts"></div>
                     </div>
                 </div>
                 <div class="analyse_top_right inline_block">
                     <div class="analyse_top_name">性别</div>
-                    <div class="analyse_top_content"></div>
+                    <div class="analyse_top_content">
+                      <div id="sexEcharts" ref="sexEcharts"></div>
+                    </div>
                 </div>
             </div>
             <div class="analyse_center">
                 <div class="analyse_top_name">时间</div>
-                <div class="analyse_center_content"></div>
+                <div class="analyse_center_content">
+                  <div id="hourCountEcharts" ref="hourCountEcharts"></div>
+                </div>
             </div>
             <div class="analyse_bottom">
                 <div class="analyse_top_left inline_block">
                     <div class="analyse_top_name">天</div>
-                    <div class="analyse_top_content"></div>
+                    <div class="analyse_top_content">
+                      <div id="weekCountEcharts" ref="weekCountEcharts"></div>
+                    </div>
                 </div>
                 <div class="analyse_top_center inline_block">
                     <div class="analyse_top_name">月</div>
-                    <div class="analyse_top_content"></div>
+                    <div class="analyse_top_content">
+                      <div id="mouthCountEcharts" ref="mouthCountEcharts"></div>
+                    </div>
                 </div>
                 <div class="analyse_top_right inline_block">
                     <div class="analyse_top_name">次数</div>
-                    <div class="analyse_top_content"></div>
+                    <div class="analyse_top_content">
+                      <div id="timesCountEcharts" ref="timesCountEcharts"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -101,6 +111,7 @@
 </template>
 
 <script>
+import echarts from "echarts";
 export default {
   name: "Analyse",
   data() {
@@ -136,13 +147,554 @@ export default {
         valueTimeS: "three",
         valueTime: [], //时间
         valueSex: "ALL", //性别
-        valueCount: "ALL", // 出现次数
+        valueCount: "ALL" // 出现次数
       },
 
-      // 详情部分 top 部分 年龄图表
-    //   analyse_top_content: {
-          
-    //   }
+      // 详情部分 top 部分 年龄图表 start
+      resData: "",
+      ageEcharts: {
+        color: ["#547ee6"],
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        grid: {
+          left: "1%",
+          right: "3%",
+          bottom: "3%",
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: "category",
+            data: ["18岁至25岁", "26岁至35岁", "36岁至45岁", "46岁至55岁"],
+            axisTick: {
+              alignWithLabel: true
+            },
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#fff", //左边线的颜色
+                width: "2" //坐标线的宽度
+              }
+            }
+            // axisLabel: {
+            //   interval:0,
+            //   rotate:40
+            // },
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#fff",
+                width: "2"
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#fff"
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: "直接访问",
+            type: "bar",
+            barWidth: "30%",
+            itemStyle: {
+              normal: {
+                barBorderRadius: 40
+              }
+            },
+            data: [
+              20,
+              52,
+              18,
+              55,
+              46,
+              35,
+              29,
+              50,
+              32,
+              38,
+              52,
+              18,
+              55,
+              46,
+              20,
+              52,
+              18,
+              55,
+              46,
+              35,
+              29,
+              50,
+              32,
+              38,
+              52,
+              18,
+              55,
+              46
+            ]
+          }
+        ]
+      },
+      // 详情部分 top部分  图表样式 end
+
+      // 详情部分 top 部分 性别图表 start
+      sexEcharts: {
+        color: ["#d780f0", "#4b77e5"],
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b}: {c} ({d}%)",
+          position: function(p) {
+            //其中p为当前鼠标的位置
+            return [p[0] + 10, p[1] - 10];
+          },
+          extraCssText: "width:160px;height:40px;background:rgba(0,0,0,0.2);"
+        },
+        legend: {
+          orient: "horizontal",
+          x: "right",
+          data: ["女性", "男性"],
+          textStyle: {
+            color: "#fff"
+          }
+        },
+        series: [
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: ["50%", "70%"],
+            avoidLabelOverlap: false,
+            label: {
+              normal: {
+                show: false,
+                position: "center"
+              },
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: "30",
+                  fontWeight: "bold"
+                }
+              }
+            },
+            data: [{ value: 335, name: "女性" }, { value: 310, name: "男性" }]
+          }
+        ]
+      },
+      // 详情部分 top部分  图表样式 end
+
+      // 详情部分 中间部分  图表样式 start
+      hourCountEcharts: {
+        tooltip: {
+          trigger: "axis",
+          formatter: "{a} <br/>{b}->{c}人 ",
+          position: function(p) {
+            //其中p为当前鼠标的位置
+            return [p[0] + 10, p[1] - 10];
+          },
+          extraCssText: "width:160px;height:40px;background:rgba(0,0,0,0.2);"
+        },
+        grid: {
+          left: "3%",
+          right: "3%",
+          bottom: "10%",
+          containLabel: true
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: [
+            "00:00",
+            "01:00",
+            "02:00",
+            "03:00",
+            "04:00",
+            "05:00",
+            "06:00",
+            "07:00",
+            "08:00",
+            "09:00",
+            "10:00",
+            "11:00",
+            "12:00",
+            "13:00",
+            "14:00",
+            "15:00",
+            "16:00",
+            "17:00",
+            "18:00",
+            "19:00",
+            "20:00",
+            "21:00",
+            "22:00",
+            "23:00"
+          ],
+          axisLine: {
+            lineStyle: {
+              type: "solid",
+              color: "#fff", //左边线的颜色
+              width: "2" //坐标线的宽度
+            }
+          }
+        },
+        yAxis: {
+          type: "value",
+          axisLine: {
+            lineStyle: {
+              type: "solid",
+              color: "#fff",
+              width: "2"
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#fff"
+            }
+          }
+        },
+        series: [
+          {
+            name: "黑名单人数",
+            type: "line",
+            data: [11, 0, 11, 15, 13, 12, 13, 10],
+            markPoint: {
+              data: [
+                { type: "max", name: "最大值" },
+                { type: "min", name: "最小值" }
+              ]
+            },
+            markLine: {
+              data: [
+                { type: "average", name: "平均值" },
+                [
+                  {
+                    symbol: "none",
+                    x: "90%",
+                    yAxis: "max"
+                  },
+                  {
+                    symbol: "circle",
+                    label: {
+                      normal: {
+                        position: "start",
+                        formatter: "最大值"
+                      }
+                    },
+                    type: "max",
+                    name: "最高点"
+                  }
+                ]
+              ]
+            }
+          }
+        ]
+      },
+       // 详情部分 中间部分  图表样式 End
+
+      // 详情部分 bottom 部分 周期图表 start
+      weekCountEcharts: {
+        color: ["#d780f0"],
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        grid: {
+          left: "1%",
+          right: "3%",
+          bottom: "3%",
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: "category",
+            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+            axisTick: {
+              alignWithLabel: true
+            },
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#fff", //左边线的颜色
+                width: "2" //坐标线的宽度
+              }
+            }
+            // axisLabel: {
+            //   interval:0,
+            //   rotate:40
+            // },
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#fff",
+                width: "2"
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#fff"
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: "直接访问",
+            type: "bar",
+            barWidth: "30%",
+            itemStyle: {
+              normal: {
+                barBorderRadius: 40
+              }
+            },
+            data: [
+              20,
+              52,
+              18,
+              55,
+              46,
+              35,
+              29,
+              50,
+              32,
+              38,
+              52,
+              18,
+              55,
+              46,
+              20,
+              52,
+              18,
+              55,
+              46,
+              35,
+              29,
+              50,
+              32,
+              38,
+              52,
+              18,
+              55,
+              46
+            ]
+          }
+        ]
+      },
+      // 详情部分 bottom 部分 周期图表 end
+
+      // 详情部分 bottom 部分 月份图表 start
+      mouthCountEcharts: {
+        color: ["#ceaa1b"],
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        grid: {
+          left: "1%",
+          right: "3%",
+          bottom: "3%",
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: "category",
+            data: ["7月", "8月", "9月"],
+            axisTick: {
+              alignWithLabel: true
+            },
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#fff", //左边线的颜色
+                width: "2" //坐标线的宽度
+              }
+            }
+            // axisLabel: {
+            //   interval:0,
+            //   rotate:40
+            // },
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#fff",
+                width: "2"
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#fff"
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: "直接访问",
+            type: "bar",
+            barWidth: "30%",
+            itemStyle: {
+              normal: {
+                barBorderRadius: 40
+              }
+            },
+            data: [
+              20,
+              52,
+              18,
+              55,
+              46,
+              35,
+              29,
+              50,
+              32,
+              38,
+              52,
+              18,
+              55,
+              46,
+              20,
+              52,
+              18,
+              55,
+              46,
+              35,
+              29,
+              50,
+              32,
+              38,
+              52,
+              18,
+              55,
+              46
+            ]
+          }
+        ]
+      },
+      // 详情部分 bottom 部分 月份图表 end
+
+      // 详情部分 bottom 部分 次数图表 start
+      timesCountEcharts: {
+        color: ["#5bdada"],
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        grid: {
+          left: "1%",
+          right: "3%",
+          bottom: "3%",
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: "category",
+            data: ["1次", "2次", "3次及以上"],
+            axisTick: {
+              alignWithLabel: true
+            },
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#fff", //左边线的颜色
+                width: "2" //坐标线的宽度
+              }
+            }
+            // axisLabel: {
+            //   interval:0,
+            //   rotate:40
+            // },
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#fff",
+                width: "2"
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#fff"
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: "直接访问",
+            type: "bar",
+            barWidth: "30%",
+            itemStyle: {
+              normal: {
+                barBorderRadius: 40
+              }
+            },
+            data: [
+              20,
+              52,
+              18,
+              55,
+              46,
+              35,
+              29,
+              50,
+              32,
+              38,
+              52,
+              18,
+              55,
+              46,
+              20,
+              52,
+              18,
+              55,
+              46,
+              35,
+              29,
+              50,
+              32,
+              38,
+              52,
+              18,
+              55,
+              46
+            ]
+          }
+        ]
+      },
+      // 详情部分 bottom 部分 次数图表 end
     };
   },
   beforeMount() {
@@ -151,37 +703,56 @@ export default {
   },
   mounted: function() {
     let _this = this;
-    
-    window.addEventListener("resize", function() {
-      
-      
+    //
+    _this.myChart = echarts.init(document.getElementById("ageEcharts"));
+    _this.myChart.setOption(_this.ageEcharts);
+
+    _this.myChart1 = echarts.init(document.getElementById("sexEcharts"));
+    _this.myChart1.setOption(_this.sexEcharts);
+
+    _this.myChart2 = echarts.init(document.getElementById("hourCountEcharts"));
+    _this.myChart2.setOption(_this.hourCountEcharts);
+
+    _this.myChart3 = echarts.init(document.getElementById("weekCountEcharts"));
+    _this.myChart3.setOption(_this.weekCountEcharts);
+
+    _this.myChart4 = echarts.init(document.getElementById("mouthCountEcharts"));
+    _this.myChart4.setOption(_this.mouthCountEcharts);
+
+    _this.myChart5 = echarts.init(document.getElementById("timesCountEcharts"));
+    _this.myChart5.setOption(_this.timesCountEcharts);
+
+    window.addEventListener("resize", () => {
+      _this.myChart.resize();
+      _this.myChart1.resize();
+      _this.myChart2.resize();
+      _this.myChart3.resize();
+      _this.myChart4.resize();
+      _this.myChart5.resize();
     });
   },
   watch: {
-    'top.valueTime': {
-            handler: function( val, oldval ){
-                let _this = this;
-                if( val === null ){
-                    val = [] ;
-                }
-                if( val != null && val.length != 0 ){
-                    _this.top.valueTimeS = "custom" ;
-                }
-            },
-            deep: true
-        },
+    "top.valueTime": {
+      handler: function(val, oldval) {
+        let _this = this;
+        if (val === null) {
+          val = [];
+        }
+        if (val != null && val.length != 0) {
+          _this.top.valueTimeS = "custom";
+        }
+      },
+      deep: true
+    }
   },
   methods: {
-    
     changeTimes() {
       let _this = this;
       if (_this.top.valueTimeS != "custom") {
         _this.top.valueTime = [];
       }
       // 时间改变发起数据列表请求
-
     },
-    
 
     getMyDate(str) {
       let _this = this;
@@ -265,7 +836,7 @@ export default {
           // _this.$message("请求出错，请稍后重试！");
           _this.btm.times.listContent = [];
         });
-    },
+    }
   }
 };
 </script>
@@ -307,13 +878,12 @@ export default {
   margin-top: 15px;
   /* display: inline-block;
     margin-right: 134px; */
-    margin-right: 120px;
+  margin-right: 120px;
 }
 
 /* 设置元素为行内块元素 */
 .inline_block {
   display: inline-block;
-  
 }
 
 /* 门店下拉框*/
@@ -325,7 +895,7 @@ export default {
 .searChstore span {
   margin-right: 10px;
 }
-/* 出现次数 */ 
+/* 出现次数 */
 .timesCount > div {
   display: inline-block;
   vertical-align: middle;
@@ -356,71 +926,114 @@ export default {
   background: url("../../assets/images/search_icon_hover.png") no-repeat;
   background-size: 100% 100%;
 }
-/* 查询操作按钮 */ 
+/* 查询操作按钮 */
 .operaty > div:hover {
   background: rgb(54, 63, 104);
   color: #fff;
   cursor: pointer;
 }
 
-/* 详情块css  start  */ 
+/* 详情块css  start  */
 .analyse_top {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 .analyse_top_left {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 .analyse_top_center {
-    margin: 0 106px;
+  /* width: 100%; */
+  margin: 0 106px;
 }
-.analyse_top_right {
-    
-}
+/* .analyse_top_center div{
+    float: left;
+    width: 50%;
+  } */
+
 .analyse_top_content {
-    overflow: hidden;
-    width: 458px;
-	height: 360px;
-	background-color: #313856;
-	box-shadow: 1px 1px 18px 0px 
-		rgba(64, 128, 255, 0.2);
-	border-radius: 16px;
+  overflow: hidden;
+  width: 458px;
+  height: 360px;
+  background-color: #313856;
+  box-shadow: 1px 1px 18px 0px rgba(64, 128, 255, 0.2);
+  border-radius: 16px;
 }
 .analyse_top_content img {
-    width: 162px;
-    height: 187px;
-    margin: 84px 0 0 47px;
-    box-shadow: 8px 8px 8px  rgba(0, 0, 0, 0.5);
+  width: 162px;
+  height: 187px;
+  margin: 84px 0 0 47px;
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.5);
 }
 
 .analyse_top_content_period {
-    float: right;
-    display: inline-block;
-    margin: 160px 90px 0 0;
-    font-size: 14px;
-    font-family: '微软雅黑';
-    font-weight: 700;
+  float: right;
+  display: inline-block;
+  margin: 160px 90px 0 0;
+  font-size: 14px;
+  font-family: "微软雅黑";
+  font-weight: 700;
 }
 .analyse_top_content_period div {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 
 /* 详情部分-top部分-标题*/
 .analyse_top_name {
-    margin: 0 0 22px 14px;
+  margin: 0 0 22px 14px;
 }
 /* 按时段分析图表部分 */
 .analyse_center {
-    margin: 40px 0 0 24px;
+  width: 100%;
+  margin: 40px 0 0 24px;
 }
 .analyse_center_content {
-    width: 98%;
-	height: 360px;
-	background-color: #313856;
-	box-shadow: 1px 1px 18px 0px 
-		rgba(64, 128, 255, 0.2);
-	border-radius: 20px;
+  width: 98%;
+  height: 360px;
+  background-color: #313856;
+  box-shadow: 1px 1px 18px 0px rgba(64, 128, 255, 0.2);
+  border-radius: 20px;
 }
 .analyse_bottom {
-    margin-top: 40px;
+  margin-top: 40px;
+}
+
+/*echarts图表样式*/
+#ageEcharts {
+  width: 95%;
+  height: 340px;
+  margin: 0 auto;
+  color: #fff;
+  overflow: hidden;
+}
+#sexEcharts {
+  width: 97%;
+  height: 350px;
+  margin: 10px auto;
+  overflow: hidden;
+}
+#hourCountEcharts {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+}
+#weekCountEcharts {
+  width: 95%;
+  height: 340px;
+  margin: 0 auto;
+  color: #fff;
+  overflow: hidden;
+}
+#mouthCountEcharts {
+  width: 95%;
+  height: 340px;
+  margin: 0 auto;
+  color: #fff;
+  overflow: hidden;
+}
+#timesCountEcharts {
+  width: 95%;
+  height: 340px;
+  margin: 0 auto;
+  color: #fff;
+  overflow: hidden;
 }
 </style>
