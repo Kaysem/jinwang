@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="analyse_center">
+    <div class="passenger_top">
         <h3>重点行业</h3>
-      <div class="analyse_center_content">
-       <div id="hourCountEcharts" ref="hourCountEcharts"></div>
+      <div class="passenger_top_content_charts">
+       <div id="passengerCountEcharts" ref="passengerCountEcharts"></div>
       </div>
     </div>
 
@@ -113,23 +113,50 @@ export default {
       //       }
       //     ]
       //   }
-      hourCountEcharts: {
+      passengerCountEcharts: {
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
+          axisPointer: {
+            type: "cross",
+            label: {
+              backgroundColor: "#6a7985"
+            }
+          }
         },
         legend: {
-          data: ["邮件营销", "联盟广告", "视频广告"]
+          itemWidth: 60,
+          itemGap: 30,
+          top: 15,
+          textStyle: {
+            fontSize: 12,
+            color: "#fff"
+          },
+          data: ["总客流量", "支付客流量", "支付率"]
         },
+        dataZoom: [
+          {
+            show: true,
+            realtime: true,
+            start: 65,
+            end: 100,
+            bottom: 15,
+            backgroundColor: '#fff',
+            dataBackground: {
+              lineStyle: {
+                color : '#EE0000'
+              },
+              areaStyle: {
+                color: '#030303'
+              }
+            },
+
+          }
+        ],
         grid: {
           left: "3%",
           right: "4%",
-          bottom: "3%",
+          bottom: "15%",
           containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
         },
         xAxis: {
           type: "category",
@@ -148,39 +175,87 @@ export default {
             }
           }
         },
-        yAxis: {
-          type: "value",
-          axisLine: {
-            lineStyle: {
-              type: "solid",
-              color: "#fff",
-              width: "2"
+        yAxis: [
+          {
+            name: "总客流量 ( 单位 : 人 )",
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#fff",
+                width: "2"
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#fff"
+              }
             }
           },
-          axisLabel: {
-            textStyle: {
-              color: "#fff"
+          {
+            name: "支付率 ( 单位 : % )",
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#fff",
+                width: "2"
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#fff"
+              }
             }
           }
-        },
+        ],
         series: [
           {
-            name: "邮件营销",
+            name: "总客流量",
             type: "line",
-            stack: "总量",
-            data: [120, 132, 101, 134, 90, 230, 210]
+            stack: "总量1",
+            areaStyle: { normal: {} },
+            yAxisIndex: 0,
+            itemStyle: {
+              normal: {
+                color: "#f1bd2a",
+                lineStyle: {
+                  color: "#f1bd2a"
+                }
+              }
+            },
+            data: [1200, 1320, 1010, 1340, 900, 2300, 2100]
           },
           {
-            name: "联盟广告",
+            name: "支付客流量",
             type: "line",
-            stack: "总量",
-            data: [220, 182, 191, 234, 290, 330, 310]
+            stack: "总量2",
+            areaStyle: { normal: {} },
+            yAxisIndex: 0,
+            itemStyle: {
+              normal: {
+                color: "#CD2626",
+                lineStyle: {
+                  color: "#CD2626"
+                }
+              }
+            },
+            data: [820, 982, 791, 534, 1190, 530, 310]
           },
           {
-            name: "视频广告",
+            name: "支付率",
             type: "line",
-            stack: "总量",
-            data: [150, 232, 201, 154, 190, 330, 410]
+            stack: "总量3",
+            yAxisIndex: 1,
+            itemStyle: {
+              normal: {
+                color: "#2ec7c9",
+                lineStyle: {
+                  color: "#2ec7c9"
+                }
+              }
+            },
+            data: [65, 99, 18, 87, 91, 57, 69]
           }
         ]
       }
@@ -188,8 +263,8 @@ export default {
   },
   mounted() {
     // this.setEchartOption()
-    this.myChart = echarts.init(document.getElementById("hourCountEcharts"));
-    this.myChart.setOption(this.hourCountEcharts);
+    this.myChart = echarts.init(document.getElementById("passengerCountEcharts"));
+    this.myChart.setOption(this.passengerCountEcharts);
     window.addEventListener("resize", () => {
       this.myChart.resize();
     });
@@ -220,7 +295,7 @@ export default {
 </script>
 
 <style>
-.analyse_center {
+.passenger_top {
   width: 100%;
 }
 /* .analyse_top_content {
@@ -230,9 +305,9 @@ export default {
   box-shadow: 1px 1px 18px 0px rgba(64, 128, 255, 0.2);
   border-radius: 16px;
 } */
-.analyse_center_content {
+.passenger_top_content_charts {
   width: 100%;
-  height: 360px;
+  height: 420px;
   background-color: #313856;
   box-shadow: 1px 1px 18px 0px rgba(64, 128, 255, 0.2);
   border-radius: 20px;
@@ -247,7 +322,7 @@ export default {
   padding-bottom: 20px;
   margin-left: -20px;
 }
-#hourCountEcharts {
+#passengerCountEcharts {
   width: 100%;
   height: 100%;
   margin: 0 auto;
