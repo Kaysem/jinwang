@@ -57,7 +57,7 @@
         </div>
         <div class="b_btm">
             <div class="analyse_top">
-                <div class="analyse_top_left inline_block">
+                <div class="analyse_top_left analyse_top_all inline_block">
                     <div class="analyse_top_name">Key Point</div>
                     <div class="analyse_top_content">
                         <img src="../../assets/images/jinwang01.jpg" alt="用户照片">
@@ -67,13 +67,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="analyse_top_center inline_block">
+                <div class="analyse_top_center analyse_top_all inline_block">
                     <div class="analyse_top_name">年龄</div>
                     <div class="analyse_top_content">
                         <div id="ageEcharts" ref="ageEcharts"></div>
                     </div>
                 </div>
-                <div class="analyse_top_right inline_block">
+                <div class="analyse_top_right analyse_top_all inline_block">
                     <div class="analyse_top_name">性别</div>
                     <div class="analyse_top_content">
                       <div id="sexEcharts" ref="sexEcharts"></div>
@@ -87,19 +87,19 @@
                 </div>
             </div>
             <div class="analyse_bottom">
-                <div class="analyse_top_left inline_block">
+                <div class="analyse_top_left analyse_top_all inline_block">
                     <div class="analyse_top_name">天</div>
                     <div class="analyse_top_content">
                       <div id="weekCountEcharts" ref="weekCountEcharts"></div>
                     </div>
                 </div>
-                <div class="analyse_top_center inline_block">
+                <div class="analyse_top_center analyse_top_all inline_block">
                     <div class="analyse_top_name">月</div>
                     <div class="analyse_top_content">
                       <div id="mouthCountEcharts" ref="mouthCountEcharts"></div>
                     </div>
                 </div>
-                <div class="analyse_top_right inline_block">
+                <div class="analyse_top_right analyse_top_all inline_block">
                     <div class="analyse_top_name">次数</div>
                     <div class="analyse_top_content">
                       <div id="timesCountEcharts" ref="timesCountEcharts"></div>
@@ -937,12 +937,14 @@ export default {
 .analyse_top {
   margin-top: 30px;
 }
-.analyse_top_left {
-  margin-left: 20px;
-}
-.analyse_top_center {
-  /* width: 100%; */
+/* .analyse_top_left {
+  margin: 0 40px;
+} */
+/* .analyse_top_center {
   margin: 0 106px;
+} */
+.analyse_top_all {
+  margin: 0 40px 20px;
 }
 /* .analyse_top_center div{
     float: left;

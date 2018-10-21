@@ -127,7 +127,7 @@
             _this.menuoperate.forEach(function(v,i,arr){
                 if( v == 7 ){
                     //可以点击
-                    _this.$router.push({ name: 'Userpicture',params:{name:item.storeCode}});
+                    _this.$router.push({ name: 'Passenger',params:{name:item.storeCode}});
                     let obj = item.storeCode;
                     sessionStorage.removeItem("shoplistInfo");
                     sessionStorage.setItem("shoplistInfo", obj);

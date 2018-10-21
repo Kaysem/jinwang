@@ -93,11 +93,11 @@
                         <a href="javascript:void(0)" @click="torouter('/black/blacklist')" data-url="/black/blacklist"><i v-show="big_isShow">黑名单库</i></a>
                       </span>
                     </el-menu-item>
-                    <el-menu-item index="6-2">
+                    <!-- <el-menu-item index="6-2">
                       <span>
                         <a href="javascript:void(0)" @click="torouter('/black/blackadd')" data-url="/black/blackadd"><i v-show="big_isShow">抓取照片</i></a>
                       </span>
-                    </el-menu-item>
+                    </el-menu-item> -->
                     <el-menu-item index="6-3">
                       <span>
                         <a href="javascript:void(0)" @click="torouter('/black/blackanalyse')" data-url="/black/blackanalyse"><i v-show="big_isShow">黑名单分析</i></a>
@@ -123,11 +123,11 @@
                     <span slot="title">系统管理</span>
                   </template>
                   <el-menu-item-group>
-                    <!-- <el-menu-item  index="7-1">
+                    <el-menu-item  index="7-1">
                       <span>
                          <a href="javascript:;" @click="torouter('/snap/browse')" data-url="/snap/browse"><i v-show="big_isShow">抓取照片</i></a>
                       </span>
-                    </el-menu-item>  -->
+                    </el-menu-item> 
                     <!-- <el-menu-item  index="7-2">
                       <span>
                         <a href="javascript:;" @click="torouter('/snap/camera')" data-url="/snap/camera"><i v-show="big_isShow">摄像头管理</i></a>
@@ -325,7 +325,7 @@ export default {
           }
         });
         _this.menuOpen.push(N);
-      }else if( to.path == "/black/blackadd" || to.path == "/black/blacklist" ){
+      }else if( to.path == "/black/blackanalyse" || to.path == "/black/blacklist" || to.path == "/black/passenger" ){
         let N = "1" ;
         _this.menuOpen = [];
         // _this.menuList.forEach(function(v,i,arr){

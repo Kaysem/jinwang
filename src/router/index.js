@@ -23,9 +23,6 @@ import User from '@/components/power/user' //用户管理
 import Role from '@/components/power/role' //角色管理
 import Store from '@/components/power/store' //门店管理
 import System from '@/components/power/system' //系统日志
-// //黑名单
-// // import Blackadd from '@/components/black/blackadd' //黑名单添加 不作了
-// import Blacklist from '@/components/black/blacklist' //黑名单库
 
 
 //黑名单
@@ -158,9 +155,9 @@ export default new Router({
         //   path: '/black/blackadd',name: 'Blackadd',component: resolve => require(['@/components/black/Blackadd'],resolve),meta: {requireAuth: true}
         // },
           //  黑名单->黑名单添加->抓取照片
-          {
-            path: '/black/blackadd',name: 'Blackadd',component: resolve => require(['@/components/black/Blackadd'],resolve),meta: {requireAuth: true}
-          },
+          // {
+          //   path: '/snap/browse',name: 'browse',component: resolve => require(['@/components/snap/Browse'],resolve),meta: {requireAuth: true}
+          // },
           // 黑名单库
           {
             path: '/black/blacklist',name: 'Blacklist',component: resolve => require(['@/components/black/Blacklist'],resolve),meta: {requireAuth: true}
@@ -171,21 +168,21 @@ export default new Router({
           },
           //客流报表
           {
-            path: '/black/passenger',name: 'Passenger',component: resolve => require(['@/components/black/passenger'],resolve),meta: {requireAuth: true}
+            path: '/black/passenger',name: 'Passenger',component: resolve => require(['@/components/black/Passenger'],resolve),meta: {requireAuth: true}
           },
 
           //测试
           {
-            path: '/black/ceshi',name: 'Ceshi',component: resolve => require(['@/components/black/ceshi'],resolve),meta: {requireAuth: true}
+            path: '/black/ceshi',name: 'Ceshi',component: resolve => require(['@/components/black/Ceshi'],resolve),meta: {requireAuth: true}
           },
         // //黑名单
         // {
         //   path: '/black/blacklist',name: 'Blacklist',component: resolve => require(['@/components/black/Blacklist'],resolve),meta: {requireAuth: true}
         // },
-        // // 系统管理-> 抓取照片
-        // {
-        //   path: '/snap/browse',name: 'Browse',component: resolve => require(['@/components/snap/Browse'],resolve),meta: {requireAuth: true}
-        // },
+        // 系统管理-> 抓取照片
+        {
+          path: '/snap/browse',name: 'Browse',component: resolve => require(['@/components/snap/Browse'],resolve),meta: {requireAuth: true}
+        },
         // // {
           // path: '/snap/personal',name: 'Personal',component: resolve => require(['@/components/snap/Personal'],resolve),meta: {requireAuth: true}
         // } ,

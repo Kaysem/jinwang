@@ -80,8 +80,17 @@ export default {
     //门店概览
     "getStoreMapShow" : baseUrl + '/getStoreMapShow', //门店概览列表
     "getStoreByRole" : baseUrl + '/getStoreByRole', //门店概览列表2  role_rank != 0
-    
-    
+
+    //门店信息->客流报表
+    "exec_allFlow" : baseUrl3 + '/allFlow', // 客流报表->总客流
+    "exec_payFlow" : baseUrl3 + '/payFlow', // 客流报表->支付客流
+    "exec_flowTrendDate" : baseUrl3 + '/flowTrendDate', // 客流报表->客流日期趋势
+    "exec_flowTrendTime" : baseUrl3 + '/flowTrendTime', // 客流报表->客流时间趋势
+    "exec_byAgeCnt" : baseUrl3 + '/byAgeCnt', // 客流报表->年龄组统计
+    "exec_byMonthCnt" : baseUrl3 + '/byMonthCnt', // 客流报表->月份组统计
+    "exec_byMemtypeCnt" : baseUrl3 + '/byMemtypeCnt', // 客流报表->会员类型统计
+    "exec_byTraitCnt" : baseUrl3 + '/byTraitCnt', // 客流报表->会员性格统计
+    "exec_bySexCnt" : baseUrl3 + '/bySexCnt', // 客流报表->会员性格统计
     
     // 登陆  
     "login" : baseUrl2 + '/usermanage/login', //门店概览列表

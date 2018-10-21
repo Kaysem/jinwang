@@ -383,7 +383,7 @@ export default {
     // 添加黑名单按钮事件
     addBlack() {
       let _this = this;
-      _this.$router.push({path: '/black/blackadd'});
+      _this.$router.push({path: '/snap/browse'});
     }
   },
   beforeDestroy() {

@@ -222,8 +222,8 @@ export default {
               title: "保存为图片",
               type: "png",
               lang: ["点击本地保存"],
-              backgroundColor:'#313856',
-              name : '总客流量与支付客流量对比图',
+              backgroundColor: "#313856",
+              name: "总客流量与支付客流量对比图"
             }
           }
         },
@@ -296,6 +296,7 @@ export default {
               }
             },
             axisLabel: {
+              formatter:'{value}%',
               textStyle: {
                 color: "#fff"
               }
@@ -307,6 +308,7 @@ export default {
             name: "总客流量",
             type: "line",
             stack: "总量1",
+            smooth: true, //这个是把线变成曲线
             areaStyle: { normal: {} },
             yAxisIndex: 0,
             itemStyle: {
@@ -323,6 +325,7 @@ export default {
             name: "支付客流量",
             type: "line",
             stack: "总量2",
+            smooth: true, //这个是把线变成曲线
             areaStyle: { normal: {} },
             yAxisIndex: 0,
             itemStyle: {
@@ -446,8 +449,8 @@ export default {
               title: "保存为图片",
               type: "png",
               lang: ["点击本地保存"],
-              backgroundColor:'#313856',
-              name : '总客流量与支付客流量对比图',
+              backgroundColor: "#313856",
+              name: "总客流量与支付客流量对比图"
             }
           }
         },
@@ -478,7 +481,8 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["00:00",
+          data: [
+            "00:00",
             "01:00",
             "02:00",
             "03:00",
@@ -501,7 +505,8 @@ export default {
             "20:00",
             "21:00",
             "22:00",
-            "23:00"],
+            "23:00"
+          ],
           axisLine: {
             lineStyle: {
               type: "solid",
@@ -675,8 +680,8 @@ export default {
               title: "保存为图片",
               type: "png",
               lang: ["点击本地保存"],
-              backgroundColor:'#313856',
-              name : '总客流量与支付客流量对比图',
+              backgroundColor: "#313856",
+              name: "总客流量与支付客流量对比图"
             }
           }
         },
@@ -707,7 +712,8 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["00:00",
+          data: [
+            "00:00",
             "01:00",
             "02:00",
             "03:00",
@@ -730,7 +736,8 @@ export default {
             "20:00",
             "21:00",
             "22:00",
-            "23:00"],
+            "23:00"
+          ],
           axisLine: {
             lineStyle: {
               type: "solid",
@@ -908,7 +915,7 @@ export default {
         ]
       },
 
-       // 详情部分 bottom 部分 月份图表 start
+      // 详情部分 bottom 部分 月份图表 start
       mouthCountEcharts: {
         color: ["#ceaa1b"],
         tooltip: {
@@ -1005,7 +1012,7 @@ export default {
         ]
       },
 
-      // 详情部分 top 部分 类型图表 start
+      // 详情部分 bottom 部分 类型图表 start
       typeEcharts: {
         color: ["#f1bd2a", "#4b77e5", "#d780f0"],
         tooltip: {
@@ -1020,36 +1027,117 @@ export default {
         legend: {
           orient: "horizontal",
           x: "right",
-          data: ["VIP顾客", "消费顾客","未消费顾客"],
+          data: ["VIP顾客", "消费顾客", "未消费顾客"],
           textStyle: {
             color: "#fff"
           }
         },
         series: [
           {
-            name: "访问来源",
-            type: "pie",
-            radius: ["50%", "70%"],
-            avoidLabelOverlap: false,
+            name:'访问来源',
+            type:'pie',
+            selectedMode: 'single',
+            radius: [0, '40%'],
+
             label: {
-              normal: {
-                show: false,
-                position: "center"
-              },
-              emphasis: {
+                normal: {
+                    position: 'inner'
+                },
+                emphasis: {
                 show: true,
+                formatter: " {b}：{c} \n\n",
                 textStyle: {
-                  fontSize: "30",
+                  fontSize: "20",
                   fontWeight: "bold"
                 }
               }
             },
-            data: [{ value: 1335, name: "VIP顾客" }, { value: 1910, name: "消费顾客" },{ value: 310, name: "未消费顾客" }]
+            data: [
+              { value: 1335, name: "VIP顾客" },
+              { value: 1910, name: "消费顾客" },
+              { value: 310, name: "未消费顾客" }
+            ]
+        },
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: ["50%", "70%"],
+            avoidLabelOverlap: false,
+            // label: {
+            //   normal: {
+            //     show: false,
+            //     position: "center"
+            //   },
+            //   emphasis: {
+            //     show: true,
+            //     textStyle: {
+            //       fontSize: "30",
+            //       fontWeight: "bold"
+            //     }
+            //   }
+            // },
+            label: {
+              normal: {
+                // \n\n可让文字居于牵引线上方，很关键
+                //  {b}  代表显示的内容标题
+                // {c}代表数据
+                formatter: " {b}：{c} \n\n",
+                show: true,
+                position: "outside",
+                borderWidth: 20,
+                borderRadius: 4,
+                margin: 10,
+                padding: [0, -50],
+                rich: {
+                    a: {
+                        // color: '#333',
+                        fontSize: 12,
+                        lineHeight: 20
+                    },
+                    b: {
+                        fontSize: 12,
+                        lineHeight: 20,
+                        // color: '#333'
+                    }
+                }
+              },
+              emphasis: {
+                show: true,
+                position: 'center',
+                formatter: "{c} \n\n",
+                textStyle: {
+                  fontSize: "20",
+                  fontWeight: "bold"
+                }
+              }
+            },
+            labelLine: {
+              normal: {
+                length: 20,
+                length2: 50
+                // lineStyle: {
+                //     color: '#333'
+                // }
+              },
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: "20",
+                  fontWeight: "bold"
+                }
+              }
+            },
+
+            data: [
+              { value: 1335, name: "VIP顾客" },
+              { value: 1910, name: "消费顾客" },
+              { value: 310, name: "未消费顾客" }
+            ]
           }
         ]
       },
 
-      // 详情部分 top 部分 性别图表 start
+      // 详情部分 bottom 部分 性别图表 start
       sexEcharts: {
         color: ["#d780f0", "#4b77e5"],
         tooltip: {
@@ -1093,7 +1181,7 @@ export default {
         ]
       },
 
-      // 详情部分 top 部分 性格图表 start
+      // 详情部分 bottom 部分 性格图表 start
       traitEcharts: {
         color: ["#d780f0", "#4b77e5"],
         tooltip: {
@@ -1132,10 +1220,13 @@ export default {
                 }
               }
             },
-            data: [{ value: 8335, name: "感性消费" }, { value: 7310, name: "理性消费" }]
+            data: [
+              { value: 8335, name: "感性消费" },
+              { value: 7310, name: "理性消费" }
+            ]
           }
         ]
-      },
+      }
     };
   },
   beforeMount() {
@@ -1144,28 +1235,40 @@ export default {
   },
   mounted: function() {
     let _this = this;
-    _this.myChart1 = _this.$echarts.init(document.getElementById("passengerCountEcharts"));
+    _this.myChart1 = _this.$echarts.init(
+      document.getElementById("passengerCountEcharts")
+    );
     _this.myChart1.setOption(_this.passengerCountEcharts);
 
-    _this.myChart2 = _this.$echarts.init(document.getElementById("passengerTypeDayEcharts"));
+    _this.myChart2 = _this.$echarts.init(
+      document.getElementById("passengerTypeDayEcharts")
+    );
     _this.myChart2.setOption(_this.passengerTypeDayEcharts);
 
-    _this.myChart3 = _this.$echarts.init(document.getElementById("passengerTypeHourEcharts"));
+    _this.myChart3 = _this.$echarts.init(
+      document.getElementById("passengerTypeHourEcharts")
+    );
     _this.myChart3.setOption(_this.passengerTypeHourEcharts);
-    
+
     _this.myChart4 = _this.$echarts.init(document.getElementById("ageEcharts"));
     _this.myChart4.setOption(_this.ageEcharts);
 
-    _this.myChart5 = _this.$echarts.init(document.getElementById("mouthCountEcharts"));
+    _this.myChart5 = _this.$echarts.init(
+      document.getElementById("mouthCountEcharts")
+    );
     _this.myChart5.setOption(_this.mouthCountEcharts);
 
-    _this.myChart6 = _this.$echarts.init(document.getElementById("typeEcharts"));
+    _this.myChart6 = _this.$echarts.init(
+      document.getElementById("typeEcharts")
+    );
     _this.myChart6.setOption(_this.typeEcharts);
 
     _this.myChart7 = _this.$echarts.init(document.getElementById("sexEcharts"));
     _this.myChart7.setOption(_this.sexEcharts);
 
-    _this.myChart8 = _this.$echarts.init(document.getElementById("traitEcharts"));
+    _this.myChart8 = _this.$echarts.init(
+      document.getElementById("traitEcharts")
+    );
     _this.myChart8.setOption(_this.traitEcharts);
 
     window.addEventListener("resize", () => {
