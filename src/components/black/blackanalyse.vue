@@ -16,8 +16,8 @@
             <div class="top_content inline_block time">
                 <span>时间：</span>
                 <el-radio-group v-model="top.valueTimeS" @change="changeTimes()">
-                    <el-radio label="three">最近3个月</el-radio>
-                    <el-radio label="six">最近6个月</el-radio>
+                    <el-radio label="threeMouth">最近3个月</el-radio>
+                    <el-radio label="sixMouth">最近6个月</el-radio>
                     <el-radio class="custom" label="custom">自定义
                         <el-date-picker 
                             v-model="top.valueTime"
@@ -144,7 +144,7 @@ export default {
       // 门店下拉选择框 end
 
       top: {
-        valueTimeS: "three",
+        valueTimeS: "threeMouth",
         valueTime: [], //时间
         valueSex: "ALL", //性别
         valueCount: "ALL" // 出现次数
@@ -754,6 +754,7 @@ export default {
       // 时间改变发起数据列表请求
     },
 
+
     getMyDate(str) {
       let _this = this;
       var oDate = new Date(str),
@@ -784,59 +785,60 @@ export default {
       }
       return num;
     },
+    
     /**
      * 列表数据
      */
-    usercomein_list(p = 1) {
-      let _this = this;
-      let timestamp = new Date().getTime(); //当前时间
-      let timeStart = "";
-      let timeEnd = "";
-      if (_this.top.valueTimeS == "half") {
-        timeStart = _this.getMyDate((timestamp / 1000 - 1800) * 1000);
-        timeEnd = _this.getMyDate(timestamp);
-      } else if (_this.top.valueTimeS == "hour") {
-        timeStart = _this.getMyDate((timestamp / 1000 - 3600) * 1000);
-        timeEnd = _this.getMyDate(timestamp);
-      } else {
-        timeStart = _this.top.valueTime[0];
-        timeEnd = _this.top.valueTime[1];
-      }
-      let json = {
-        page: p,
-        sex: _this.top.valueSex,
-        ageStart: _this.top.age.startAge,
-        ageEnd: _this.top.age.endAge,
-        timeStart: timeStart,
-        timeEnd: timeEnd
-      };
-      let formdata = _this.$config.formData(json);
-      _this.$axios
-        .post(_this.$url.usercomein_list, formdata)
-        .then(res => {
-          console.log("列表重新渲染了");
-          if (res.status == 200) {
-            let data = res.data;
-            _this.page.currentPage = data.start;
-            _this.page.total = data.count;
-            _this.page.allPages = data.pages;
-            let List = [];
-            List = data.datas;
-            for (let i = 0; i < List.length; i++) {
-              List[i]["checked"] = false;
-              List[i]["ts"] = _this.getMyDate(parseInt(List[i]["time"]));
-            }
-            _this.btm.times.listContent = List;
-            _this.$nextTick(() => {
-              _this.Time_picsMargin();
-            });
-          }
-        })
-        .catch(err => {
-          // _this.$message("请求出错，请稍后重试！");
-          _this.btm.times.listContent = [];
-        });
-    }
+    // usercomein_list(p = 1) {
+    //   let _this = this;
+    //   let timestamp = new Date().getTime(); //当前时间
+    //   let timeStart = "";
+    //   let timeEnd = "";
+    //   if (_this.top.valueTimeS == "half") {
+    //     timeStart = _this.getMyDate((timestamp / 1000 - 1800) * 1000);
+    //     timeEnd = _this.getMyDate(timestamp);
+    //   } else if (_this.top.valueTimeS == "hour") {
+    //     timeStart = _this.getMyDate((timestamp / 1000 - 3600) * 1000);
+    //     timeEnd = _this.getMyDate(timestamp);
+    //   } else {
+    //     timeStart = _this.top.valueTime[0];
+    //     timeEnd = _this.top.valueTime[1];
+    //   }
+    //   let json = {
+    //     page: p,
+    //     sex: _this.top.valueSex,
+    //     ageStart: _this.top.age.startAge,
+    //     ageEnd: _this.top.age.endAge,
+    //     timeStart: timeStart,
+    //     timeEnd: timeEnd
+    //   };
+    //   let formdata = _this.$config.formData(json);
+    //   _this.$axios
+    //     .post(_this.$url.usercomein_list, formdata)
+    //     .then(res => {
+    //       console.log("列表重新渲染了");
+    //       if (res.status == 200) {
+    //         let data = res.data;
+    //         _this.page.currentPage = data.start;
+    //         _this.page.total = data.count;
+    //         _this.page.allPages = data.pages;
+    //         let List = [];
+    //         List = data.datas;
+    //         for (let i = 0; i < List.length; i++) {
+    //           List[i]["checked"] = false;
+    //           List[i]["ts"] = _this.getMyDate(parseInt(List[i]["time"]));
+    //         }
+    //         _this.btm.times.listContent = List;
+    //         _this.$nextTick(() => {
+    //           _this.Time_picsMargin();
+    //         });
+    //       }
+    //     })
+    //     .catch(err => {
+    //       // _this.$message("请求出错，请稍后重试！");
+    //       _this.btm.times.listContent = [];
+    //     });
+    // }
   }
 };
 </script>

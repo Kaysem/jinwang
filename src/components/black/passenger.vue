@@ -5,8 +5,8 @@
             <div class="top_content inline_block time">
                 <span>时间：</span>
                 <el-radio-group v-model="top.valueTimeS" @change="changeTimes()">
-                    <el-radio label="half">最近半小时</el-radio>
-                    <el-radio label="hour">最近一小时</el-radio>
+                    <el-radio label="threeMouth">最近三个月</el-radio>
+                    <el-radio label="sixMouth">最近六个月</el-radio>
                     <el-radio class="custom" label="custom">自定义
                         <el-date-picker 
                             v-model="top.valueTime"
@@ -29,7 +29,7 @@
             </div>
             <div class="top_content inline_block sex">
                 <span>身份：</span>
-                <el-radio-group v-model="top.valueStatus" @change="changeSex()">
+                <el-radio-group v-model="top.valueMemtype" @change="changeSex()">
                     <el-radio label="ALL">全部</el-radio>
                     <el-radio label="vip">VIP</el-radio>
                     <el-radio label="buy">消费顾客</el-radio>
@@ -57,7 +57,7 @@
             </div> -->
             <div class="top_content inline_block operaty">
                 <span>操作：</span>
-                <div class="todo_search" @click.stop="usercomein_list()"> <span class="search_icon"></span> 查询 </div>
+                <div class="todo_search" @click.stop="getPassenger()"> <span class="search_icon"></span> 查询 </div>
             </div>
         </div>
         <div class="b_btm">
@@ -118,15 +118,15 @@ export default {
   data() {
     return {
       top: {
-        valueTimeS: "half",
+        valueTimeS: "threeMouth",
         valueTime: [], //时间
         valueSex: "ALL", //性别
-        valueStatus: "ALL", //身份
+        valueMemtype: "ALL", //身份
         age: {
           startAge: "1",
           endAge: "99"
         },
-        kind: "按时间" //位置按时不需要
+        // kind: "按时间" //位置按时不需要
       },
 
       // echarts图表详情设置
@@ -254,7 +254,8 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+          // data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+          data: [],
           axisLine: {
             lineStyle: {
               type: "solid",
@@ -296,7 +297,7 @@ export default {
               }
             },
             axisLabel: {
-              formatter:'{value}%',
+              formatter: "{value}%",
               textStyle: {
                 color: "#fff"
               }
@@ -309,49 +310,88 @@ export default {
             type: "line",
             stack: "总量1",
             smooth: true, //这个是把线变成曲线
-            areaStyle: { normal: {} },
+            areaStyle: { normal: {
+              // 颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: "rgba(112,73,240,1)"
+                  },
+                  // {
+                  //   offset: 0.8,
+                  //   color: "rgba(112,73,240,0.8)"
+                  // },
+                  {
+                    offset: 1,
+                    color: "rgba(112,73,240,0)"
+                  }
+                ])
+            } },
             yAxisIndex: 0,
             itemStyle: {
               normal: {
-                color: "#f1bd2a",
+                color: "#7049f0",
                 lineStyle: {
-                  color: "#f1bd2a"
+                  color: "#7049f0"
                 }
               }
             },
-            data: [1200, 1320, 1010, 1340, 900, 2300, 2100]
+            // data: [2520, 2782, 2691, 2534, 2190, 2530, 2310]
+            data: []
           },
           {
             name: "支付客流量",
             type: "line",
             stack: "总量2",
             smooth: true, //这个是把线变成曲线
-            areaStyle: { normal: {} },
+            
             yAxisIndex: 0,
             itemStyle: {
               normal: {
-                color: "#CD2626",
+                color: "#1a9bfc",
                 lineStyle: {
-                  color: "#CD2626"
+                  color: "#1a9bfc"
                 }
               }
             },
-            data: [820, 982, 791, 534, 1190, 530, 310]
+            areaStyle: {
+              normal: {
+                // 颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: "rgba(26,155,252,1)"
+                  },
+                  // {
+                  //   offset: 0.8,
+                  //   color: "rgba(26,155,252,0.8)"
+                  // },
+                  {
+                    offset: 1,
+                    color: "rgba(26,155,252,0)"
+                  }
+                ])
+              }
+            },
+            // data: [820, 982, 791, 534, 1190, 530, 310]
+            data:[]
           },
           {
             name: "支付率",
             type: "line",
             stack: "总量3",
             yAxisIndex: 1,
+            smooth: true, //这个是把线变成曲线
             itemStyle: {
               normal: {
-                color: "#2ec7c9",
+                color: "#fa704d",
                 lineStyle: {
-                  color: "#2ec7c9"
+                  color: "#fa704d"
                 }
               }
             },
-            data: [65, 99, 18, 87, 91, 57, 69]
+            // data: [65, 99, 18, 87, 91, 57, 69]
+            data:[]
           }
         ]
       },
@@ -837,7 +877,8 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: ["18岁至25岁", "26岁至35岁", "36岁至45岁", "46岁至55岁"],
+            // data: ["18岁至25岁", "26岁至35岁", "36岁至45岁", "46岁至55岁"],
+            data: [],
             axisTick: {
               alignWithLabel: true
             },
@@ -881,36 +922,37 @@ export default {
                 barBorderRadius: 40
               }
             },
-            data: [
-              20,
-              52,
-              18,
-              55,
-              46,
-              35,
-              29,
-              50,
-              32,
-              38,
-              52,
-              18,
-              55,
-              46,
-              20,
-              52,
-              18,
-              55,
-              46,
-              35,
-              29,
-              50,
-              32,
-              38,
-              52,
-              18,
-              55,
-              46
-            ]
+            data: [],
+            // data: [
+            //   20,
+            //   52,
+            //   18,
+            //   55,
+            //   46,
+            //   35,
+            //   29,
+            //   50,
+            //   32,
+            //   38,
+            //   52,
+            //   18,
+            //   55,
+            //   46,
+            //   20,
+            //   52,
+            //   18,
+            //   55,
+            //   46,
+            //   35,
+            //   29,
+            //   50,
+            //   32,
+            //   38,
+            //   52,
+            //   18,
+            //   55,
+            //   46
+            // ]
           }
         ]
       },
@@ -1034,16 +1076,16 @@ export default {
         },
         series: [
           {
-            name:'访问来源',
-            type:'pie',
-            selectedMode: 'single',
-            radius: [0, '40%'],
+            name: "访问来源",
+            type: "pie",
+            selectedMode: "single",
+            radius: [0, "40%"],
 
             label: {
-                normal: {
-                    position: 'inner'
-                },
-                emphasis: {
+              normal: {
+                position: "inner"
+              },
+              emphasis: {
                 show: true,
                 formatter: " {b}：{c} \n\n",
                 textStyle: {
@@ -1057,7 +1099,7 @@ export default {
               { value: 1910, name: "消费顾客" },
               { value: 310, name: "未消费顾客" }
             ]
-        },
+          },
           {
             name: "访问来源",
             type: "pie",
@@ -1089,21 +1131,21 @@ export default {
                 margin: 10,
                 padding: [0, -50],
                 rich: {
-                    a: {
-                        // color: '#333',
-                        fontSize: 12,
-                        lineHeight: 20
-                    },
-                    b: {
-                        fontSize: 12,
-                        lineHeight: 20,
-                        // color: '#333'
-                    }
+                  a: {
+                    // color: '#333',
+                    fontSize: 12,
+                    lineHeight: 20
+                  },
+                  b: {
+                    fontSize: 12,
+                    lineHeight: 20
+                    // color: '#333'
+                  }
                 }
               },
               emphasis: {
                 show: true,
-                position: 'center',
+                position: "center",
                 formatter: "{c} \n\n",
                 textStyle: {
                   fontSize: "20",
@@ -1235,6 +1277,9 @@ export default {
   },
   mounted: function() {
     let _this = this;
+    //组件挂载的时候获取页面数据
+    _this.getPassenger();
+
     _this.myChart1 = _this.$echarts.init(
       document.getElementById("passengerCountEcharts")
     );
@@ -1305,37 +1350,6 @@ export default {
         _this.top.valueTime = [];
       }
     },
-    /**
-     * 时间更改事件
-     */
-    ClickTime(e, state) {
-      let _this = this;
-      if ($(e.target).prop("tagName") != "LI") {
-        $(".timeLis li")
-          .eq(2)
-          .addClass("active")
-          .siblings("li")
-          .removeClass("active");
-      } else {
-        $(e.target)
-          .addClass("active")
-          .siblings("li")
-          .removeClass("active");
-      }
-    },
-    /**
-     * 更改性别
-     */
-    changeSex(val) {
-      let _this = this;
-    },
-
-    /**
-     * 按时间多选框
-     */
-    checkBoxChange_T(item, index) {
-      let _this = this;
-    },
     getMyDate(str) {
       let _this = this;
       var oDate = new Date(str),
@@ -1366,59 +1380,310 @@ export default {
       }
       return num;
     },
-    /**
-     * 列表数据
-     */
-    usercomein_list(p = 1) {
+
+  /**
+     *  获取客流分析数据
+     *   */
+    getPassenger () {
       let _this = this;
+      // console.log(_this.$route.params.storeCode);
       let timestamp = new Date().getTime(); //当前时间
       let timeStart = "";
       let timeEnd = "";
-      if (_this.top.valueTimeS == "half") {
-        timeStart = _this.getMyDate((timestamp / 1000 - 1800) * 1000);
+      if (_this.top.valueTimeS == "threeMouth") {
+        timeStart = _this.getMyDate((timestamp / 1000 - 7776000) * 1000);
         timeEnd = _this.getMyDate(timestamp);
-      } else if (_this.top.valueTimeS == "hour") {
-        timeStart = _this.getMyDate((timestamp / 1000 - 3600) * 1000);
+      } else if (_this.top.valueTimeS == "sixMouth") {
+        timeStart = _this.getMyDate((timestamp / 1000 - 15552000) * 1000);
         timeEnd = _this.getMyDate(timestamp);
       } else {
         timeStart = _this.top.valueTime[0];
         timeEnd = _this.top.valueTime[1];
       }
       let json = {
-        page: p,
+        // storeCode: _this.$route.params.storeCode,
         sex: _this.top.valueSex,
-        ageStart: _this.top.age.startAge,
-        ageEnd: _this.top.age.endAge,
-        timeStart: timeStart,
-        timeEnd: timeEnd
+        sa: _this.top.age.startAge,
+        ea: _this.top.age.endAge,
+        memtype: _this.top.valueMemtype,
+        st: timeStart,
+        et: timeEnd
       };
       let formdata = _this.$config.formData(json);
+
+
+      // 客流报表->总客流+支付客流+支付率
       _this.$axios
-        .post(_this.$url.usercomein_list, formdata)
+        .post(_this.$url.exec_flowAllPay, formdata)
         .then(res => {
-          console.log("列表重新渲染了");
+          console.log("总客流量返回成功");
           if (res.status == 200) {
             let data = res.data;
-            _this.page.currentPage = data.start;
-            _this.page.total = data.count;
-            _this.page.allPages = data.pages;
-            let List = [];
-            List = data.datas;
-            for (let i = 0; i < List.length; i++) {
-              List[i]["checked"] = false;
-              List[i]["ts"] = _this.getMyDate(parseInt(List[i]["time"]));
+            console.log(data);
+            // _this.passengerCountEcharts.series.data = data.start;
+            let List1 = [];
+            List1 = data.data;
+            for (let i = 0; i < List1.length; i++) {
+              let xAxisValue1  = _this.getMyDate(parseInt(List1[i]["ds"]));
+              let seriesFlowCntData1  = data.data.flowCnt;
+              let seriesPayCntData1  = data.data.payCnt;
+              let seriesPayRateData1  = data.data.payRate;
+              _this.passengerCountEcharts.xAxis.data.push(xAxisValue1);
+              _this.passengerCountEcharts.series[0].data.push(seriesFlowCntData1);
+              _this.passengerCountEcharts.series[1].data.push(seriesPayCntData1);
+              _this.passengerCountEcharts.series[2].data.push(seriesPayRateData1);
             }
-            _this.btm.times.listContent = List;
             _this.$nextTick(() => {
-              _this.Time_picsMargin();
+              // _this.Time_picsMargin();
             });
           }
         })
         .catch(err => {
-          // _this.$message("请求出错，请稍后重试！");
-          _this.btm.times.listContent = [];
+          _this.$message("请求出错，请稍后重试！");
+      });
+      // 客流报表->客流日期趋势
+      _this.$axios
+        .post(_this.$url.flow_flowTrendDate, formdata)
+        .then(res => {
+          console.log("日期客流返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            let List2 = [];
+            List2 = data.datas;
+            for (let i = 0; i < List2.length; i++) {
+              let xAxisValue2  = _this.getMyDate(parseInt(List2[i]["ds"]));
+              let seriesFlowCntData2  = data.data.flowCnt;
+              let seriesPayCntData2  = data.data.payCnt;
+              let seriesPayRateData2  = data.data.payRate;
+              _this.passengerCountEcharts.xAxis.data.push(xAxisValue2);
+              _this.passengerCountEcharts.series[0].data.push(seriesFlowCntData2);
+              _this.passengerCountEcharts.series[1].data.push(seriesPayCntData2);
+              _this.passengerCountEcharts.series[2].data.push(seriesPayRateData2);
+            }
+            _this.$nextTick(() => {
+              // _this.Time_picsMargin();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+      
+      
+      // 客流报表->客流时间趋势
+      _this.$axios
+        .post(_this.$url.flow_flowTrendTime, formdata)
+        .then(res => {
+          console.log("时间客流返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            _this.passengerCountEcharts.series.data = data.start;
+            let List = [];
+            List = data.datas;
+            for (let i = 0; i < List.length; i++) {
+
+              let xAxisTimes  = _this.getMyDate(parseInt(List[i]["ds"]));
+              _this.passengerCountEcharts.xAxis.data.push(xAxisTimes);
+            }
+            _this.$nextTick(() => {
+              // _this.Time_picsMargin();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+
+      
+      
+      // 客流报表->年龄组统计
+      _this.$axios
+        .post(_this.$url.flow_byAgeCnt, formdata)
+        .then(res => {
+          console.log("年龄返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            console.log(res);
+            // _this.passengerCountEcharts.series.data = data.start;
+            let List4 = [];
+            List4 = data.datas;
+            for (let i = 0; i < List4.length; i++) {
+              let xAxisValue4  = List4[i]["age_groups"];
+              let seriesCntData4  = List4[i]["cnt"];
+              _this.passengerCountEcharts.xAxis.data.push(xAxisValue4);
+              _this.passengerCountEcharts.series[0].data.push(seriesCntData4);
+            }
+            _this.$nextTick(() => {
+              // _this.Time_picsMargin();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+
+      
+      
+      // 客流报表->月份组统计
+      _this.$axios
+        .post(_this.$url.flow_byMonthCnt, formdata)
+        .then(res => {
+          console.log("月份返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            _this.passengerCountEcharts.series.data = data.start;
+            let List = [];
+            List = data.datas;
+            for (let i = 0; i < List.length; i++) {
+
+              let xAxisTimes  = _this.getMyDate(parseInt(List[i]["ds"]));
+              _this.passengerCountEcharts.xAxis.data.push(xAxisTimes);
+            }
+            _this.$nextTick(() => {
+              // _this.Time_picsMargin();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+
+      
+      
+      
+      // 客流报表->会员类型统计
+      _this.$axios
+        .post(_this.$url.flow_byMemtypeCnt, formdata)
+        .then(res => {
+          console.log("会员类型返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            _this.passengerCountEcharts.series.data = data.start;
+            let List = [];
+            List = data.datas;
+            for (let i = 0; i < List.length; i++) {
+
+              let xAxisTimes  = _this.getMyDate(parseInt(List[i]["ds"]));
+              _this.passengerCountEcharts.xAxis.data.push(xAxisTimes);
+            }
+            _this.$nextTick(() => {
+              // _this.Time_picsMargin();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+
+      
+      
+      
+      // 客流报表->会员性格统计
+      _this.$axios
+        .post(_this.$url.flow_byTraitCnt, formdata)
+        .then(res => {
+          console.log("性格返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            _this.passengerCountEcharts.series.data = data.start;
+            let List = [];
+            List = data.datas;
+            for (let i = 0; i < List.length; i++) {
+
+              let xAxisTimes  = _this.getMyDate(parseInt(List[i]["ds"]));
+              _this.passengerCountEcharts.xAxis.data.push(xAxisTimes);
+            }
+            _this.$nextTick(() => {
+              // _this.Time_picsMargin();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+
+      
+      
+      
+      // 客流报表->会员性别统计
+      _this.$axios
+        .post(_this.$url.flow_bySexCnt, formdata)
+        .then(res => {
+          console.log("性别返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            _this.passengerCountEcharts.series.data = data.start;
+            let List = [];
+            List = data.datas;
+            for (let i = 0; i < List.length; i++) {
+
+              let xAxisTimes  = _this.getMyDate(parseInt(List[i]["ds"]));
+              _this.passengerCountEcharts.xAxis.data.push(xAxisTimes);
+            }
+            _this.$nextTick(() => {
+              // _this.Time_picsMargin();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
         });
     }
+
+
+    /**
+     * 列表数据
+     */
+    // usercomein_list(p = 1) {
+    //   let _this = this;
+    //   let timestamp = new Date().getTime(); //当前时间
+    //   let timeStart = "";
+    //   let timeEnd = "";
+    //   if (_this.top.valueTimeS == "half") {
+    //     timeStart = _this.getMyDate((timestamp / 1000 - 1800) * 1000);
+    //     timeEnd = _this.getMyDate(timestamp);
+    //   } else if (_this.top.valueTimeS == "hour") {
+    //     timeStart = _this.getMyDate((timestamp / 1000 - 3600) * 1000);
+    //     timeEnd = _this.getMyDate(timestamp);
+    //   } else {
+    //     timeStart = _this.top.valueTime[0];
+    //     timeEnd = _this.top.valueTime[1];
+    //   }
+    //   let json = {
+    //     page: p,
+    //     sex: _this.top.valueSex,
+    //     ageStart: _this.top.age.startAge,
+    //     ageEnd: _this.top.age.endAge,
+    //     timeStart: timeStart,
+    //     timeEnd: timeEnd
+    //   };
+    //   let formdata = _this.$config.formData(json);
+    //   _this.$axios
+    //     .post(_this.$url.usercomein_list, formdata)
+    //     .then(res => {
+    //       console.log("列表重新渲染了");
+    //       if (res.status == 200) {
+    //         let data = res.data;
+    //         _this.page.currentPage = data.start;
+    //         _this.page.total = data.count;
+    //         _this.page.allPages = data.pages;
+    //         let List = [];
+    //         List = data.datas;
+    //         for (let i = 0; i < List.length; i++) {
+    //           List[i]["checked"] = false;
+    //           List[i]["ts"] = _this.getMyDate(parseInt(List[i]["time"]));
+    //         }
+    //         _this.btm.times.listContent = List;
+    //         _this.$nextTick(() => {
+    //           _this.Time_picsMargin();
+    //         });
+    //       }
+    //     })
+    //     .catch(err => {
+    //       // _this.$message("请求出错，请稍后重试！");
+    //       _this.btm.times.listContent = [];
+    //     });
+    // }
   }
 };
 </script>

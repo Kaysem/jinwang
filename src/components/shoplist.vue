@@ -74,7 +74,6 @@
         let _this = this;
         _this.userinfo = JSON.parse(sessionStorage.getItem("userinfo"));
         _this.M_List();
-
         if($(window).width() < 850) {
             $(".box>div").css({"display": "block","marginRight": "0px","width": "100%" });
             $(".box").height($(".box>div").length * ($(".box>div").height() + 15));
@@ -127,7 +126,7 @@
             _this.menuoperate.forEach(function(v,i,arr){
                 if( v == 7 ){
                     //可以点击
-                    _this.$router.push({ name: 'Passenger',params:{name:item.storeCode}});
+                    _this.$router.push({ name: 'Passenger',params:{storeCode:item.storeCode}});
                     let obj = item.storeCode;
                     sessionStorage.removeItem("shoplistInfo");
                     sessionStorage.setItem("shoplistInfo", obj);

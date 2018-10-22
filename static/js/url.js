@@ -23,11 +23,26 @@
 // 金王  改接口
 const baseUrl = 'http://jinwang2.umessage.com.cn/api/ckdxh';  //  //本地部署
 const baseUrl2 = 'http://jinwang1.umessage.com.cn/master'; //本 //本地部署  //权限和其他俩各不同
-const baseUrl3 =  'http://jinwang3.umessage.com.cn/api/exec';  //  //本地部署
+// const baseUrl3 =  'http://jinwang3.umessage.com.cn/api/exec';  //  //本地部署
 
 // 金王
 // const baseUrl4 = '= 'http://face.umessage.com.cn';  ';  //贺月杰 线上
 const baseUrl4 = 'http://face.umessage.com.cn';    //贺月杰  本地测试
+
+
+
+
+
+
+
+
+// 金王  开发接口 start 
+
+const baseUrl3 =  'http://172.16.29.18:56765/api/exec';  //吴新
+const baseUrl5 =  'http://172.16.29.18:56765/api/flow';  //吴新
+
+// 金王  开发接口 end 
+
 
 
  
@@ -82,16 +97,17 @@ export default {
     "getStoreByRole" : baseUrl + '/getStoreByRole', //门店概览列表2  role_rank != 0
 
     //门店信息->客流报表
-    "exec_allFlow" : baseUrl3 + '/allFlow', // 客流报表->总客流
-    "exec_payFlow" : baseUrl3 + '/payFlow', // 客流报表->支付客流
-    "exec_flowTrendDate" : baseUrl3 + '/flowTrendDate', // 客流报表->客流日期趋势
-    "exec_flowTrendTime" : baseUrl3 + '/flowTrendTime', // 客流报表->客流时间趋势
-    "exec_byAgeCnt" : baseUrl3 + '/byAgeCnt', // 客流报表->年龄组统计
-    "exec_byMonthCnt" : baseUrl3 + '/byMonthCnt', // 客流报表->月份组统计
-    "exec_byMemtypeCnt" : baseUrl3 + '/byMemtypeCnt', // 客流报表->会员类型统计
-    "exec_byTraitCnt" : baseUrl3 + '/byTraitCnt', // 客流报表->会员性格统计
-    "exec_bySexCnt" : baseUrl3 + '/bySexCnt', // 客流报表->会员性格统计
-    
+    "exec_flowAllPay" : baseUrl3 + '/flowAllPay', // 客流报表->总客流+支付客流+支付率
+    "flow_flowTrendDate" : baseUrl5 + '/flowTrendDate', // 客流报表->客流日期趋势
+    "flow_flowTrendTime" : baseUrl5 + '/flowTrendTime', // 客流报表->客流时间趋势
+    "flow_byAgeCnt" : baseUrl5 + '/byAgeCnt', // 客流报表->年龄组统计
+    "flow_byMonthCnt" : baseUrl5 + '/byMonthCnt', // 客流报表->月份组统计
+    "flow_byMemtypeCnt" : baseUrl5 + '/byMemtypeCnt', // 客流报表->会员类型统计
+    "flow_byTraitCnt" : baseUrl5 + '/byTraitCnt', // 客流报表->会员性格统计
+    "flow_bySexCnt" : baseUrl5 + '/bySexCnt', // 客流报表->会员性别统计
+     //门店信息->客流报表 End
+
+     
     // 登陆  
     "login" : baseUrl2 + '/usermanage/login', //门店概览列表
 
