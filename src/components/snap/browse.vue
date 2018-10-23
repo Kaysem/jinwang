@@ -680,6 +680,7 @@ export default {
       }
       let json = {
         page: p,
+        rows: 10,
         sex: _this.top.valueSex,
         ageStart: _this.top.age.startAge,
         ageEnd: _this.top.age.endAge,

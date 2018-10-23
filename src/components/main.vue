@@ -103,16 +103,6 @@
                         <a href="javascript:void(0)" @click="torouter('/black/blackanalyse')" data-url="/black/blackanalyse"><i v-show="big_isShow">黑名单分析</i></a>
                       </span>
                     </el-menu-item>
-                    <el-menu-item index="6-4">
-                      <span>
-                        <a href="javascript:void(0)" @click="torouter('/black/passenger')" data-url="/black/passenger"><i v-show="big_isShow">客流报表</i></a>
-                      </span>
-                    </el-menu-item>
-                    <el-menu-item index="6-5">
-                      <span>
-                        <a href="javascript:void(0)" @click="torouter('/black/ceshi')" data-url="/black/ceshi"><i v-show="big_isShow">测试</i></a>
-                      </span>
-                    </el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
 
@@ -325,7 +315,7 @@ export default {
           }
         });
         _this.menuOpen.push(N);
-      }else if( to.path == "/black/blackanalyse" || to.path == "/black/blacklist" || to.path == "/black/passenger" ){
+      }else if( to.path == "/black/blackanalyse" || to.path == "/black/blacklist" ){
         let N = "1" ;
         _this.menuOpen = [];
         // _this.menuList.forEach(function(v,i,arr){

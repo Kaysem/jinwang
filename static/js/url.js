@@ -23,23 +23,18 @@
 // 金王  改接口
 const baseUrl = 'http://jinwang2.umessage.com.cn/api/ckdxh';  //  //本地部署
 const baseUrl2 = 'http://jinwang1.umessage.com.cn/master'; //本 //本地部署  //权限和其他俩各不同
-// const baseUrl3 =  'http://jinwang3.umessage.com.cn/api/exec';  //  //本地部署
+const baseUrl3 =  'http://jinwang3.umessage.com.cn/api/exec';  //  //本地部署
 
 // 金王
 // const baseUrl4 = '= 'http://face.umessage.com.cn';  ';  //贺月杰 线上
-const baseUrl4 = 'http://face.umessage.com.cn';    //贺月杰  本地测试
-
-
-
-
-
-
-
+const baseUrl6 = 'http://face.umessage.com.cn';    //贺月杰  本地测试 抓拍照片
+const baseUrl4 = 'http://172.16.24.53/black/api/index'; // PHP后台 黑名单模块
 
 // 金王  开发接口 start 
+const baseUrl5 =  'http://172.16.29.18:56765/api';  //吴新  客流分析模块
+// const baseUrl5 =  'http://172.16.29.18:56765/api/flow';  //吴新
+// const baseUrl6 =  'http://172.16.29.18:56765/api/exec';  //吴新
 
-const baseUrl3 =  'http://172.16.29.18:56765/api/exec';  //吴新
-const baseUrl5 =  'http://172.16.29.18:56765/api/flow';  //吴新
 
 // 金王  开发接口 end 
 
@@ -97,14 +92,14 @@ export default {
     "getStoreByRole" : baseUrl + '/getStoreByRole', //门店概览列表2  role_rank != 0
 
     //门店信息->客流报表
-    "exec_flowAllPay" : baseUrl3 + '/flowAllPay', // 客流报表->总客流+支付客流+支付率
-    "flow_flowTrendDate" : baseUrl5 + '/flowTrendDate', // 客流报表->客流日期趋势
-    "flow_flowTrendTime" : baseUrl5 + '/flowTrendTime', // 客流报表->客流时间趋势
-    "flow_byAgeCnt" : baseUrl5 + '/byAgeCnt', // 客流报表->年龄组统计
-    "flow_byMonthCnt" : baseUrl5 + '/byMonthCnt', // 客流报表->月份组统计
-    "flow_byMemtypeCnt" : baseUrl5 + '/byMemtypeCnt', // 客流报表->会员类型统计
-    "flow_byTraitCnt" : baseUrl5 + '/byTraitCnt', // 客流报表->会员性格统计
-    "flow_bySexCnt" : baseUrl5 + '/bySexCnt', // 客流报表->会员性别统计
+    "exec_flowAllPay" : baseUrl5 + '/exec/flowAllPay', // 客流报表->总客流+支付客流+支付率
+    "flow_flowTrendDate" : baseUrl5 + '/flow/flowTrendDate', // 客流报表->客流日期趋势
+    "flow_flowTrendTime" : baseUrl5 + '/flow/flowTrendTime', // 客流报表->客流时间趋势
+    "flow_byAgeCnt" : baseUrl5 + '/flow/byAgeCnt', // 客流报表->年龄组统计
+    "flow_byMonthCnt" : baseUrl5 + '/flow/byMonthCnt', // 客流报表->月份组统计
+    "flow_byMemtypeCnt" : baseUrl5 + '/flow/byMemtypeCnt', // 客流报表->会员类型统计
+    "flow_byTraitCnt" : baseUrl5 + '/flow/byTraitCnt', // 客流报表->会员性格统计
+    "flow_bySexCnt" : baseUrl5 + '/flow/bySexCnt', // 客流报表->会员性别统计
      //门店信息->客流报表 End
 
      
@@ -185,24 +180,30 @@ export default {
 
         // 黑名单模块 S  qianzhuang接口
     // 黑名单库->查询黑名单列表 
-    "blacklist_list" : baseUrl4 + '/api/blacklist/list', // 黑名单库列表
+    "blacklist_list" : baseUrl4 + '/blist', // 黑名单库列表
     // 黑名单库 -> 删除黑名单信息
-    "blacklist_del"  : baseUrl4 + '/api/blacklist/del',  //删除黑名单信息
+    "blacklist_del"  : baseUrl4 + '/del',  //删除黑名单信息
     // 黑名单库-> 查询单个黑名单信息
-    "blacklist_find" : baseUrl4 + '/api/blacklist/find', //查询单个黑名单信息
+    "blacklist_find" : baseUrl4 + '/blackInfo', //查询单个黑名单信息
+    // 黑名单库-> 查询单个黑名单-> 黑名单分析
+    "black_analyze" : baseUrl4 + '/black_analyze', //黑名单分析
+
+
+
+
     // 抓取照片-> 查询-浏览抓拍照片记录
-    "usercomein_list" : baseUrl4 + '/api/usercomein/list', // 查询
+    "usercomein_list" : baseUrl6 + '/api/usercomein/list', // 查询
     // 抓取照片-> 加入黑名单
-    "blacklist_add" : baseUrl4 + '/api/blacklist/add', // 添加到黑名单
+    "blacklist_add" : baseUrl6 + '/api/blacklist/add', // 添加到黑名单
     // 抓取照片-> 删除照片
-    "usercomein_del" : baseUrl4 + '/api/usercomein/del', //删除照片
+    "usercomein_del" : baseUrl6 + '/api/usercomein/del', //删除照片
     
     // 黑名单模块  End
 
-    // 金王  抓拍
-    "browse_list" : baseUrl4 + '/api/usercomein/list', // 列表
-    "browse_del" : baseUrl4 + '/api/usercomein/del', // 删除
-    "browse_blackAdd" : baseUrl4 + '/api/black/add', // 加入黑名单
+    // // 金王  抓拍
+    // "browse_list" : baseUrl4 + '/api/usercomein/list', // 列表
+    // "browse_del" : baseUrl4 + '/api/usercomein/del', // 删除
+    // "browse_blackAdd" : baseUrl4 + '/api/black/add', // 加入黑名单
     //底库
     // "listFaceId" : baseUrl5 + '/listFaceId', // 枚举会员
     // "getFaceImg" : baseUrl5 + '/getFaceImg', //获取faceId封面照片

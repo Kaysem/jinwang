@@ -50,7 +50,7 @@
                     </el-table-column>
                     <el-table-column
                     label="门店名称"
-                    prop="comeStore"
+                    prop="storeName"
                     sortable
                     >
                     </el-table-column>
@@ -271,7 +271,7 @@ export default {
           // if (res.status == 200 && res.data.code == 1) {
           if (res.status == 200) {
             console.log('请求了黑名单数据成功了');
-            let data = res.data;
+            let data = res.data.data;
 
             // 金王数据测试 S
             // _this.page.total = data.count ; 
@@ -279,23 +279,25 @@ export default {
             // _this.page.allPages = data.pages ;
             // _this.table.tableData = data.datas ;
             //金王数据测试  end
-
+            
             _this.page.total = data.records;  // 总条数
             _this.page.currentPage = data.page; // 当前页
-            _this.page.allPages = data.total; //总页数
-            _this.table.tableData = data.rows; // 列表黑名单人员数据
-            for( let i = 0 ; i <  _this.table.tableData.length ;i++ ){
-               _this.table.tableData[i]['lastdate'] = _this.getMyDate(_this.table.tableData[i]['lastdate']);
-            }
+            _this.page.allPages = data.pageTotal; //总页数
+            _this.table.tableData = data.res; // 列表黑名单人员数据
+            // for( let i = 0 ; i <  _this.table.tableData.length ;i++ ){
+            //    _this.table.tableData[i]['lastdate'] = _this.getMyDate(_this.table.tableData[i]['lastdate']);
+            // }
             // _this.top.valueTimeS = "";
             // _this.top.valueTime = [];
+            
+        console.log(data.res);
           } else {
             _this.$message.error("请求失败！");
           }
         })
         .catch(err => {
           _this.$message.error("服务器繁忙，请稍后再试");
-          console.log(err);
+          // console.log(err);
         });
     },
    

@@ -31,9 +31,9 @@
                 <span>身份：</span>
                 <el-radio-group v-model="top.valueMemtype" @change="changeSex()">
                     <el-radio label="ALL">全部</el-radio>
-                    <el-radio label="vip">VIP</el-radio>
-                    <el-radio label="buy">消费顾客</el-radio>
-                    <el-radio label="notBuy">未消费顾客</el-radio>
+                    <el-radio label="VIP顾客">VIP</el-radio>
+                    <el-radio label="消费顾客">消费顾客</el-radio>
+                    <el-radio label="未消费顾客">未消费顾客</el-radio>
                 </el-radio-group>
             </div>
             <div class="top_content inline_block age">
@@ -912,6 +912,106 @@ export default {
             }
           }
         ],
+        series: [{
+            name: "直接访问",
+            type: "bar",
+            barWidth: "30%",
+            itemStyle: {
+              normal: {
+                barBorderRadius: 40
+              }
+            },
+            data: [],
+            // data: [
+            //   20,
+            //   52,
+            //   18,
+            //   55,
+            //   46,
+            //   35,
+            //   29,
+            //   50,
+            //   32,
+            //   38,
+            //   52,
+            //   18,
+            //   55,
+            //   46,
+            //   20,
+            //   52,
+            //   18,
+            //   55,
+            //   46,
+            //   35,
+            //   29,
+            //   50,
+            //   32,
+            //   38,
+            //   52,
+            //   18,
+            //   55,
+            //   46
+            // ]
+          }]
+      },
+
+      // 详情部分 bottom 部分 月份图表 start
+      mouthCountEcharts: {
+        color: ["#ceaa1b"],
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        grid: {
+          left: "1%",
+          right: "3%",
+          bottom: "3%",
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: "category",
+            data:[],
+            // data: ["7月", "8月", "9月"],
+            axisTick: {
+              alignWithLabel: true
+            },
+            axisLabel: {
+              formatter: "{value}月",
+            },
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#fff", //左边线的颜色
+                width: "2" //坐标线的宽度
+              }
+            }
+            // axisLabel: {
+            //   interval:0,
+            //   rotate:40
+            // },
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#fff",
+                width: "2"
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#fff"
+              }
+            }
+          }
+        ],
         series: [
           {
             name: "直接访问",
@@ -957,106 +1057,9 @@ export default {
         ]
       },
 
-      // 详情部分 bottom 部分 月份图表 start
-      mouthCountEcharts: {
-        color: ["#ceaa1b"],
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            // 坐标轴指示器，坐标轴触发有效
-            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-          }
-        },
-        grid: {
-          left: "1%",
-          right: "3%",
-          bottom: "3%",
-          containLabel: true
-        },
-        xAxis: [
-          {
-            type: "category",
-            data: ["7月", "8月", "9月"],
-            axisTick: {
-              alignWithLabel: true
-            },
-            axisLine: {
-              lineStyle: {
-                type: "solid",
-                color: "#fff", //左边线的颜色
-                width: "2" //坐标线的宽度
-              }
-            }
-            // axisLabel: {
-            //   interval:0,
-            //   rotate:40
-            // },
-          }
-        ],
-        yAxis: [
-          {
-            type: "value",
-            axisLine: {
-              lineStyle: {
-                type: "solid",
-                color: "#fff",
-                width: "2"
-              }
-            },
-            axisLabel: {
-              textStyle: {
-                color: "#fff"
-              }
-            }
-          }
-        ],
-        series: [
-          {
-            name: "直接访问",
-            type: "bar",
-            barWidth: "30%",
-            itemStyle: {
-              normal: {
-                barBorderRadius: 40
-              }
-            },
-            data: [
-              20,
-              52,
-              18,
-              55,
-              46,
-              35,
-              29,
-              50,
-              32,
-              38,
-              52,
-              18,
-              55,
-              46,
-              20,
-              52,
-              18,
-              55,
-              46,
-              35,
-              29,
-              50,
-              32,
-              38,
-              52,
-              18,
-              55,
-              46
-            ]
-          }
-        ]
-      },
-
       // 详情部分 bottom 部分 类型图表 start
       typeEcharts: {
-        color: ["#f1bd2a", "#4b77e5", "#d780f0"],
+        color: [ "#4b77e5","#f1bd2a", "#d780f0"],
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b}: {c} ({d}%)",
@@ -1069,7 +1072,8 @@ export default {
         legend: {
           orient: "horizontal",
           x: "right",
-          data: ["VIP顾客", "消费顾客", "未消费顾客"],
+          // data: ["VIP顾客", "消费顾客", "未消费顾客"],
+          data:[],
           textStyle: {
             color: "#fff"
           }
@@ -1094,11 +1098,11 @@ export default {
                 }
               }
             },
-            data: [
-              { value: 1335, name: "VIP顾客" },
-              { value: 1910, name: "消费顾客" },
-              { value: 310, name: "未消费顾客" }
-            ]
+            data: []
+              // { value: 1335, name: "VIP顾客" },
+              // { value: 1910, name: "消费顾客" },
+              // { value: 310, name: "未消费顾客" }
+            
           },
           {
             name: "访问来源",
@@ -1170,18 +1174,14 @@ export default {
               }
             },
 
-            data: [
-              { value: 1335, name: "VIP顾客" },
-              { value: 1910, name: "消费顾客" },
-              { value: 310, name: "未消费顾客" }
-            ]
+            data: []
           }
         ]
       },
 
       // 详情部分 bottom 部分 性别图表 start
       sexEcharts: {
-        color: ["#d780f0", "#4b77e5"],
+        color: [  "#d780f0","#4b77e5"],
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b}: {c} ({d}%)",
@@ -1194,7 +1194,8 @@ export default {
         legend: {
           orient: "horizontal",
           x: "right",
-          data: ["女性", "男性"],
+          // data: ["VIP顾客", "消费顾客", "未消费顾客"],
+          data:[],
           textStyle: {
             color: "#fff"
           }
@@ -1203,29 +1204,106 @@ export default {
           {
             name: "访问来源",
             type: "pie",
-            radius: ["50%", "70%"],
-            avoidLabelOverlap: false,
+            selectedMode: "single",
+            radius: [0, "40%"],
+
             label: {
               normal: {
-                show: false,
-                position: "center"
+                position: "inner"
               },
               emphasis: {
                 show: true,
+                formatter: " {b}：{c} \n\n",
                 textStyle: {
-                  fontSize: "30",
+                  fontSize: "20",
                   fontWeight: "bold"
                 }
               }
             },
-            data: [{ value: 335, name: "女性" }, { value: 310, name: "男性" }]
+            data: []
+              // { value: 1335, name: "VIP顾客" },
+              // { value: 1910, name: "消费顾客" },
+              // { value: 310, name: "未消费顾客" }
+            
+          },
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: ["50%", "70%"],
+            avoidLabelOverlap: false,
+            // label: {
+            //   normal: {
+            //     show: false,
+            //     position: "center"
+            //   },
+            //   emphasis: {
+            //     show: true,
+            //     textStyle: {
+            //       fontSize: "30",
+            //       fontWeight: "bold"
+            //     }
+            //   }
+            // },
+            label: {
+              normal: {
+                // \n\n可让文字居于牵引线上方，很关键
+                //  {b}  代表显示的内容标题
+                // {c}代表数据
+                formatter: " {b}：{c} \n\n",
+                show: true,
+                position: "outside",
+                borderWidth: 20,
+                borderRadius: 4,
+                margin: 10,
+                padding: [0, -50],
+                rich: {
+                  a: {
+                    // color: '#333',
+                    fontSize: 12,
+                    lineHeight: 20
+                  },
+                  b: {
+                    fontSize: 12,
+                    lineHeight: 20
+                    // color: '#333'
+                  }
+                }
+              },
+              emphasis: {
+                show: true,
+                position: "center",
+                formatter: "{c} \n\n",
+                textStyle: {
+                  fontSize: "20",
+                  fontWeight: "bold"
+                }
+              }
+            },
+            labelLine: {
+              normal: {
+                length: 20,
+                length2: 50
+                // lineStyle: {
+                //     color: '#333'
+                // }
+              },
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: "20",
+                  fontWeight: "bold"
+                }
+              }
+            },
+
+            data: []
           }
         ]
       },
 
       // 详情部分 bottom 部分 性格图表 start
       traitEcharts: {
-        color: ["#d780f0", "#4b77e5"],
+        color: [  "#d780f0","#4b77e5"],
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b}: {c} ({d}%)",
@@ -1238,7 +1316,8 @@ export default {
         legend: {
           orient: "horizontal",
           x: "right",
-          data: ["感性消费", "理性消费"],
+          // data: ["VIP顾客", "消费顾客", "未消费顾客"],
+          data:[],
           textStyle: {
             color: "#fff"
           }
@@ -1247,25 +1326,99 @@ export default {
           {
             name: "访问来源",
             type: "pie",
-            radius: ["50%", "70%"],
-            avoidLabelOverlap: false,
+            selectedMode: "single",
+            radius: [0, "40%"],
+
             label: {
               normal: {
-                show: false,
-                position: "center"
+                position: "inner"
               },
               emphasis: {
                 show: true,
+                formatter: " {b}：{c} \n\n",
                 textStyle: {
-                  fontSize: "30",
+                  fontSize: "20",
                   fontWeight: "bold"
                 }
               }
             },
-            data: [
-              { value: 8335, name: "感性消费" },
-              { value: 7310, name: "理性消费" }
-            ]
+            data: []
+              // { value: 1335, name: "VIP顾客" },
+              // { value: 1910, name: "消费顾客" },
+              // { value: 310, name: "未消费顾客" }
+            
+          },
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: ["50%", "70%"],
+            avoidLabelOverlap: false,
+            // label: {
+            //   normal: {
+            //     show: false,
+            //     position: "center"
+            //   },
+            //   emphasis: {
+            //     show: true,
+            //     textStyle: {
+            //       fontSize: "30",
+            //       fontWeight: "bold"
+            //     }
+            //   }
+            // },
+            label: {
+              normal: {
+                // \n\n可让文字居于牵引线上方，很关键
+                //  {b}  代表显示的内容标题
+                // {c}代表数据
+                formatter: " {b}：{c} \n\n",
+                show: true,
+                position: "outside",
+                borderWidth: 20,
+                borderRadius: 4,
+                margin: 10,
+                padding: [0, -50],
+                rich: {
+                  a: {
+                    // color: '#333',
+                    fontSize: 12,
+                    lineHeight: 20
+                  },
+                  b: {
+                    fontSize: 12,
+                    lineHeight: 20
+                    // color: '#333'
+                  }
+                }
+              },
+              emphasis: {
+                show: true,
+                position: "center",
+                formatter: "{c} \n\n",
+                textStyle: {
+                  fontSize: "20",
+                  fontWeight: "bold"
+                }
+              }
+            },
+            labelLine: {
+              normal: {
+                length: 20,
+                length2: 50
+                // lineStyle: {
+                //     color: '#333'
+                // }
+              },
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: "20",
+                  fontWeight: "bold"
+                }
+              }
+            },
+
+            data: []
           }
         ]
       }
@@ -1274,13 +1427,381 @@ export default {
   beforeMount() {
     let _this = this;
     console.log("挂载前执行");
+    // _this.getPassenger()
   },
   mounted: function() {
     let _this = this;
     //组件挂载的时候获取页面数据
     _this.getPassenger();
 
-    _this.myChart1 = _this.$echarts.init(
+    // _this.drawEcharts();
+  },
+  watch: {
+    "top.valueTime": {
+      handler: function(val, oldval) {
+        let _this = this;
+        if (val === null) {
+          val = [];
+        }
+        if (val != null && val.length != 0) {
+          _this.top.valueTimeS = "custom";
+        }
+      },
+      deep: true
+    }
+  },
+  methods: {
+    /**
+     *时间改变
+     */
+    changeTimes() {
+      let _this = this;
+      if (_this.top.valueTimeS != "custom") {
+        _this.top.valueTime = [];
+      }
+    },
+    getMyDate(str) {
+      let _this = this;
+      var oDate = new Date(str),
+        oYear = oDate.getFullYear(),
+        oMonth = oDate.getMonth() + 1,
+        oDay = oDate.getDate(),
+        oHour = oDate.getHours(),
+        oMin = oDate.getMinutes(),
+        oSen = oDate.getSeconds(),
+        oTime =
+          oYear +
+          "-" +
+          _this.getzf(oMonth) +
+          "-" +
+          _this.getzf(oDay) 
+          // " " +
+          // _this.getzf(oHour) +
+          // ":" +
+          // _this.getzf(oMin) +
+          // ":" +
+          // _this.getzf(oSen); //最后拼接时间
+      return oTime;
+    },
+    //补0操作
+    getzf(num) {
+      if (parseInt(num) < 10) {
+        num = "0" + num;
+      }
+      return num;
+    },
+
+  /**
+     *  获取客流分析数据
+     *   */
+    getPassenger () {
+      let _this = this;
+      // console.log(_this.$route.params.storeCode);
+      let timestamp = new Date().getTime(); //当前时间
+      let timeStart = "";
+      let timeEnd = "";
+      if (_this.top.valueTimeS == "threeMouth") {
+        timeStart = _this.getMyDate((timestamp / 1000 - 7776000) * 1000);
+        timeEnd = _this.getMyDate(timestamp);
+      } else if (_this.top.valueTimeS == "sixMouth") {
+        timeStart = _this.getMyDate((timestamp / 1000 - 15552000) * 1000);
+        timeEnd = _this.getMyDate(timestamp);
+      } else {
+        timeStart = _this.top.valueTime[0];
+        timeEnd = _this.top.valueTime[1];
+      }
+      console.log(timeStart,timeEnd);
+      let top_valueSex = '';
+      if (_this.top.valueSex != "ALL") {
+        top_valueSex = _this.top.valueSex;
+      }
+      let top_valueMemtype = '';
+      if (_this.top.valueMemtype != "ALL") {
+        top_valueMemtype = _this.top.valueMemtype;
+      }
+      console.log(_this.$route.params.storeCode);
+      sessionStorage.setItem('sid', JSON.stringify(_this.$route.params.storeCode))
+      let storeCode = JSON.parse(sessionStorage.getItem('sid'));
+      let json = {
+        sid: storeCode,
+        sex: top_valueSex,
+        sa: _this.top.age.startAge,
+        ea: _this.top.age.endAge,
+        memtype: top_valueMemtype,
+        st: timeStart,
+        et: timeEnd
+      };
+      let formdata = _this.$config.formData(json);
+
+
+      // 客流报表->总客流+支付客流+支付率
+      _this.$axios
+        .post(_this.$url.exec_flowAllPay, formdata)
+        .then(res => {
+          console.log("总客流量返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            console.log(data);
+            
+            // _this.passengerCountEcharts.series.data = data.start;
+            let List1 = [];
+            List1 = data.data;
+            for (let i = 0; i < List1.length; i++) {
+              let xAxisValue1  = _this.getMyDate(parseInt(List1[i]["ds"]));
+              let seriesFlowCntData1  = List1[i].flowCnt;
+              let seriesPayCntData1  = List1[i].payCnt;
+              let seriesPayRateData1  = List1[i].payRate;
+              _this.passengerCountEcharts.xAxis.data.push(xAxisValue1);
+              _this.passengerCountEcharts.series[0].data.push(seriesFlowCntData1);
+              _this.passengerCountEcharts.series[1].data.push(seriesPayCntData1);
+              _this.passengerCountEcharts.series[2].data.push(seriesPayRateData1);
+            }
+            _this.$nextTick(() => {
+              _this.drawEcharts();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+      });
+      // 客流报表->客流日期趋势
+      _this.$axios
+        .post(_this.$url.flow_flowTrendDate, formdata)
+        .then(res => {
+          console.log("日期客流返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            let List2 = [];
+            List2 = data.datas;
+            for (let i = 0; i < List2.length; i++) {
+              let xAxisValue2  = _this.getMyDate(parseInt(List2[i]["ds"]));
+              let seriesFlowCntData2  = List2[i].flowCnt;
+              let seriesPayCntData2  = List2[i].payCnt;
+              let seriesPayRateData2  = List2[i].payRate;
+              _this.passengerCountEcharts.xAxis.data.push(xAxisValue2);
+              _this.passengerCountEcharts.series[0].data.push(seriesFlowCntData2);
+              _this.passengerCountEcharts.series[1].data.push(seriesPayCntData2);
+              _this.passengerCountEcharts.series[2].data.push(seriesPayRateData2);
+            }
+            _this.$nextTick(() => {
+              _this.drawEcharts();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+      
+      
+      // 客流报表->客流时间趋势
+      _this.$axios
+        .post(_this.$url.flow_flowTrendTime, formdata)
+        .then(res => {
+          console.log("时间客流返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            _this.passengerCountEcharts.series.data = data.start;
+            let List = [];
+            List = data.datas;
+            for (let i = 0; i < List.length; i++) {
+
+              let xAxisTimes  = _this.getMyDate(parseInt(List[i]["ds"]));
+              _this.passengerCountEcharts.xAxis.data.push(xAxisTimes);
+            }
+            _this.$nextTick(() => {
+              _this.drawEcharts();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+
+      
+      
+      // 客流报表->年龄组统计
+      _this.$axios
+        .post(_this.$url.flow_byAgeCnt, formdata)
+        .then(res => {
+          if (res.status == 200) {
+            let data = res.data;
+            console.log(res);
+            // _this.passengerCountEcharts.series.data = data.start;
+            let List4 = [];
+            List4 = data.data;
+            console.log(List4);
+            for (let i = 0; i < List4.length; i++) {
+              let xAxisValue4  = List4[i].age_groups;
+              let seriesCntData4  = List4[i].cnt;
+              _this.ageEcharts.xAxis[0].data.push(xAxisValue4);
+              _this.ageEcharts.series[0].data.push(seriesCntData4);
+            }
+            _this.$nextTick(() => {
+              _this.drawEcharts();
+            });
+            
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+      // _this.byAgeCnt();
+      
+      
+      // 客流报表->月份组统计
+      _this.$axios
+        .post(_this.$url.flow_byMonthCnt, formdata)
+        .then(res => {
+          console.log("月份返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            console.log(res);
+            // _this.passengerCountEcharts.series.data = data.start;
+            let List5 = [];
+            List5 = data.data;
+            console.log(List5);
+            for (let i = 0; i < List5.length; i++) {
+              let xAxisValue5  = List5[i].month;
+              let seriesCntData5  = List5[i].cnt;
+              _this.mouthCountEcharts.xAxis[0].data.push(xAxisValue5);
+              _this.mouthCountEcharts.series[0].data.push(seriesCntData5);
+            }
+            _this.$nextTick(() => {
+              _this.drawEcharts();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+
+      
+      
+      
+      // 客流报表->会员类型统计
+      _this.$axios
+        .post(_this.$url.flow_byMemtypeCnt, formdata)
+        .then(res => {
+          console.log("会员类型返回成功");
+          if (res.status == 200) {
+           let data = res.data;
+            console.log(res);
+            // _this.passengerCountEcharts.series.data = data.start;
+            let List6 = [];
+            List6 = data.data;
+            console.log(List6);
+            for (let i = 0; i < List6.length; i++) {
+              // // let legend6  = List6[i].memtype;
+              // let seriesvalueData6  = List6[i].cnt;
+              let seriesnameData6  = List6[i].memtype;
+              let typeEcharts_series_data = {
+                value: List6[i].cnt,
+                name : List6[i].memtype
+              };
+              _this.typeEcharts.legend.data.push(seriesnameData6);
+              // _this.typeEcharts.series[0].data[i].value=seriesvalueData6;
+              // _this.typeEcharts.series[0].data[i].name = seriesnameData6;
+
+              _this.typeEcharts.series[0].data.push(typeEcharts_series_data);
+              _this.typeEcharts.series[1].data.push(typeEcharts_series_data);
+
+            }
+            _this.$nextTick(() => {
+              _this.drawEcharts();
+            });
+            console.log(_this.typeEcharts.series[0].data)
+            // console.log(_this.typeEcharts.series[0].data[i].name)
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+
+      
+      
+      
+      // 客流报表->会员性格统计
+      _this.$axios
+        .post(_this.$url.flow_byTraitCnt, formdata)
+        .then(res => {
+          console.log("性格返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            console.log(res);
+            let List7 = [];
+            List7 = data.data;
+            console.log(List7);
+            for (let i = 0; i < List7.length; i++) {
+              // // let legend6  = List6[i].memtype;
+              // let seriesvalueData6  = List6[i].cnt;
+              let seriesnameData7  = List7[i].sex;
+              let traitEcharts_series_data = {
+                value: List7[i].cnt,
+                name : List7[i].sex
+              };
+              _this.traitEcharts.legend.data.push(seriesnameData7);
+              // _this.typeEcharts.series[0].data[i].value=seriesvalueData6;
+              // _this.typeEcharts.series[0].data[i].name = seriesnameData6;
+
+              _this.traitEcharts.series[0].data.push(traitEcharts_series_data);
+              _this.traitEcharts.series[1].data.push(traitEcharts_series_data);
+
+            }
+            _this.$nextTick(() => {
+              _this.drawEcharts();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+
+      
+      
+      
+      // 客流报表->会员性别统计
+      _this.$axios
+        .post(_this.$url.flow_bySexCnt, formdata)
+        .then(res => {
+          console.log("性别返回成功");
+          if (res.status == 200) {
+            let data = res.data;
+            console.log(res);
+            let List8 = [];
+            List8 = data.data;
+            console.log(List8);
+            for (let i = 0; i < List8.length; i++) {
+              // // let legend6  = List6[i].memtype;
+              // let seriesvalueData6  = List6[i].cnt;
+              let seriesnameData8  = List8[i].sex;
+              let sexEcharts_series_data = {
+                value: List8[i].cnt,
+                name : List8[i].sex
+              };
+              _this.sexEcharts.legend.data.push(seriesnameData8);
+              // _this.typeEcharts.series[0].data[i].value=seriesvalueData6;
+              // _this.typeEcharts.series[0].data[i].name = seriesnameData6;
+
+              _this.sexEcharts.series[0].data.push(sexEcharts_series_data);
+              _this.sexEcharts.series[1].data.push(sexEcharts_series_data);
+
+            }
+            _this.$nextTick(() => {
+              _this.drawEcharts();
+            });
+          }
+        })
+        .catch(err => {
+          _this.$message("请求出错，请稍后重试！");
+        });
+        
+    },
+    
+      
+
+    drawEcharts () {
+      let _this = this;
+      _this.myChart1 = _this.$echarts.init(
       document.getElementById("passengerCountEcharts")
     );
     _this.myChart1.setOption(_this.passengerCountEcharts);
@@ -1325,309 +1846,6 @@ export default {
       _this.myChart7.resize();
       _this.myChart8.resize();
     });
-  },
-  watch: {
-    "top.valueTime": {
-      handler: function(val, oldval) {
-        let _this = this;
-        if (val === null) {
-          val = [];
-        }
-        if (val != null && val.length != 0) {
-          _this.top.valueTimeS = "custom";
-        }
-      },
-      deep: true
-    }
-  },
-  methods: {
-    /**
-     *时间改变
-     */
-    changeTimes() {
-      let _this = this;
-      if (_this.top.valueTimeS != "custom") {
-        _this.top.valueTime = [];
-      }
-    },
-    getMyDate(str) {
-      let _this = this;
-      var oDate = new Date(str),
-        oYear = oDate.getFullYear(),
-        oMonth = oDate.getMonth() + 1,
-        oDay = oDate.getDate(),
-        oHour = oDate.getHours(),
-        oMin = oDate.getMinutes(),
-        oSen = oDate.getSeconds(),
-        oTime =
-          oYear +
-          "-" +
-          _this.getzf(oMonth) +
-          "-" +
-          _this.getzf(oDay) +
-          " " +
-          _this.getzf(oHour) +
-          ":" +
-          _this.getzf(oMin) +
-          ":" +
-          _this.getzf(oSen); //最后拼接时间
-      return oTime;
-    },
-    //补0操作
-    getzf(num) {
-      if (parseInt(num) < 10) {
-        num = "0" + num;
-      }
-      return num;
-    },
-
-  /**
-     *  获取客流分析数据
-     *   */
-    getPassenger () {
-      let _this = this;
-      // console.log(_this.$route.params.storeCode);
-      let timestamp = new Date().getTime(); //当前时间
-      let timeStart = "";
-      let timeEnd = "";
-      if (_this.top.valueTimeS == "threeMouth") {
-        timeStart = _this.getMyDate((timestamp / 1000 - 7776000) * 1000);
-        timeEnd = _this.getMyDate(timestamp);
-      } else if (_this.top.valueTimeS == "sixMouth") {
-        timeStart = _this.getMyDate((timestamp / 1000 - 15552000) * 1000);
-        timeEnd = _this.getMyDate(timestamp);
-      } else {
-        timeStart = _this.top.valueTime[0];
-        timeEnd = _this.top.valueTime[1];
-      }
-      let json = {
-        // storeCode: _this.$route.params.storeCode,
-        sex: _this.top.valueSex,
-        sa: _this.top.age.startAge,
-        ea: _this.top.age.endAge,
-        memtype: _this.top.valueMemtype,
-        st: timeStart,
-        et: timeEnd
-      };
-      let formdata = _this.$config.formData(json);
-
-
-      // 客流报表->总客流+支付客流+支付率
-      _this.$axios
-        .post(_this.$url.exec_flowAllPay, formdata)
-        .then(res => {
-          console.log("总客流量返回成功");
-          if (res.status == 200) {
-            let data = res.data;
-            console.log(data);
-            // _this.passengerCountEcharts.series.data = data.start;
-            let List1 = [];
-            List1 = data.data;
-            for (let i = 0; i < List1.length; i++) {
-              let xAxisValue1  = _this.getMyDate(parseInt(List1[i]["ds"]));
-              let seriesFlowCntData1  = data.data.flowCnt;
-              let seriesPayCntData1  = data.data.payCnt;
-              let seriesPayRateData1  = data.data.payRate;
-              _this.passengerCountEcharts.xAxis.data.push(xAxisValue1);
-              _this.passengerCountEcharts.series[0].data.push(seriesFlowCntData1);
-              _this.passengerCountEcharts.series[1].data.push(seriesPayCntData1);
-              _this.passengerCountEcharts.series[2].data.push(seriesPayRateData1);
-            }
-            _this.$nextTick(() => {
-              // _this.Time_picsMargin();
-            });
-          }
-        })
-        .catch(err => {
-          _this.$message("请求出错，请稍后重试！");
-      });
-      // 客流报表->客流日期趋势
-      _this.$axios
-        .post(_this.$url.flow_flowTrendDate, formdata)
-        .then(res => {
-          console.log("日期客流返回成功");
-          if (res.status == 200) {
-            let data = res.data;
-            let List2 = [];
-            List2 = data.datas;
-            for (let i = 0; i < List2.length; i++) {
-              let xAxisValue2  = _this.getMyDate(parseInt(List2[i]["ds"]));
-              let seriesFlowCntData2  = data.data.flowCnt;
-              let seriesPayCntData2  = data.data.payCnt;
-              let seriesPayRateData2  = data.data.payRate;
-              _this.passengerCountEcharts.xAxis.data.push(xAxisValue2);
-              _this.passengerCountEcharts.series[0].data.push(seriesFlowCntData2);
-              _this.passengerCountEcharts.series[1].data.push(seriesPayCntData2);
-              _this.passengerCountEcharts.series[2].data.push(seriesPayRateData2);
-            }
-            _this.$nextTick(() => {
-              // _this.Time_picsMargin();
-            });
-          }
-        })
-        .catch(err => {
-          _this.$message("请求出错，请稍后重试！");
-        });
-      
-      
-      // 客流报表->客流时间趋势
-      _this.$axios
-        .post(_this.$url.flow_flowTrendTime, formdata)
-        .then(res => {
-          console.log("时间客流返回成功");
-          if (res.status == 200) {
-            let data = res.data;
-            _this.passengerCountEcharts.series.data = data.start;
-            let List = [];
-            List = data.datas;
-            for (let i = 0; i < List.length; i++) {
-
-              let xAxisTimes  = _this.getMyDate(parseInt(List[i]["ds"]));
-              _this.passengerCountEcharts.xAxis.data.push(xAxisTimes);
-            }
-            _this.$nextTick(() => {
-              // _this.Time_picsMargin();
-            });
-          }
-        })
-        .catch(err => {
-          _this.$message("请求出错，请稍后重试！");
-        });
-
-      
-      
-      // 客流报表->年龄组统计
-      _this.$axios
-        .post(_this.$url.flow_byAgeCnt, formdata)
-        .then(res => {
-          console.log("年龄返回成功");
-          if (res.status == 200) {
-            let data = res.data;
-            console.log(res);
-            // _this.passengerCountEcharts.series.data = data.start;
-            let List4 = [];
-            List4 = data.datas;
-            for (let i = 0; i < List4.length; i++) {
-              let xAxisValue4  = List4[i]["age_groups"];
-              let seriesCntData4  = List4[i]["cnt"];
-              _this.passengerCountEcharts.xAxis.data.push(xAxisValue4);
-              _this.passengerCountEcharts.series[0].data.push(seriesCntData4);
-            }
-            _this.$nextTick(() => {
-              // _this.Time_picsMargin();
-            });
-          }
-        })
-        .catch(err => {
-          _this.$message("请求出错，请稍后重试！");
-        });
-
-      
-      
-      // 客流报表->月份组统计
-      _this.$axios
-        .post(_this.$url.flow_byMonthCnt, formdata)
-        .then(res => {
-          console.log("月份返回成功");
-          if (res.status == 200) {
-            let data = res.data;
-            _this.passengerCountEcharts.series.data = data.start;
-            let List = [];
-            List = data.datas;
-            for (let i = 0; i < List.length; i++) {
-
-              let xAxisTimes  = _this.getMyDate(parseInt(List[i]["ds"]));
-              _this.passengerCountEcharts.xAxis.data.push(xAxisTimes);
-            }
-            _this.$nextTick(() => {
-              // _this.Time_picsMargin();
-            });
-          }
-        })
-        .catch(err => {
-          _this.$message("请求出错，请稍后重试！");
-        });
-
-      
-      
-      
-      // 客流报表->会员类型统计
-      _this.$axios
-        .post(_this.$url.flow_byMemtypeCnt, formdata)
-        .then(res => {
-          console.log("会员类型返回成功");
-          if (res.status == 200) {
-            let data = res.data;
-            _this.passengerCountEcharts.series.data = data.start;
-            let List = [];
-            List = data.datas;
-            for (let i = 0; i < List.length; i++) {
-
-              let xAxisTimes  = _this.getMyDate(parseInt(List[i]["ds"]));
-              _this.passengerCountEcharts.xAxis.data.push(xAxisTimes);
-            }
-            _this.$nextTick(() => {
-              // _this.Time_picsMargin();
-            });
-          }
-        })
-        .catch(err => {
-          _this.$message("请求出错，请稍后重试！");
-        });
-
-      
-      
-      
-      // 客流报表->会员性格统计
-      _this.$axios
-        .post(_this.$url.flow_byTraitCnt, formdata)
-        .then(res => {
-          console.log("性格返回成功");
-          if (res.status == 200) {
-            let data = res.data;
-            _this.passengerCountEcharts.series.data = data.start;
-            let List = [];
-            List = data.datas;
-            for (let i = 0; i < List.length; i++) {
-
-              let xAxisTimes  = _this.getMyDate(parseInt(List[i]["ds"]));
-              _this.passengerCountEcharts.xAxis.data.push(xAxisTimes);
-            }
-            _this.$nextTick(() => {
-              // _this.Time_picsMargin();
-            });
-          }
-        })
-        .catch(err => {
-          _this.$message("请求出错，请稍后重试！");
-        });
-
-      
-      
-      
-      // 客流报表->会员性别统计
-      _this.$axios
-        .post(_this.$url.flow_bySexCnt, formdata)
-        .then(res => {
-          console.log("性别返回成功");
-          if (res.status == 200) {
-            let data = res.data;
-            _this.passengerCountEcharts.series.data = data.start;
-            let List = [];
-            List = data.datas;
-            for (let i = 0; i < List.length; i++) {
-
-              let xAxisTimes  = _this.getMyDate(parseInt(List[i]["ds"]));
-              _this.passengerCountEcharts.xAxis.data.push(xAxisTimes);
-            }
-            _this.$nextTick(() => {
-              // _this.Time_picsMargin();
-            });
-          }
-        })
-        .catch(err => {
-          _this.$message("请求出错，请稍后重试！");
-        });
     }
 
 
