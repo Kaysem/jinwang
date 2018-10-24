@@ -40,8 +40,6 @@
                     stripe
                     :default-sort = "{prop: 'date', order: 'descending'}"
                     >
-
-                    </el-table-column>
                     <el-table-column
                     label="序号"
                     :index="typeIndex"
@@ -68,6 +66,7 @@
                     <el-table-column
                     label="出现次数"
                     prop="comeCnt"
+                    sortable
                     >
                     </el-table-column>
                     <el-table-column label="操作">
@@ -79,52 +78,63 @@
 
                 </el-table>
                 <div id="big_picture"  v-show="bigShow == true"  @click.stop="bigShow = true">
-                        <div class="kapian" :data="gridData">
-                            <!-- <img src="../../assets/images/01.jpg" class="img"> -->
-                            <img :src="gridData.url" class="img">
-                            <div class="table_top"> 
-                                  <div class="table_left">
-                                        <!-- <p>女</p> -->
-                                        <p>{{ gridData.sex }}</p>
-                                        <p class="shuxing">性别</p>
-                                  </div>
-                                  <div class="table_right">
-                                        <!-- <p>18岁</p> -->
-                                        <p>{{ gridData.age }}</p>
-                                        <p class="shuxing">年龄</p>
-                                  </div>
-                            </div>
-                            <div class="table_bottom">
-                                  <div class="table_left">
-                                        <!-- <p>消费顾客</p> -->
-                                        <p>{{ gridData.memType }}</p>
-                                        <p class="shuxing">身份信息</p>
-                                  </div>
-                                  <div class="table_right">
-                                        <!-- <p>西直门店</p> -->
-                                        <p>{{ gridData.comeStore }}</p>
-                                        <p class="shuxing">创建门店</p>
-                                  </div>
-                            </div>
-                            
-                            <div class="info_analyze">
-                                  <span>创建时间 : </span>
-                                  <!-- <span>2018-03-40  14:34:54</span> -->
-                                  <span>{{ gridData.createdate }}</span>
-                            </div>
-                            <div class="info_analyze">
-                                  <!-- <span>出现频率最多月份 : 9月</span> -->
-                                  <span>出现频率最多月份 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ gridData.comeMonth }}</span>
-                            </div>
-                            <div class="info_analyze">
-                                  <!-- <span>出现频率最多周期 : 星期二</span> -->
-                                  <span>出现频率最多周期 : &nbsp;&nbsp;&nbsp;&nbsp;{{ gridData.comeWeek }}</span>
-                            </div>
-                            <div class="info_analyze">
-                                  <!-- <span>出现频率最多门店 : 西直门店</span> -->
-                                  <span>出现频率最多门店 : &nbsp;&nbsp;&nbsp;&nbsp;{{ gridData.comeStore }}</span>
-                            </div>
-                      </div>
+                        <div class="kapian" :data="table.blacklist_find">
+                          <!-- <img src="../../assets/images/jinwang01.jpg" class="img"> -->
+                          <img :src="table.blacklist_find.url" class="img">
+                          <div>
+                                <div class="kapian_left">
+                                      <p class="sex">性别: {{table.blacklist_find.sex}}</p>
+                                      <p class="wechat">微信/QQ: 929200707</p>
+                                      <p class="week">出现频率最多周期: {{table.blacklist_find.comeWeek}}</p>
+                                      <p class="info">备注: {{table.blacklist_find.mark}}</p>
+                                </div>
+                                <div class="kapian_center">
+                                      <p class="age">年龄: {{table.blacklist_find.age}}</p>
+                                      <p class="create_store">创建门店: {{table.blacklist_find.storeName}}</p>
+                                      <p class="highest_frequency">出现频率最高门店: {{table.blacklist_find.comeStore}}</p>
+                                </div>
+                                <div class="kapian_right">
+                                      <p class="telephone">联系电话: 18833446699</p>
+                                      <p class="create_time">创建时间: {{table.blacklist_find.createdate}}</p>
+                                      <p class="more_info" ><a href="javascript:void(0)" @click="more_unwind()" v-text ="gengduo">更多详情 ></a></p>
+                                </div>
+                                <div class="black_more" v-show="black_more_show"  @click.stop="black_more_show = true">
+                                      <div class="black_analyse">
+                                        <div class="black_analyseEcharts">
+                                          <div id="black_analyseEcharts" ref="black_analyseEcharts"></div>
+                                        </div>
+                                      </div>
+                                      <div class="black_analyseCountTable">
+                                        <el-table
+                                          :data="table.tableData "
+                                          style="width: 90%"
+                                          stripe
+                                          :default-sort = "{prop: 'date', order: 'descending'}"
+                                          max-height= "185"
+                                          >
+                                          <el-table-column
+                                          label="最近出现时间"
+                                          prop="lastdate"
+                                          sortable
+                                          >
+                                          </el-table-column>
+                                          <el-table-column
+                                          label="出现门店"
+                                          prop="storeName"
+                                          >
+                                          </el-table-column>
+                                          <el-table-column
+                                          label="出现次数"
+                                          prop="comeCnt"
+                                          sortable
+                                          >
+                                          </el-table-column>
+                                        </el-table>
+                                      </div>
+                                </div>
+                          </div>
+
+                        </div>
 
                     <!-- </el-popover> -->
                 </div>
@@ -178,119 +188,246 @@ export default {
     return {
       userinfo: {},
       SearchInput: "",
-      top:{
-        valueTimeS: '',
-        valueTime: [], //时间
+      top: {
+        valueTimeS: "",
+        valueTime: [] //时间
       },
       table: {
         tableData: [],
         // chooseImg: "",
+        blacklist_find:{}  //黑名单个人详情
       },
       page: {
-        total: 0 ,      //总条数
-        pageSize: 8,    //1页条数
+        total: 0, //总条数
+        pageSize: 8, //1页条数
         currentPage: 1, //当前页面位置
-        allPages:  0  ,
+        allPages: 0
       },
       Dialog: {
         del: {
+          row: {},
           show: false
+        },
+        find: {
+          row: {},
+          // show: false
         }
       },
       bigShow: false,
       gridData: [],
+      gengduo: "更多详情 >",
+      black_analyseEcharts: {
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          },
+          formatter: function(params) {
+            var tar;
+            if (params[1].value != "-") {
+              tar = params[1];
+            } else {
+              tar = params[0];
+            }
+            return tar.name + "<br/>" + tar.seriesName + " : " + tar.value;
+          }
+        },
+        dataZoom: [
+          {
+            show: true,
+            realtime: true,
+            start: 0,
+            end: 100,
+            bottom: 15,
+            backgroundColor: "#fff",
+            dataBackground: {
+              lineStyle: {
+                color: "#EE0000"
+              },
+              areaStyle: {
+                color: "#030303"
+              }
+            },
+            left: "3.5%"
+
+          }
+        ],
+        grid: {
+          top: "5%",
+          left: "2%",
+          right: "3%",
+          // bottom: "10%",
+          containLabel: true
+        },
+        xAxis: {
+          type: "category",
+          splitLine: { show: false },
+          axisLine: {
+            lineStyle: {
+              type: "solid",
+              color: "#fff",
+              width: "2"
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#fff"
+            }
+          },
+          data: (function() {
+            var list = [];
+            for (var i = 1; i <= 11; i++) {
+              list.push("11月" + i + "日");
+            }
+            return list;
+          })()
+        },
+        yAxis: {
+          type: "value",
+          axisLine: {
+            lineStyle: {
+              type: "solid",
+              color: "#fff",
+              width: "2"
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#fff"
+            }
+          }
+        },
+        series: [
+          {
+            name: "辅助",
+            type: "bar",
+            stack: "总量",
+            itemStyle: {
+              normal: {
+                barBorderColor: "rgba(0,0,0,0)",
+                color: "rgba(0,0,0,0)"
+              },
+              emphasis: {
+                barBorderColor: "rgba(0,0,0,0)",
+                color: "rgba(0,0,0,0)"
+              }
+            },
+            data: [0, 12, 10, 15]
+          },
+          {
+            name: "出现时间",
+            type: "bar",
+            stack: "总量",
+            // color: "#5de3e1",
+            label: {
+              normal: {
+                show: true,
+                position: "top"
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: "#5de3e1"
+              }
+            },
+            barWidth: 20,
+            data: [9, 16, 15, 18]
+          }
+        ]
+      },
+      black_more_show : false,
     };
   },
   methods: {
     /**
      *搜索时间改变
      */
-    changeTimes( ){
-        let _this = this; 
-        if( _this.top.valueTimeS != "custom" ){
-            _this.top.valueTime = [];
-        }
-    },
-     getMyDate(str){  
+    changeTimes() {
       let _this = this;
-      var oDate = new Date(str),  
-      oYear = oDate.getFullYear(),  
-      oMonth = oDate.getMonth()+1,  
-      oDay = oDate.getDate(),  
-      oHour = oDate.getHours(),  
-      oMin = oDate.getMinutes(),  
-      oSen = oDate.getSeconds(),  
-      oTime = oYear +'-'+ _this.getzf(oMonth) +'-'+ _this.getzf(oDay) +' '+ _this.getzf(oHour) +':'+ _this.getzf(oMin) +':'+_this.getzf(oSen);//最后拼接时间  
-      return oTime;  
+      if (_this.top.valueTimeS != "custom") {
+        _this.top.valueTime = [];
+      }
+    },
+    getMyDate(str) {
+      let _this = this;
+      var oDate = new Date(str),
+        oYear = oDate.getFullYear(),
+        oMonth = oDate.getMonth() + 1,
+        oDay = oDate.getDate(),
+        oHour = oDate.getHours(),
+        oMin = oDate.getMinutes(),
+        oSen = oDate.getSeconds(),
+        oTime =
+          oYear +
+          "-" +
+          _this.getzf(oMonth) +
+          "-" +
+          _this.getzf(oDay) +
+          " " +
+          _this.getzf(oHour) +
+          ":" +
+          _this.getzf(oMin) +
+          ":" +
+          _this.getzf(oSen); //最后拼接时间
+      return oTime;
     },
     //补0操作
-    getzf(num){  
-      if(parseInt(num) < 10){  
-          num = '0'+num;  
-      }  
-      return num;  
+    getzf(num) {
+      if (parseInt(num) < 10) {
+        num = "0" + num;
+      }
+      return num;
     },
     //请求列表
     getPics(n = 1) {
       let _this = this;
       // console.log(_this.userinfo);
-      let timestamp = (new Date()).getTime();//当前时间
+      let timestamp = new Date().getTime(); //当前时间
       let timeStart = "";
       let timeEnd = "";
       console.log(_this.top.valueTimeS);
-      if( _this.top.valueTimeS == 'half' ){
-          timeStart = _this.getMyDate( (timestamp/1000-1800) * 1000 ) ;
-          timeEnd = _this.getMyDate( timestamp ) ;
-      }else if( _this.top.valueTimeS == 'hour' ){
-          timeStart = _this.getMyDate( (timestamp/1000-3600) * 1000 ) ;
-          timeEnd = _this.getMyDate( timestamp ) ;
-      }else if( _this.top.valueTimeS && _this.top.valueTime != []){
-          timeStart = _this.top.valueTime[0] ;
-          timeEnd = _this.top.valueTime[1] ;
-      }else {
-          timeStart = "";
-          timeEnd   = "";
+      if (_this.top.valueTimeS == "half") {
+        timeStart = _this.getMyDate((timestamp / 1000 - 1800) * 1000);
+        timeEnd = _this.getMyDate(timestamp);
+      } else if (_this.top.valueTimeS == "hour") {
+        timeStart = _this.getMyDate((timestamp / 1000 - 3600) * 1000);
+        timeEnd = _this.getMyDate(timestamp);
+      } else if (_this.top.valueTimeS && _this.top.valueTime != []) {
+        timeStart = _this.top.valueTime[0];
+        timeEnd = _this.top.valueTime[1];
+      } else {
+        timeStart = "";
+        timeEnd = "";
       }
       console.log(123);
-      console.log(timeStart,timeEnd);
+      console.log(timeStart, timeEnd);
       let json = {
-        'venderId': _this.userinfo.store_root_id,
-        'storeName': _this.SearchInput,
-        'rows': 8, //每页条数
-        'sidx': "", //排序字段
-        'sord': "", //ASC|DESC
-        'page': n,
-        'st': timeStart ,
-        'et': timeEnd
+        vendorId: _this.userinfo.store_root_id,
+        search: _this.SearchInput,
+        rows: 8, //每页条数
+        sidx: "", //排序字段
+        sord: "", //ASC|DESC
+        page: n,
+        st: timeStart,
+        et: timeEnd
       };
       let formdata = _this.$config.formData(json);
-      _this.$axios.post(_this.$url.blacklist_list, formdata)
+      _this.$axios
+        .post(_this.$url.blacklist_list, formdata)
         .then(res => {
-          _this.table.tableData = [] ;
+          _this.table.tableData = [];
           console.log(res.data);
           // if (res.status == 200 && res.data.code == 1) {
           if (res.status == 200) {
-            console.log('请求了黑名单数据成功了');
+            console.log("请求了黑名单数据成功了");
             let data = res.data.data;
-
-            // 金王数据测试 S
-            // _this.page.total = data.count ; 
-            // _this.page.currentPage = data.start ;
-            // _this.page.allPages = data.pages ;
-            // _this.table.tableData = data.datas ;
-            //金王数据测试  end
-            
-            _this.page.total = data.records;  // 总条数
+            _this.page.total = data.records; // 总条数
             _this.page.currentPage = data.page; // 当前页
             _this.page.allPages = data.pageTotal; //总页数
             _this.table.tableData = data.res; // 列表黑名单人员数据
-            // for( let i = 0 ; i <  _this.table.tableData.length ;i++ ){
-            //    _this.table.tableData[i]['lastdate'] = _this.getMyDate(_this.table.tableData[i]['lastdate']);
-            // }
-            // _this.top.valueTimeS = "";
-            // _this.top.valueTime = [];
-            
-        console.log(data.res);
+
+            console.log(data.res);
           } else {
             _this.$message.error("请求失败！");
           }
@@ -300,7 +437,7 @@ export default {
           // console.log(err);
         });
     },
-   
+
     // 分页方法 S
     //改变页码
     handleCurrentChange(val) {
@@ -335,57 +472,100 @@ export default {
       let _this = this;
       _this.Dialog.del.show = true;
       _this.Dialog.del.row = row;
-
+      console.log(index, row);
       // 点确定后执行sureDelRow()
     },
     // 从黑名单中删除之弹框确认按钮事件
-    sureDelRow(){
+    sureDelRow() {
       let _this = this;
-      _this.$axios.get( _this.$url.blacklist_del+"/"+_this.Dialog.del.row.id ).then((res)=>{
-          if( res.status == 200 && res.data.code == 1 ) {
-              _this.$message.success("删除成功！");
-              _this.getPics(_this.page.currentPage);
-          }else {
-              _this.$message.error(res.data.msg);
+      let json = {
+        id: _this.Dialog.del.row.id,
+        vendorId: _this.userinfo.store_root_id,
+        personId: _this.Dialog.del.row.personid
+      };
+      let formdata = _this.$config.formData(json);
+
+      _this.$axios
+        .post(_this.$url.blacklist_del, formdata)
+        .then(res => {
+          if (res.status == 200 && res.data.code == 1) {
+            _this.$message.success("删除成功！");
+            _this.getPics(_this.page.currentPage);
+          } else {
+            _this.$message.error(res.data.msg);
           }
-          _this.Dialog.del.show = false ;
-          
-      }).catch((err)=>{
+          _this.Dialog.del.show = false;
+        })
+        .catch(err => {
           _this.$message.error("请求失败，请稍后再试！");
-      })
+        });
     },
     //表单操作之查看操作事件
     handleLook(index, row, e) {
       let _this = this;
       _this.bigShow = false;
-      // let table_top = $(".table_box").offset().top;
-      // let Table_Height = $(".table_box").height();
-      // let TOP = $(e.target).offset().top - table_top;
-      // if (Table_Height - TOP <= $("tbody tr:last-child").height()) {
-      //   TOP = TOP - 10;
-      // } else if (Table_Height - TOP <= $("tbody tr:last-child").height() * 2) {
-      //   TOP = TOP - 50;
-      // } else {
-      //   TOP = TOP + 10;
-      // }
-      // $("#big_picture").css({
-      //   top: TOP
-      // });
+      //发送ajax请求获取 黑名单个人次数列表数据
+      _this.Dialog.find.row = row;
+      let json = {
+        id: _this.Dialog.find.row.id,
+        vendorId: _this.userinfo.store_root_id,
+        personId: _this.Dialog.find.row.personid
+      };
+      let formdata = _this.$config.formData(json);
 
-      // _this.table.chooseImg = rows.imageurl ;
+      _this.$axios
+        .post(_this.$url.blacklist_find, formdata)
+        .then(res => {
+          let data = res.data;
+          if (res.status == 200 && res.data.code == 1) {
+            _this.$message.success("可点击更多详情查看！");
+            console.log(data);
+            _this.table.blacklist_find = data.data[0];
+            console.log(_this.table.blacklist_find);
+          } else {
+            _this.$message.error("请刷新页面重试!");
+          }
+          _this.Dialog.del.show = false;
+        })
+        .catch(err => {
+          _this.$message.error("请求失败，请稍后再试！");
+        });
       // 点击查看之后 获取当前点击黑名单数据
-      for( let i = 0 ; i <  _this.table.tableData.length ;i++ ){
-        _this.table.tableData[i]['createdate'] = _this.getMyDate(_this.table.tableData[i]['createdate']);
-      }
-      _this.gridData = _this.table.tableData[index]
+      // for (let i = 0; i < _this.table.tableData.length; i++) {
+      //   _this.table.tableData[i]["createdate"] = _this.getMyDate(
+      //     _this.table.tableData[i]["createdate"]
+      //   );
+      // }
+      _this.gridData = _this.table.tableData[index];
       console.log(_this.table.tableData[index]);
-      
+
       _this.bigShow = true;
+      _this.black_more_show = false;
+      _this.gengduo = "更多详情 >";
     },
+
+    // 查看黑名单个人详情点击更多详情按钮事件
+    more_unwind() {
+      let _this = this;
+      // console.log(_this)
+      _this.black_more_show = false;
+      _this.gengduo = "更多详情 ∨";
+
+      // 发送ajax请求获取 echarts数据
+
+      
+
+      _this.myChart = _this.$echarts.init(document.getElementById("black_analyseEcharts"));
+      _this.myChart.setOption(_this.black_analyseEcharts);
+      window.addEventListener("resize", () => {
+      _this.myChart.resize();
+    });
+      _this.black_more_show = true;
+      },
     // 添加黑名单按钮事件
     addBlack() {
       let _this = this;
-      _this.$router.push({path: '/snap/browse'});
+      _this.$router.push({ path: "/snap/browse" });
     }
   },
   beforeDestroy() {
@@ -393,35 +573,38 @@ export default {
   },
   mounted() {
     let _this = this;
-    _this.userinfo = sessionStorage.getItem("userinfo") != "" ? JSON.parse(sessionStorage.getItem("userinfo")) : "";
+    _this.userinfo =
+      sessionStorage.getItem("userinfo") != ""
+        ? JSON.parse(sessionStorage.getItem("userinfo"))
+        : "";
     _this.getPics(); //下拉数据
   },
   watch: {
     //侦听 Dialog.del.show 值的变化  从而操作Dialog.del.show
     "Dialog.del.show": {
-        handler: function( val, oldval ){
-            let _this = this;
-            if( val === false ){
-                _this.Dialog.del.row = {};
-            }
-        },
-        deep: true
+      handler: function(val, oldval) {
+        let _this = this;
+        if (val === false) {
+          _this.Dialog.del.row = {};
+        }
+      },
+      deep: true
     },
-    'top.valueTime': {
-        handler: function( val, oldval ){
-          console.log(val);
-            let _this = this;
-            if( val === [] || val === null ){
-                _this.top.valueTime = [] ;
-                _this.top.valueTimeS = "";
-            }
-            if( val != [] && val !=null  && val.length != 0 ){
-                _this.top.valueTimeS = "custom" ;
-            }
-            _this.getPics();
-            console.log('先执行 小时');
-        },
-        deep: true
+    "top.valueTime": {
+      handler: function(val, oldval) {
+        console.log(val);
+        let _this = this;
+        if (val === [] || val === null) {
+          _this.top.valueTime = [];
+          _this.top.valueTimeS = "";
+        }
+        if (val != [] && val != null && val.length != 0) {
+          _this.top.valueTimeS = "custom";
+        }
+        _this.getPics();
+        console.log("先执行 小时");
+      },
+      deep: true
     },
     // 'top.valueTimes': {
     //     handler: function( val, oldval ){
@@ -438,20 +621,20 @@ export default {
     //     },
     //     deep: true
     // },
-    'SearchInput': {
-       handler: function( val, oldval ){
-         console.log(val);
-            let _this = this;
-            if( val === "" ){
-                val = "" ;
-            }
-            if( val != "" ){
-                _this.top.valueTimeS = "val" ;
-            }
-            _this.getPics();
-            console.log('先执行 日期');
-        },
-        deep: true
+    SearchInput: {
+      handler: function(val, oldval) {
+        console.log(val);
+        let _this = this;
+        if (val === "") {
+          val = "";
+        }
+        if (val != "") {
+          _this.top.valueTimeS = "val";
+        }
+        _this.getPics();
+        console.log("先执行 日期");
+      },
+      deep: true
     }
   }
 };
@@ -459,7 +642,7 @@ export default {
 <style scoped>
 #blacklist {
   width: 96%;
-  /* min-height: 539px; */
+  min-height: 600px;
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   border-radius: 10px;
@@ -609,91 +792,138 @@ export default {
 }
 .table_box {
   position: relative;
-  min-height: 422px;
+  min-height: 480px;
 }
 #big_picture {
   position: absolute;
-  top: -26%;
-  right: 16%;
+  top: -43%;
+  right: 26%;
   /* width: 160px;
   height: 200px; */
+  padding-bottom: 20px;
+  /* overflow: hidden; */
 }
 
 .float_left {
-    float:left;
+  float: left;
 }
 .clear {
-    margin-left: 8px;
-    margin-top: 14px;
-    height:8px;
+  margin-left: 8px;
+  margin-top: 14px;
+  height: 8px;
 }
 .float_right {
-    float: right;
+  float: right;
 }
 
 /* 弹框显示黑名单会员个人信息样式 Start*/
 
 .kapian {
-                 width: 298px;
-                 height: 470px; 
-                 background-color: #313856;
-                 border-radius: 10px;
-                 margin-top: 100px;
-                 color: #fff;
-                 font-size: 14px;
-                 font-weight: 700;
-                 font-family: MicrosoftYaHei;
-            }
-            .img {
-                  width: 116px;
-                  height: 116px;
-                  border: 4px solid #717ba3;
-                  border-radius: 50%;
-                  margin-top: -48px;
-                  margin-left: 88px;
-                  margin-bottom: 24px;
-            }
-            p {
-                  margin-top: 10px;
-                  margin-bottom: 10px;
-            }
-            .table_top {
+  width: 770px;
+  height: 100%;
+  min-height: 270px;
+  /* height: 800px; */
+  background-color: #313856;
+  border-radius: 10px;
+  margin-top: 100px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: MicrosoftYaHei;
+}
+.img {
+  width: 116px;
+  height: 116px;
+  border: 4px solid #717ba3;
+  border-radius: 50%;
+  margin-top: -48px;
+  margin-left: 322px;
+  margin-bottom: 5px;
+}
+.kapian p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.kapian_left {
+  float: left;
+  height: 150px;
+  margin-left: 45px;
+}
 
-                  text-align: center;
-                  border-bottom: 1px solid #464f76;
-            }
-            .table_left {
-                  width: 123px;
-                  display: inline-block;
-                  border-right: 1px solid #464f76;
-            }
-            .table_right {
-                  width: 123px;
-                  display: inline-block;
-            }
-            .table_bottom{
-                  text-align: center;
-            }
-            .shuxing {
-                  font-size: 12px;
-                  color: #bdc0d4;
-            }
-            .info_analyze {
-                  margin-left: 42px;
-                  margin-top:  28px;
-            }
+.kapian_center {
+  float: left;
+  height: 150px;
+  margin-left: 60px;
+}
+
+.kapian_right {
+  float: left;
+  height: 150px;
+  margin-left: 60px;
+}
+.more_info {
+  float: right;
+  padding-top: 25px;
+  margin-right: 80px;
+  color: #5de3e1;
+}
+.more_info a {
+  color: #5de3e1;
+}
+.black_more {
+  width: 100%;
+  height: 100%;
+  padding: 10px 0;
+  /* overflow-x:auto; */
+  overflow: hidden;
+}
+.black_analyse {
+  width: 100%;
+}
+.black_analyseEcharts {
+  /* overflow: hidden; */
+  width: 90%;
+  height: 220px;
+  background-color: #313856;
+  box-shadow: 1px 1px 18px 0px rgba(64, 128, 255, 0.2);
+  border-radius: 20px;
+  margin: 0 5% 5px 5%;
+}
+.black_analyseCountTable {
+  width: 100%;
+  /* padding: 0 30px; */
+  
+}
+.black_analyseCountTable .el-table {
+  border-radius: 8px;
+  margin: 0 auto;
+}
+
 /* 弹框显示黑名单会员个人信息样式 End*/
 
-    .timesearch {
-      float: right;
-      margin-right: 300px;
-    }
-    .el-input__inner {
-      width: 364px;
-      height: 35px;
-      background-color: #1a1f37;
-      border-radius: 20px;
-      border-color: #91a2eb
-    }
+.timesearch {
+  float: right;
+  margin-right: 300px;
+}
+.el-input__inner {
+  width: 364px;
+  height: 35px;
+  background-color: #1a1f37;
+  border-radius: 20px;
+  border-color: #91a2eb;
+}
+#black_analyseEcharts {
+  width: 700px;
+  height: 220px;
+  /* margin: 0 auto; */
+}
+.black_analyseEcharts>div {
+  width: 100%;
+  height: 100%;
+}
+.black_analyseEcharts>div>canvas {
+  width: 100%;
+  height: 100%;
+}
 </style>
 

@@ -21,7 +21,7 @@
             </div>
             <div class="top_content inline_block sex">
                 <span>性别：</span>
-                <el-radio-group v-model="top.valueSex" @change="changeSex()">
+                <el-radio-group v-model="top.valueSex">
                     <el-radio label="ALL">全部</el-radio>
                     <el-radio label="男">男性</el-radio>
                     <el-radio label="女">女性</el-radio>
@@ -29,7 +29,7 @@
             </div>
             <div class="top_content inline_block sex">
                 <span>身份：</span>
-                <el-radio-group v-model="top.valueMemtype" @change="changeSex()">
+                <el-radio-group v-model="top.valueMemtype">
                     <el-radio label="ALL">全部</el-radio>
                     <el-radio label="VIP顾客">VIP</el-radio>
                     <el-radio label="消费顾客">消费顾客</el-radio>
@@ -521,32 +521,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: [
-            "00:00",
-            "01:00",
-            "02:00",
-            "03:00",
-            "04:00",
-            "05:00",
-            "06:00",
-            "07:00",
-            "08:00",
-            "09:00",
-            "10:00",
-            "11:00",
-            "12:00",
-            "13:00",
-            "14:00",
-            "15:00",
-            "16:00",
-            "17:00",
-            "18:00",
-            "19:00",
-            "20:00",
-            "21:00",
-            "22:00",
-            "23:00"
-          ],
+          data: [],
           axisLine: {
             lineStyle: {
               type: "solid",
@@ -555,9 +530,11 @@ export default {
             }
           },
           axisLabel: {
+            interval:0,
+            rotate:20,
             textStyle: {
               color: "#fff"
-            }
+            },
           }
         },
         yAxis: [
@@ -592,7 +569,7 @@ export default {
                 }
               }
             },
-            data: [1200, 1320, 1010, 1340, 900, 2300, 2100]
+            data: []
           },
           {
             name: "消费顾客",
@@ -607,7 +584,7 @@ export default {
                 }
               }
             },
-            data: [820, 982, 791, 534, 1190, 530, 310]
+            data: []
           },
           {
             name: "非消费顾客",
@@ -622,7 +599,7 @@ export default {
                 }
               }
             },
-            data: [65, 99, 18, 87, 91, 57, 69]
+            data: []
           }
         ]
       },
@@ -752,32 +729,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: [
-            "00:00",
-            "01:00",
-            "02:00",
-            "03:00",
-            "04:00",
-            "05:00",
-            "06:00",
-            "07:00",
-            "08:00",
-            "09:00",
-            "10:00",
-            "11:00",
-            "12:00",
-            "13:00",
-            "14:00",
-            "15:00",
-            "16:00",
-            "17:00",
-            "18:00",
-            "19:00",
-            "20:00",
-            "21:00",
-            "22:00",
-            "23:00"
-          ],
+          data: [],
           axisLine: {
             lineStyle: {
               type: "solid",
@@ -788,7 +740,8 @@ export default {
           axisLabel: {
             textStyle: {
               color: "#fff"
-            }
+            },
+            rotate:40
           }
         },
         yAxis: [
@@ -823,7 +776,7 @@ export default {
                 }
               }
             },
-            data: [1200, 1320, 1010, 1340, 900, 2300, 2100]
+            data: []
           },
           {
             name: "消费顾客",
@@ -838,7 +791,7 @@ export default {
                 }
               }
             },
-            data: [820, 982, 791, 534, 1190, 530, 310]
+            data: []
           },
           {
             name: "非消费顾客",
@@ -853,7 +806,7 @@ export default {
                 }
               }
             },
-            data: [65, 99, 18, 87, 91, 57, 69]
+            data: []
           }
         ]
       },
@@ -1564,24 +1517,27 @@ export default {
         .catch(err => {
           _this.$message("请求出错，请稍后重试！");
       });
+
       // 客流报表->客流日期趋势
       _this.$axios
-        .post(_this.$url.flow_flowTrendDate, formdata)
+        .post(_this.$url.exec_flowTrendDate, formdata)
         .then(res => {
           console.log("日期客流返回成功");
           if (res.status == 200) {
             let data = res.data;
+            console.log(data)
             let List2 = [];
             List2 = data.datas;
+            console.log(List2)
             for (let i = 0; i < List2.length; i++) {
-              let xAxisValue2  = _this.getMyDate(parseInt(List2[i]["ds"]));
-              let seriesFlowCntData2  = List2[i].flowCnt;
-              let seriesPayCntData2  = List2[i].payCnt;
-              let seriesPayRateData2  = List2[i].payRate;
-              _this.passengerCountEcharts.xAxis.data.push(xAxisValue2);
-              _this.passengerCountEcharts.series[0].data.push(seriesFlowCntData2);
-              _this.passengerCountEcharts.series[1].data.push(seriesPayCntData2);
-              _this.passengerCountEcharts.series[2].data.push(seriesPayRateData2);
+              let xAxisValue2  = _this.getMyDate(parseInt(List2[i]["date"]));
+              let seriesVipcntData2  = List2[i].vipcnt;
+              let seriesPayCntData2  = List2[i].paycnt;
+              let seriesNopaycntData2  = List2[i].nopaycnt;
+              _this.passengerTypeDayEcharts.xAxis.data.push(xAxisValue2);
+              _this.passengerTypeDayEcharts.series[0].data.push(seriesVipcntData2);
+              _this.passengerTypeDayEcharts.series[1].data.push(seriesPayCntData2);
+              _this.passengerTypeDayEcharts.series[2].data.push(seriesNopaycntData2);
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
@@ -1600,13 +1556,19 @@ export default {
           console.log("时间客流返回成功");
           if (res.status == 200) {
             let data = res.data;
-            _this.passengerCountEcharts.series.data = data.start;
-            let List = [];
-            List = data.datas;
-            for (let i = 0; i < List.length; i++) {
-
-              let xAxisTimes  = _this.getMyDate(parseInt(List[i]["ds"]));
-              _this.passengerCountEcharts.xAxis.data.push(xAxisTimes);
+            console.log(data)
+            let List3 = [];
+            List3 = data.datas;
+            console.log(List3)
+            for (let i = 0; i < List3.length; i++) {
+              let xAxisValue3  = _this.getMyDate(parseInt(List3[i]["date"]))+' '+List3[i].hour+'时';
+              let seriesVipcntData3  = List3[i].vipcnt;
+              let seriesPayCntData3  = List3[i].paycnt;
+              let seriesNopaycntData3  = List2[i].nopaycnt;
+              _this.passengerTypeDayEcharts.xAxis.data.push(xAxisValue3);
+              _this.passengerTypeDayEcharts.series[0].data.push(seriesVipcntData3);
+              _this.passengerTypeDayEcharts.series[1].data.push(seriesPayCntData3);
+              _this.passengerTypeDayEcharts.series[2].data.push(seriesNopaycntData3);
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
@@ -1847,61 +1809,6 @@ export default {
       _this.myChart8.resize();
     });
     }
-
-
-    /**
-     * 列表数据
-     */
-    // usercomein_list(p = 1) {
-    //   let _this = this;
-    //   let timestamp = new Date().getTime(); //当前时间
-    //   let timeStart = "";
-    //   let timeEnd = "";
-    //   if (_this.top.valueTimeS == "half") {
-    //     timeStart = _this.getMyDate((timestamp / 1000 - 1800) * 1000);
-    //     timeEnd = _this.getMyDate(timestamp);
-    //   } else if (_this.top.valueTimeS == "hour") {
-    //     timeStart = _this.getMyDate((timestamp / 1000 - 3600) * 1000);
-    //     timeEnd = _this.getMyDate(timestamp);
-    //   } else {
-    //     timeStart = _this.top.valueTime[0];
-    //     timeEnd = _this.top.valueTime[1];
-    //   }
-    //   let json = {
-    //     page: p,
-    //     sex: _this.top.valueSex,
-    //     ageStart: _this.top.age.startAge,
-    //     ageEnd: _this.top.age.endAge,
-    //     timeStart: timeStart,
-    //     timeEnd: timeEnd
-    //   };
-    //   let formdata = _this.$config.formData(json);
-    //   _this.$axios
-    //     .post(_this.$url.usercomein_list, formdata)
-    //     .then(res => {
-    //       console.log("列表重新渲染了");
-    //       if (res.status == 200) {
-    //         let data = res.data;
-    //         _this.page.currentPage = data.start;
-    //         _this.page.total = data.count;
-    //         _this.page.allPages = data.pages;
-    //         let List = [];
-    //         List = data.datas;
-    //         for (let i = 0; i < List.length; i++) {
-    //           List[i]["checked"] = false;
-    //           List[i]["ts"] = _this.getMyDate(parseInt(List[i]["time"]));
-    //         }
-    //         _this.btm.times.listContent = List;
-    //         _this.$nextTick(() => {
-    //           _this.Time_picsMargin();
-    //         });
-    //       }
-    //     })
-    //     .catch(err => {
-    //       // _this.$message("请求出错，请稍后重试！");
-    //       _this.btm.times.listContent = [];
-    //     });
-    // }
   }
 };
 </script>
