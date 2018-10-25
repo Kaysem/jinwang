@@ -106,7 +106,7 @@
                                       </div>
                                       <div class="black_analyseCountTable">
                                         <el-table
-                                          :data="table.tableData "
+                                          :data="table.blacklist_find_moreCount "
                                           style="width: 90%"
                                           stripe
                                           :default-sort = "{prop: 'date', order: 'descending'}"
@@ -181,7 +181,7 @@
 
 <script>
 import imgsrc from "../../assets/images/1.jpg";
-
+let hourArr= [];
 export default {
   name: "Blacklist",
   data() {
@@ -195,7 +195,8 @@ export default {
       table: {
         tableData: [],
         // chooseImg: "",
-        blacklist_find:{}  //黑名单个人详情
+        blacklist_find: {}, //黑名单个人详情
+        blacklist_find_moreCount: []
       },
       page: {
         total: 0, //总条数
@@ -209,13 +210,16 @@ export default {
           show: false
         },
         find: {
-          row: {},
+          row: {}
           // show: false
         }
       },
       bigShow: false,
       gridData: [],
       gengduo: "更多详情 >",
+
+      hourArr: [],
+      
       black_analyseEcharts: {
         tooltip: {
           trigger: "axis",
@@ -223,15 +227,14 @@ export default {
             // 坐标轴指示器，坐标轴触发有效
             type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
           },
-          formatter: function(params) {
-            var tar;
-            if (params[1].value != "-") {
-              tar = params[1];
-            } else {
-              tar = params[0];
-            }
-            return tar.name + "<br/>" + tar.seriesName + " : " + tar.value;
-          }
+          formatter:function (params) {
+            let index = params[0].dataIndex;
+            // let hourString = sessionStorage.getItem("hourArr")[indx];
+            
+            let hourArrObj = hourArr[index];
+            return '出现时间:</br>'+hourArrObj;
+        }
+         
         },
         dataZoom: [
           {
@@ -250,8 +253,9 @@ export default {
               }
             },
             left: "3.5%"
-
-          }
+          }, {
+            type: 'inside'
+        }
         ],
         grid: {
           top: "5%",
@@ -263,6 +267,7 @@ export default {
         xAxis: {
           type: "category",
           splitLine: { show: false },
+          boundaryGap: false,  //  使坐标轴刻度 居中
           axisLine: {
             lineStyle: {
               type: "solid",
@@ -275,13 +280,7 @@ export default {
               color: "#fff"
             }
           },
-          data: (function() {
-            var list = [];
-            for (var i = 1; i <= 11; i++) {
-              list.push("11月" + i + "日");
-            }
-            return list;
-          })()
+          data: []
         },
         yAxis: {
           type: "value",
@@ -300,7 +299,7 @@ export default {
         },
         series: [
           {
-            name: "辅助",
+            name: "首次出现时间",
             type: "bar",
             stack: "总量",
             itemStyle: {
@@ -313,10 +312,10 @@ export default {
                 color: "rgba(0,0,0,0)"
               }
             },
-            data: [0, 12, 10, 15]
+            data: []
           },
           {
-            name: "出现时间",
+            name: "当日出现次数",
             type: "bar",
             stack: "总量",
             // color: "#5de3e1",
@@ -332,11 +331,11 @@ export default {
               }
             },
             barWidth: 20,
-            data: [9, 16, 15, 18]
+            data: []
           }
         ]
       },
-      black_more_show : false,
+      black_more_show: false
     };
   },
   methods: {
@@ -517,11 +516,42 @@ export default {
         .post(_this.$url.blacklist_find, formdata)
         .then(res => {
           let data = res.data;
-          if (res.status == 200 && res.data.code == 1) {
+          console.log("判断之前->", data);
+          if (res.status == 200 && data.data.length != 0) {
             _this.$message.success("可点击更多详情查看！");
-            console.log(data);
-            _this.table.blacklist_find = data.data[0];
-            console.log(_this.table.blacklist_find);
+            let List = [];
+            List = data.data;
+            console.log(List);
+            _this.table.blacklist_find = List[0];
+            _this.table.blacklist_find_moreCount = List;
+
+            // 给echarts赋值
+            let dayHourList = [];
+            dayHourList = List[0].dayHour;
+            for (let i = 0; i < dayHourList.length; i++) {
+              let xAxisValue = dayHourList[i].data;
+              let seriesFuzhuData = dayHourList[i].firstHour;
+              let seriesShijiData = dayHourList[i].differ;
+              let tooltipFormatterData = dayHourList[i].hourArr;
+              _this.black_analyseEcharts.xAxis.data.push(xAxisValue);
+              _this.black_analyseEcharts.series[0].data.push(seriesFuzhuData);
+              _this.black_analyseEcharts.series[1].data.push(seriesShijiData);
+              let str = '';
+              // console.log(tooltipFormatterData);
+              for (let i=0; i<tooltipFormatterData.length; i++){
+                str += tooltipFormatterData[i]+'</br>';
+                
+              }
+              hourArr.push(str);
+              console.log("tooltipFormatterData");
+              
+              // hourArr = tooltipFormatterData;
+              
+            }
+            console.log(hourArr)
+            
+              // sessionStorage.setItem('hourArr', JSON.stringify(dayHourList))
+            console.log(_this);
           } else {
             _this.$message.error("请刷新页面重试!");
           }
@@ -529,13 +559,9 @@ export default {
         })
         .catch(err => {
           _this.$message.error("请求失败，请稍后再试！");
+          console.log("异常:", err);
         });
-      // 点击查看之后 获取当前点击黑名单数据
-      // for (let i = 0; i < _this.table.tableData.length; i++) {
-      //   _this.table.tableData[i]["createdate"] = _this.getMyDate(
-      //     _this.table.tableData[i]["createdate"]
-      //   );
-      // }
+
       _this.gridData = _this.table.tableData[index];
       console.log(_this.table.tableData[index]);
 
@@ -551,17 +577,15 @@ export default {
       _this.black_more_show = false;
       _this.gengduo = "更多详情 ∨";
 
-      // 发送ajax请求获取 echarts数据
-
-      
-
-      _this.myChart = _this.$echarts.init(document.getElementById("black_analyseEcharts"));
+      _this.myChart = _this.$echarts.init(
+        document.getElementById("black_analyseEcharts")
+      );
       _this.myChart.setOption(_this.black_analyseEcharts);
       window.addEventListener("resize", () => {
-      _this.myChart.resize();
-    });
+        _this.myChart.resize();
+      });
       _this.black_more_show = true;
-      },
+    },
     // 添加黑名单按钮事件
     addBlack() {
       let _this = this;
@@ -892,7 +916,6 @@ export default {
 .black_analyseCountTable {
   width: 100%;
   /* padding: 0 30px; */
-  
 }
 .black_analyseCountTable .el-table {
   border-radius: 8px;
@@ -917,11 +940,11 @@ export default {
   height: 220px;
   /* margin: 0 auto; */
 }
-.black_analyseEcharts>div {
+.black_analyseEcharts > div {
   width: 100%;
   height: 100%;
 }
-.black_analyseEcharts>div>canvas {
+.black_analyseEcharts > div > canvas {
   width: 100%;
   height: 100%;
 }

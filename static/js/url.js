@@ -27,11 +27,11 @@ const baseUrl3 =  'http://jinwang3.umessage.com.cn/api/exec';  //  //本地部�
 
 // 金王
 // const baseUrl4 = '= 'http://face.umessage.com.cn';  ';  //贺月杰 线上
-const baseUrl6 = 'http://face.umessage.com.cn';    //贺月杰  本地测试 抓拍照片
+const baseUrl6 = 'http://face.umbrella4365.com';    //贺月杰  本地测试 抓拍照片
 const baseUrl4 = 'http://172.16.24.53/black/api/index'; // PHP后台 黑名单模块
 
 // 金王  开发接口 start 
-const baseUrl5 =  'http://172.16.29.18:56765/api';  //吴新  客流分析模块
+const baseUrl5 =  'http://face.umbrella4365.com/api';  //吴新  客流分析模块
 // const baseUrl5 =  'http://172.16.29.18:56765/api/flow';  //吴新
 // const baseUrl6 =  'http://172.16.29.18:56765/api/exec';  //吴新
 

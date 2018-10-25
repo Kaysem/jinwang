@@ -52,7 +52,7 @@
             
             <div class="top_content inline_block operaty">
                 <span>操作：</span>
-                <div class="todo_search" @click.stop="usercomein_list()"> <span class="search_icon"></span> 查询 </div>
+                <div class="todo_search" @click.stop="blackanalyse()"> <span class="search_icon"></span> 查询 </div>
             </div>
         </div>
         <div class="b_btm">
@@ -116,6 +116,8 @@ export default {
   name: "Analyse",
   data() {
     return {
+      userInfo:{},
+      shoplistInfo:null,
       // 门店下拉选择框 s
       options: [
         {
@@ -170,7 +172,8 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: ["18岁至25岁", "26岁至35岁", "36岁至45岁", "46岁至55岁"],
+            // data: ["18岁至25岁", "26岁至35岁", "36岁至45岁", "46岁至55岁"],
+            data: [],
             axisTick: {
               alignWithLabel: true
             },
@@ -204,8 +207,7 @@ export default {
             }
           }
         ],
-        series: [
-          {
+        series: [{
             name: "直接访问",
             type: "bar",
             barWidth: "30%",
@@ -214,44 +216,14 @@ export default {
                 barBorderRadius: 40
               }
             },
-            data: [
-              20,
-              52,
-              18,
-              55,
-              46,
-              35,
-              29,
-              50,
-              32,
-              38,
-              52,
-              18,
-              55,
-              46,
-              20,
-              52,
-              18,
-              55,
-              46,
-              35,
-              29,
-              50,
-              32,
-              38,
-              52,
-              18,
-              55,
-              46
-            ]
-          }
-        ]
+            data: [],
+          }]
       },
       // 详情部分 top部分  图表样式 end
 
       // 详情部分 top 部分 性别图表 start
       sexEcharts: {
-        color: ["#d780f0", "#4b77e5"],
+        color: [  "#d780f0","#4b77e5"],
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b}: {c} ({d}%)",
@@ -264,7 +236,8 @@ export default {
         legend: {
           orient: "horizontal",
           x: "right",
-          data: ["女性", "男性"],
+          // data: ["VIP顾客", "消费顾客", "未消费顾客"],
+          data:[],
           textStyle: {
             color: "#fff"
           }
@@ -273,22 +246,99 @@ export default {
           {
             name: "访问来源",
             type: "pie",
-            radius: ["50%", "70%"],
-            avoidLabelOverlap: false,
+            selectedMode: "single",
+            radius: [0, "40%"],
+
             label: {
               normal: {
-                show: false,
-                position: "center"
+                position: "inner"
               },
               emphasis: {
                 show: true,
+                formatter: " {b}：{c} \n\n",
                 textStyle: {
-                  fontSize: "30",
+                  fontSize: "20",
                   fontWeight: "bold"
                 }
               }
             },
-            data: [{ value: 335, name: "女性" }, { value: 310, name: "男性" }]
+            data: []
+              // { value: 1335, name: "VIP顾客" },
+              // { value: 1910, name: "消费顾客" },
+              // { value: 310, name: "未消费顾客" }
+            
+          },
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: ["50%", "70%"],
+            avoidLabelOverlap: false,
+            // label: {
+            //   normal: {
+            //     show: false,
+            //     position: "center"
+            //   },
+            //   emphasis: {
+            //     show: true,
+            //     textStyle: {
+            //       fontSize: "30",
+            //       fontWeight: "bold"
+            //     }
+            //   }
+            // },
+            label: {
+              normal: {
+                // \n\n可让文字居于牵引线上方，很关键
+                //  {b}  代表显示的内容标题
+                // {c}代表数据
+                formatter: " {b}：{c} \n\n",
+                show: true,
+                position: "outside",
+                borderWidth: 20,
+                borderRadius: 4,
+                margin: 10,
+                padding: [0, -50],
+                rich: {
+                  a: {
+                    // color: '#333',
+                    fontSize: 12,
+                    lineHeight: 20
+                  },
+                  b: {
+                    fontSize: 12,
+                    lineHeight: 20
+                    // color: '#333'
+                  }
+                }
+              },
+              emphasis: {
+                show: true,
+                position: "center",
+                formatter: "{c} \n\n",
+                textStyle: {
+                  fontSize: "20",
+                  fontWeight: "bold"
+                }
+              }
+            },
+            labelLine: {
+              normal: {
+                length: 20,
+                length2: 50
+                // lineStyle: {
+                //     color: '#333'
+                // }
+              },
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: "20",
+                  fontWeight: "bold"
+                }
+              }
+            },
+
+            data: []
           }
         ]
       },
@@ -314,32 +364,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: [
-            "00:00",
-            "01:00",
-            "02:00",
-            "03:00",
-            "04:00",
-            "05:00",
-            "06:00",
-            "07:00",
-            "08:00",
-            "09:00",
-            "10:00",
-            "11:00",
-            "12:00",
-            "13:00",
-            "14:00",
-            "15:00",
-            "16:00",
-            "17:00",
-            "18:00",
-            "19:00",
-            "20:00",
-            "21:00",
-            "22:00",
-            "23:00"
-          ],
+          data: [],
           axisLine: {
             lineStyle: {
               type: "solid",
@@ -363,11 +388,10 @@ export default {
             }
           }
         },
-        series: [
-          {
+        series: {
             name: "黑名单人数",
             type: "line",
-            data: [11, 0, 11, 15, 13, 12, 13, 10],
+            data: [],
             markPoint: {
               data: [
                 { type: "max", name: "最大值" },
@@ -398,7 +422,6 @@ export default {
               ]
             }
           }
-        ]
       },
        // 详情部分 中间部分  图表样式 End
 
@@ -421,7 +444,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+            data: [],
             axisTick: {
               alignWithLabel: true
             },
@@ -465,36 +488,7 @@ export default {
                 barBorderRadius: 40
               }
             },
-            data: [
-              20,
-              52,
-              18,
-              55,
-              46,
-              35,
-              29,
-              50,
-              32,
-              38,
-              52,
-              18,
-              55,
-              46,
-              20,
-              52,
-              18,
-              55,
-              46,
-              35,
-              29,
-              50,
-              32,
-              38,
-              52,
-              18,
-              55,
-              46
-            ]
+            data: []
           }
         ]
       },
@@ -519,7 +513,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: ["7月", "8月", "9月"],
+            data: [],
             axisTick: {
               alignWithLabel: true
             },
@@ -563,36 +557,7 @@ export default {
                 barBorderRadius: 40
               }
             },
-            data: [
-              20,
-              52,
-              18,
-              55,
-              46,
-              35,
-              29,
-              50,
-              32,
-              38,
-              52,
-              18,
-              55,
-              46,
-              20,
-              52,
-              18,
-              55,
-              46,
-              35,
-              29,
-              50,
-              32,
-              38,
-              52,
-              18,
-              55,
-              46
-            ]
+            data: []
           }
         ]
       },
@@ -700,36 +665,17 @@ export default {
   beforeMount() {
     let _this = this;
     console.log("挂载前执行");
+    // _this.blackanalyse();
   },
   mounted: function() {
     let _this = this;
+    _this.userinfo = JSON.parse(sessionStorage.getItem("userinfo"));
+    _this.shoplistInfo = sessionStorage.getItem("shoplistInfo");
+
+    
     //
-    _this.myChart = echarts.init(document.getElementById("ageEcharts"));
-    _this.myChart.setOption(_this.ageEcharts);
-
-    _this.myChart1 = echarts.init(document.getElementById("sexEcharts"));
-    _this.myChart1.setOption(_this.sexEcharts);
-
-    _this.myChart2 = echarts.init(document.getElementById("hourCountEcharts"));
-    _this.myChart2.setOption(_this.hourCountEcharts);
-
-    _this.myChart3 = echarts.init(document.getElementById("weekCountEcharts"));
-    _this.myChart3.setOption(_this.weekCountEcharts);
-
-    _this.myChart4 = echarts.init(document.getElementById("mouthCountEcharts"));
-    _this.myChart4.setOption(_this.mouthCountEcharts);
-
-    _this.myChart5 = echarts.init(document.getElementById("timesCountEcharts"));
-    _this.myChart5.setOption(_this.timesCountEcharts);
-
-    window.addEventListener("resize", () => {
-      _this.myChart.resize();
-      _this.myChart1.resize();
-      _this.myChart2.resize();
-      _this.myChart3.resize();
-      _this.myChart4.resize();
-      _this.myChart5.resize();
-    });
+    // _this.drawEcharts();
+    _this.blackanalyse();
   },
   watch: {
     "top.valueTime": {
@@ -769,13 +715,13 @@ export default {
           "-" +
           _this.getzf(oMonth) +
           "-" +
-          _this.getzf(oDay) +
-          " " +
-          _this.getzf(oHour) +
-          ":" +
-          _this.getzf(oMin) +
-          ":" +
-          _this.getzf(oSen); //最后拼接时间
+          _this.getzf(oDay);
+          // " " +
+          // _this.getzf(oHour) +
+          // ":" +
+          // _this.getzf(oMin) +
+          // ":" +
+          // _this.getzf(oSen); //最后拼接时间
       return oTime;
     },
     //补0操作
@@ -785,61 +731,135 @@ export default {
       }
       return num;
     },
+    drawEcharts () {
+    let _this = this;
+    _this.myChart = echarts.init(document.getElementById("ageEcharts"));
+    _this.myChart.setOption(_this.ageEcharts);
+
+    _this.myChart1 = echarts.init(document.getElementById("sexEcharts"));
+    _this.myChart1.setOption(_this.sexEcharts);
+
+    _this.myChart2 = echarts.init(document.getElementById("hourCountEcharts"));
+    _this.myChart2.setOption(_this.hourCountEcharts);
+
+    _this.myChart3 = echarts.init(document.getElementById("weekCountEcharts"));
+    _this.myChart3.setOption(_this.weekCountEcharts);
+
+    _this.myChart4 = echarts.init(document.getElementById("mouthCountEcharts"));
+    _this.myChart4.setOption(_this.mouthCountEcharts);
+
+    _this.myChart5 = echarts.init(document.getElementById("timesCountEcharts"));
+    _this.myChart5.setOption(_this.timesCountEcharts);
+
+    window.addEventListener("resize", () => {
+      _this.myChart.resize();
+      _this.myChart1.resize();
+      _this.myChart2.resize();
+      _this.myChart3.resize();
+      _this.myChart4.resize();
+      _this.myChart5.resize();
+    });
+  },
     
-    /**
-     * 列表数据
-     */
-    // usercomein_list(p = 1) {
-    //   let _this = this;
-    //   let timestamp = new Date().getTime(); //当前时间
-    //   let timeStart = "";
-    //   let timeEnd = "";
-    //   if (_this.top.valueTimeS == "half") {
-    //     timeStart = _this.getMyDate((timestamp / 1000 - 1800) * 1000);
-    //     timeEnd = _this.getMyDate(timestamp);
-    //   } else if (_this.top.valueTimeS == "hour") {
-    //     timeStart = _this.getMyDate((timestamp / 1000 - 3600) * 1000);
-    //     timeEnd = _this.getMyDate(timestamp);
-    //   } else {
-    //     timeStart = _this.top.valueTime[0];
-    //     timeEnd = _this.top.valueTime[1];
-    //   }
-    //   let json = {
-    //     page: p,
-    //     sex: _this.top.valueSex,
-    //     ageStart: _this.top.age.startAge,
-    //     ageEnd: _this.top.age.endAge,
-    //     timeStart: timeStart,
-    //     timeEnd: timeEnd
-    //   };
-    //   let formdata = _this.$config.formData(json);
-    //   _this.$axios
-    //     .post(_this.$url.usercomein_list, formdata)
-    //     .then(res => {
-    //       console.log("列表重新渲染了");
-    //       if (res.status == 200) {
-    //         let data = res.data;
-    //         _this.page.currentPage = data.start;
-    //         _this.page.total = data.count;
-    //         _this.page.allPages = data.pages;
-    //         let List = [];
-    //         List = data.datas;
-    //         for (let i = 0; i < List.length; i++) {
-    //           List[i]["checked"] = false;
-    //           List[i]["ts"] = _this.getMyDate(parseInt(List[i]["time"]));
-    //         }
-    //         _this.btm.times.listContent = List;
-    //         _this.$nextTick(() => {
-    //           _this.Time_picsMargin();
-    //         });
-    //       }
-    //     })
-    //     .catch(err => {
-    //       // _this.$message("请求出错，请稍后重试！");
-    //       _this.btm.times.listContent = [];
-    //     });
-    // }
-  }
+    /*
+      获取分析数据
+    */
+   blackanalyse (){
+      let _this = this;
+      let timestamp = new Date().getTime(); //当前时间
+      let timeStart = "";
+      let timeEnd = "";
+      if (_this.top.valueTimeS == "threeMouth") {
+        timeStart = _this.getMyDate((timestamp / 1000 - 7776000) * 1000);
+        timeEnd = _this.getMyDate(timestamp);
+      } else if (_this.top.valueTimeS == "sixMouth") {
+        timeStart = _this.getMyDate((timestamp / 1000 - 15552000) * 1000);
+        timeEnd = _this.getMyDate(timestamp);
+      } else {
+        timeStart = _this.top.valueTime[0];
+        timeEnd = _this.top.valueTime[1];
+      }
+      console.log(_this.shoplistInfo);
+      let json = {
+        // storeid: _this.shoplistInfo,
+        // sex: _this.top.valueSex,
+        // comeCnt: _this.top.valueCount,
+        // start_time: timeStart,
+        // end_time: timeEnd
+      };
+      let formdata = _this.$config.formData(json);
+      _this.$axios
+        .post(_this.$url.black_analyze, formdata)
+        .then(res => {
+          console.log("列表重新渲染了");
+          if (res.status == 200) {
+            let data = res.data;
+            let List = [];
+            List = data.data;
+            console.log(res.data);
+
+            // 年龄echarts
+            let black_age = List.black_age;
+            for (let j = 0; j < black_age.length; j++) {
+              _this.ageEcharts.xAxis[0].data.push(black_age[j].age_groups);
+              _this.ageEcharts.series[0].data.push(black_age[j].age_cnt) ;
+            }
+
+            // 性别echarts
+            let black_sex = List.black_sex;
+            for (let i = 0; i < black_sex.length; i++) {
+              let legendData  = black_sex[i].sex+'性';
+              let sexEcharts_series_data = {
+                value: black_sex[i].sex_cnt,
+                name : black_sex[i].sex+'性'
+              };
+              _this.sexEcharts.legend.data.push(legendData);
+              _this.sexEcharts.series[0].data.push(sexEcharts_series_data);
+              _this.sexEcharts.series[1].data.push(sexEcharts_series_data);
+            }
+            
+            // 时间 echarts
+            let black_hour = List.black_hour;
+            for (let i = 0; i < black_hour.length; i++) {
+
+              _this.hourCountEcharts.xAxis.data.push(black_hour[i].hour+'时');
+              _this.hourCountEcharts.series.data.push(black_hour[i].hour_cnt);
+              // _this.sexEcharts.series[1].data.push(sexEcharts_series_data);
+            }
+
+            // 星期echarts
+            let black_week = List.black_week;
+            for (let i = 0; i < black_week.length; i++) {
+
+              _this.weekCountEcharts.xAxis[0].data.push(black_week[i].day_of_week);
+              _this.weekCountEcharts.series[0].data.push(black_week[i].dayofweek_cnt);
+              // _this.sexEcharts.series[1].data.push(sexEcharts_series_data);
+            }
+
+
+            // 月份echarts
+            let black_month = List.black_month;
+            for (let i = 0; i < black_month.length; i++) {
+
+              _this.mouthCountEcharts.xAxis[0].data.push(black_month[i].month+'月');
+              _this.mouthCountEcharts.series[0].data.push(black_month[i].month_cnt);
+              // _this.sexEcharts.series[1].data.push(sexEcharts_series_data);
+            }
+
+
+            _this.$nextTick(() => {
+              _this.drawEcharts();
+            });
+          }
+        })
+        .catch(err => {
+          // _this.$message("请求出错，请稍后重试！");
+          // _this.btm.times.listContent = [];
+        });
+    }
+  },
+
+
 };
 </script>
 

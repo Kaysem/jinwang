@@ -510,7 +510,9 @@ export default {
                 color: "#030303"
               }
             }
-          }
+          }, {
+            type: 'inside'
+        }
         ],
         grid: {
           left: "3%",
@@ -561,6 +563,7 @@ export default {
             type: "line",
             stack: "总量1",
             yAxisIndex: 0,
+            smooth: true, //这个是把线变成曲线
             itemStyle: {
               normal: {
                 color: "#f1bd2a",
@@ -576,6 +579,7 @@ export default {
             type: "line",
             stack: "总量2",
             yAxisIndex: 0,
+            smooth: true, //这个是把线变成曲线
             itemStyle: {
               normal: {
                 color: "#CD2626",
@@ -591,6 +595,7 @@ export default {
             type: "line",
             stack: "总量3",
             yAxisIndex: 0,
+            smooth: true, //这个是把线变成曲线
             itemStyle: {
               normal: {
                 color: "#2ec7c9",
@@ -718,7 +723,9 @@ export default {
                 color: "#030303"
               }
             }
-          }
+          }, {
+            type: 'inside'
+        }
         ],
         grid: {
           left: "3%",
@@ -741,7 +748,7 @@ export default {
             textStyle: {
               color: "#fff"
             },
-            rotate:40
+            rotate:25
           }
         },
         yAxis: [
@@ -768,6 +775,7 @@ export default {
             type: "line",
             stack: "总量1",
             yAxisIndex: 0,
+            smooth: true, //这个是把线变成曲线
             itemStyle: {
               normal: {
                 color: "#f1bd2a",
@@ -783,6 +791,7 @@ export default {
             type: "line",
             stack: "总量2",
             yAxisIndex: 0,
+            smooth: true, //这个是把线变成曲线
             itemStyle: {
               normal: {
                 color: "#CD2626",
@@ -798,6 +807,7 @@ export default {
             type: "line",
             stack: "总量3",
             yAxisIndex: 0,
+            smooth: true, //这个是把线变成曲线
             itemStyle: {
               normal: {
                 color: "#2ec7c9",
@@ -1485,7 +1495,14 @@ export default {
         et: timeEnd
       };
       let formdata = _this.$config.formData(json);
-
+      // dayHour[
+      //   {
+      //     day:"2018-10-04",
+      //     firstHour: 10,
+      //     hourArr:[10:11:41, 12:11:41, 16:11:41],
+      //     时间差值: 3
+      //   }
+      // ]
 
       // 客流报表->总客流+支付客流+支付率
       _this.$axios
@@ -1517,17 +1534,34 @@ export default {
         .catch(err => {
           _this.$message("请求出错，请稍后重试！");
       });
-
+      let top_valueSex2 = '';
+      if (_this.top.valueSex == "ALL") {
+        top_valueSex2 = "男','女";
+      }
+      let top_valueMemtype2 = '';
+      if (_this.top.valueMemtype != "ALL") {
+        top_valueMemtype2 = _this.top.valueMemtype;
+      }
+      let json2 = {
+        sid: storeCode,
+        sex: top_valueSex2,
+        sa: _this.top.age.startAge,
+        ea: _this.top.age.endAge,
+        memtype: top_valueMemtype2,
+        st: timeStart,
+        et: timeEnd
+      };
+      let formdata2 = _this.$config.formData(json2);
       // 客流报表->客流日期趋势
       _this.$axios
-        .post(_this.$url.exec_flowTrendDate, formdata)
+        .post(_this.$url.exec_flowTrendDate, formdata2)
         .then(res => {
           console.log("日期客流返回成功");
           if (res.status == 200) {
             let data = res.data;
             console.log(data)
             let List2 = [];
-            List2 = data.datas;
+            List2 = data.data;
             console.log(List2)
             for (let i = 0; i < List2.length; i++) {
               let xAxisValue2  = _this.getMyDate(parseInt(List2[i]["date"]));
@@ -1548,27 +1582,45 @@ export default {
           _this.$message("请求出错，请稍后重试！");
         });
       
-      
+      let top_valueSex3 = '';
+      if (_this.top.valueSex == "ALL") {
+        top_valueSex3 = "男','女";
+      }
+      let top_valueMemtype3 = '';
+      if (_this.top.valueMemtype != "ALL") {
+        top_valueMemtype3 = _this.top.valueMemtype;
+      }
+      let json3 = {
+        sid: storeCode,
+        sex: top_valueSex3,
+        sa: _this.top.age.startAge,
+        ea: _this.top.age.endAge,
+        memtype: top_valueMemtype3,
+        st: timeStart,
+        et: timeEnd
+      };
+      let formdata3 = _this.$config.formData(json3);
       // 客流报表->客流时间趋势
       _this.$axios
-        .post(_this.$url.flow_flowTrendTime, formdata)
+        .post(_this.$url.exec_flowTrendTime, formdata3)
         .then(res => {
           console.log("时间客流返回成功");
           if (res.status == 200) {
             let data = res.data;
             console.log(data)
             let List3 = [];
-            List3 = data.datas;
+            List3 = data.data;
             console.log(List3)
             for (let i = 0; i < List3.length; i++) {
               let xAxisValue3  = _this.getMyDate(parseInt(List3[i]["date"]))+' '+List3[i].hour+'时';
               let seriesVipcntData3  = List3[i].vipcnt;
               let seriesPayCntData3  = List3[i].paycnt;
-              let seriesNopaycntData3  = List2[i].nopaycnt;
-              _this.passengerTypeDayEcharts.xAxis.data.push(xAxisValue3);
-              _this.passengerTypeDayEcharts.series[0].data.push(seriesVipcntData3);
-              _this.passengerTypeDayEcharts.series[1].data.push(seriesPayCntData3);
-              _this.passengerTypeDayEcharts.series[2].data.push(seriesNopaycntData3);
+              let seriesNopaycntData3  = List3[i].nopaycnt;
+              console.log('===='+xAxisValue3,seriesVipcntData3,seriesPayCntData3,seriesNopaycntData3)
+              _this.passengerTypeHourEcharts.xAxis.data.push(xAxisValue3);
+              _this.passengerTypeHourEcharts.series[0].data.push(seriesVipcntData3);
+              _this.passengerTypeHourEcharts.series[1].data.push(seriesPayCntData3);
+              _this.passengerTypeHourEcharts.series[2].data.push(seriesNopaycntData3);
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
