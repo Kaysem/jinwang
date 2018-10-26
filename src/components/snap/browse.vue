@@ -282,27 +282,11 @@ export default {
         // 门店下拉选择框 s
         storeOptions: [
           {
-            value: "选项1",
-            label: "黄金糕"
-          },
-          {
-            value: "选项2",
-            label: "双皮奶"
-          },
-          {
-            value: "选项3",
-            label: "蚵仔煎"
-          },
-          {
-            value: "选项4",
-            label: "龙须面"
-          },
-          {
-            value: "选项5",
-            label: "北京烤鸭"
+            value: "",
+            label: "全部门店"
           }
         ],
-        searChstore: "全部",
+        searChstore: "",
 
         valueTimeS: "half",
         valueTime: [], //时间
@@ -394,6 +378,8 @@ export default {
       restaurants: [],
       state3: ""
       // E
+
+      
     };
   },
   beforeMount() {
@@ -455,6 +441,22 @@ export default {
      * 点击添加黑名单后备注输入框相关
      */
     _this.restaurants = this.loadAll();
+    
+    // 获取门店数据
+    let storeInfo_list = JSON.parse(sessionStorage.getItem("storeInfo_list"));
+    let storeInfo_listJSON={
+        value: "",
+        label: ""  
+    };
+    for (let i=0; i<storeInfo_list.length; i++){
+     let storeCode=storeInfo_list[i].storeCode;
+     let storeName=storeInfo_list[i].storeName;
+     storeInfo_listJSON={
+        value: storeCode,
+        label: storeName  
+    }
+    _this.top.storeOptions.push(storeInfo_listJSON);
+    }
   },
   watch: {
     "top.kind": {
@@ -685,7 +687,8 @@ export default {
         ageStart: _this.top.age.startAge,
         ageEnd: _this.top.age.endAge,
         timeStart: timeStart,
-        timeEnd: timeEnd
+        timeEnd: timeEnd,
+        storeId: _this.top.searChstore
       };
       let formdata = _this.$config.formData(json);
       _this.$axios
@@ -693,12 +696,15 @@ export default {
         .then(res => {
           console.log("列表重新渲染了");
           if (res.status == 200) {
-            let data = res.data;
+            console.log('返回200');
+            let data = res.data.data;
+            console.log(data)
             _this.page.currentPage = data.start;
             _this.page.total = data.count;
             _this.page.allPages = data.pages;
             let List = [];
             List = data.datas;
+            console.log(List.length)
             for (let i = 0; i < List.length; i++) {
               List[i]["checked"] = false;
               List[i]["ts"] = _this.getMyDate(parseInt(List[i]["time"]));
@@ -836,11 +842,13 @@ export default {
         }
       }
       str = str.substring(0, str.length - 1);
-      let formdata = _this.$config.formData({});
+      let formdata = _this.$config.formData({
+        rmark: _this.state3
+      });
       _this.$axios
         .post(_this.$url.browse_blackAdd + "/" + str, formdata)
         .then(res => {
-          if (res.status == 200 && res.data.code == 1) {
+          if (res.status == 200) {
             _this.$message.success("添加成功！");
             _this.tip.dialogVisible = false;
           } else {

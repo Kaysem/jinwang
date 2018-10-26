@@ -231,7 +231,7 @@ export default {
           {
             show: true,
             realtime: true,
-            start: 65,
+            start: 0,
             end: 100,
             bottom: 15,
             backgroundColor: "#fff",
@@ -253,6 +253,7 @@ export default {
         },
         xAxis: {
           type: "category",
+          interval: 'auto',
           boundaryGap: false,
           // data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
           data: [],
@@ -264,6 +265,7 @@ export default {
             }
           },
           axisLabel: {
+            interval:'auto',// 设置坐标轴刻度数据自适应
             textStyle: {
               color: "#fff"
             }
@@ -532,8 +534,7 @@ export default {
             }
           },
           axisLabel: {
-            interval:0,
-            rotate:20,
+            interval:'auto',// 设置坐标轴刻度数据自适应
             textStyle: {
               color: "#fff"
             },
@@ -748,7 +749,6 @@ export default {
             textStyle: {
               color: "#fff"
             },
-            rotate:25
           }
         },
         yAxis: [
@@ -1366,8 +1366,8 @@ export default {
             },
             labelLine: {
               normal: {
-                length: 20,
-                length2: 50
+                length: 35,
+                length2: 60
                 // lineStyle: {
                 //     color: '#333'
                 // }
@@ -1516,6 +1516,10 @@ export default {
             // _this.passengerCountEcharts.series.data = data.start;
             let List1 = [];
             List1 = data.data;
+            _this.passengerCountEcharts.xAxis.data=[];
+            _this.passengerCountEcharts.series[0].data=[];
+            _this.passengerCountEcharts.series[1].data=[];
+            _this.passengerCountEcharts.series[2].data=[];
             for (let i = 0; i < List1.length; i++) {
               let xAxisValue1  = _this.getMyDate(parseInt(List1[i]["ds"]));
               let seriesFlowCntData1  = List1[i].flowCnt;
@@ -1563,7 +1567,12 @@ export default {
             let List2 = [];
             List2 = data.data;
             console.log(List2)
+            // _this.passengerTypeDayEcharts.xAxis.data= [];
+            // _this.passengerTypeDayEcharts.series[0].data= [];
+            // _this.passengerTypeDayEcharts.series[1].data= [];
+            // _this.passengerTypeDayEcharts.series[2].data= [];
             for (let i = 0; i < List2.length; i++) {
+              // let xAxisValue2  = _this.getMyDate(parseInt(List2[i]["date"]));
               let xAxisValue2  = _this.getMyDate(parseInt(List2[i]["date"]));
               let seriesVipcntData2  = List2[i].vipcnt;
               let seriesPayCntData2  = List2[i].paycnt;
@@ -1611,6 +1620,10 @@ export default {
             let List3 = [];
             List3 = data.data;
             console.log(List3)
+            _this.passengerTypeHourEcharts.xAxis.data= [];
+            _this.passengerTypeHourEcharts.series[0].data= [];
+            _this.passengerTypeHourEcharts.series[1].data= [];
+            _this.passengerTypeHourEcharts.series[2].data= [];
             for (let i = 0; i < List3.length; i++) {
               let xAxisValue3  = _this.getMyDate(parseInt(List3[i]["date"]))+' '+List3[i].hour+'时';
               let seriesVipcntData3  = List3[i].vipcnt;
@@ -1644,6 +1657,8 @@ export default {
             let List4 = [];
             List4 = data.data;
             console.log(List4);
+            _this.ageEcharts.xAxis[0].data= [];
+            _this.ageEcharts.series[0].data= [];
             for (let i = 0; i < List4.length; i++) {
               let xAxisValue4  = List4[i].age_groups;
               let seriesCntData4  = List4[i].cnt;
@@ -1674,6 +1689,8 @@ export default {
             let List5 = [];
             List5 = data.data;
             console.log(List5);
+            _this.mouthCountEcharts.xAxis[0].data= [];
+            _this.mouthCountEcharts.series[0].data= [];
             for (let i = 0; i < List5.length; i++) {
               let xAxisValue5  = List5[i].month;
               let seriesCntData5  = List5[i].cnt;
@@ -1704,6 +1721,9 @@ export default {
             let List6 = [];
             List6 = data.data;
             console.log(List6);
+            _this.typeEcharts.legend.data= [];
+            _this.typeEcharts.series[0].data= [];
+            _this.typeEcharts.series[1].data= [];
             for (let i = 0; i < List6.length; i++) {
               // // let legend6  = List6[i].memtype;
               // let seriesvalueData6  = List6[i].cnt;
@@ -1713,9 +1733,6 @@ export default {
                 name : List6[i].memtype
               };
               _this.typeEcharts.legend.data.push(seriesnameData6);
-              // _this.typeEcharts.series[0].data[i].value=seriesvalueData6;
-              // _this.typeEcharts.series[0].data[i].name = seriesnameData6;
-
               _this.typeEcharts.series[0].data.push(typeEcharts_series_data);
               _this.typeEcharts.series[1].data.push(typeEcharts_series_data);
 
@@ -1745,6 +1762,9 @@ export default {
             let List7 = [];
             List7 = data.data;
             console.log(List7);
+            _this.traitEcharts.legend.data= [];
+            _this.traitEcharts.series[0].data= [];
+            _this.traitEcharts.series[1].data= [];
             for (let i = 0; i < List7.length; i++) {
               // // let legend6  = List6[i].memtype;
               // let seriesvalueData6  = List6[i].cnt;
@@ -1754,9 +1774,6 @@ export default {
                 name : List7[i].sex
               };
               _this.traitEcharts.legend.data.push(seriesnameData7);
-              // _this.typeEcharts.series[0].data[i].value=seriesvalueData6;
-              // _this.typeEcharts.series[0].data[i].name = seriesnameData6;
-
               _this.traitEcharts.series[0].data.push(traitEcharts_series_data);
               _this.traitEcharts.series[1].data.push(traitEcharts_series_data);
 
@@ -1784,6 +1801,9 @@ export default {
             let List8 = [];
             List8 = data.data;
             console.log(List8);
+            _this.sexEcharts.legend.data = [];
+            _this.sexEcharts.series[0].data = [];
+            _this.sexEcharts.series[1].data = [];
             for (let i = 0; i < List8.length; i++) {
               // // let legend6  = List6[i].memtype;
               // let seriesvalueData6  = List6[i].cnt;
@@ -1793,9 +1813,6 @@ export default {
                 name : List8[i].sex
               };
               _this.sexEcharts.legend.data.push(seriesnameData8);
-              // _this.typeEcharts.series[0].data[i].value=seriesvalueData6;
-              // _this.typeEcharts.series[0].data[i].name = seriesnameData6;
-
               _this.sexEcharts.series[0].data.push(sexEcharts_series_data);
               _this.sexEcharts.series[1].data.push(sexEcharts_series_data);
 

@@ -84,7 +84,7 @@
                           <div>
                                 <div class="kapian_left">
                                       <p class="sex">性别: {{table.blacklist_find.sex}}</p>
-                                      <p class="wechat">微信/QQ: 929200707</p>
+                                      <p class="wechat">微信/QQ: {{table.blacklist_find.weixin}}</p>
                                       <p class="week">出现频率最多周期: {{table.blacklist_find.comeWeek}}</p>
                                       <p class="info">备注: {{table.blacklist_find.mark}}</p>
                                 </div>
@@ -94,7 +94,7 @@
                                       <p class="highest_frequency">出现频率最高门店: {{table.blacklist_find.comeStore}}</p>
                                 </div>
                                 <div class="kapian_right">
-                                      <p class="telephone">联系电话: 18833446699</p>
+                                      <p class="telephone">联系电话: {{table.blacklist_find.tel}}</p>
                                       <p class="create_time">创建时间: {{table.blacklist_find.createdate}}</p>
                                       <p class="more_info" ><a href="javascript:void(0)" @click="more_unwind()" v-text ="gengduo">更多详情 ></a></p>
                                 </div>
@@ -258,7 +258,7 @@ export default {
         }
         ],
         grid: {
-          top: "5%",
+          top: "15%",
           left: "2%",
           right: "3%",
           // bottom: "10%",
@@ -267,7 +267,7 @@ export default {
         xAxis: {
           type: "category",
           splitLine: { show: false },
-          boundaryGap: false,  //  使坐标轴刻度 居中
+          boundaryGap: true,  //  使坐标轴刻度 居中
           axisLine: {
             lineStyle: {
               type: "solid",
@@ -276,6 +276,7 @@ export default {
             }
           },
           axisLabel: {
+            interval: 'auto',
             textStyle: {
               color: "#fff"
             }
@@ -543,7 +544,6 @@ export default {
                 
               }
               hourArr.push(str);
-              console.log("tooltipFormatterData");
               
               // hourArr = tooltipFormatterData;
               
@@ -645,21 +645,21 @@ export default {
     //     },
     //     deep: true
     // },
-    SearchInput: {
-      handler: function(val, oldval) {
-        console.log(val);
-        let _this = this;
-        if (val === "") {
-          val = "";
-        }
-        if (val != "") {
-          _this.top.valueTimeS = "val";
-        }
-        _this.getPics();
-        console.log("先执行 日期");
-      },
-      deep: true
-    }
+    // SearchInput: {
+    //   handler: function(val, oldval) {
+    //     console.log(val);
+    //     let _this = this;
+    //     if (val === "") {
+    //       val = "";
+    //     }
+    //     if (val != "") {
+    //       _this.top.valueTimeS = "val";
+    //     }
+    //     _this.getPics();
+    //     console.log("先执行 日期");
+    //   },
+    //   deep: true
+    // }
   }
 };
 </script>

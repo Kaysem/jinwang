@@ -103,11 +103,11 @@
                         <a href="javascript:void(0)" @click="torouter('/black/blackanalyse')" data-url="/black/blackanalyse"><i v-show="big_isShow">黑名单分析</i></a>
                       </span>
                     </el-menu-item>
-                    <el-menu-item index="6-3">
+                    <!-- <el-menu-item index="6-3">
                       <span>
                         <a href="javascript:void(0)" @click="torouter('/black/ceshi')" data-url="/black/ceshi"><i v-show="big_isShow">测试</i></a>
                       </span>
-                    </el-menu-item>
+                    </el-menu-item> -->
                   </el-menu-item-group>
                 </el-submenu>
 
@@ -234,7 +234,7 @@ export default {
       let _this = this;
       sessionStorage.clear();
       clearInterval(_this.systemInterval);
-      _this.$router.push({path:'/login'}) ;
+      _this.$router.push({path:'/login'});
     },
     tochang(){
       let _this = this;

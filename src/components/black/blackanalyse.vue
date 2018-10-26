@@ -6,7 +6,7 @@
                 <span>门店：</span>
                 <el-select v-model="searChstore" clearable placeholder="请选择" size="medium">
                   <el-option
-                    v-for="item in options"
+                    v-for="item in storeOptions"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -32,7 +32,7 @@
             </div>
             <div class="top_content inline_block sex">
                 <span>性别：</span>
-                <el-radio-group v-model="top.valueSex" @change="changeSex()">
+                <el-radio-group v-model="top.valueSex">
                     <el-radio label="ALL">全部</el-radio>
                     <el-radio label="男">男性</el-radio>
                     <el-radio label="女">女性</el-radio>
@@ -41,11 +41,11 @@
             <div class="top_content inline_block timesCount">
                 <span>次数：</span>
                 <div>
-                    <el-radio-group v-model="top.valueCount" @change="changeSex()">
+                    <el-radio-group v-model="top.valueCount">
                         <el-radio label="ALL">全部</el-radio>
-                        <el-radio label="once">1次</el-radio>
-                        <el-radio label="two">2次</el-radio>
-                        <el-radio label="threeAll">3次及以上</el-radio>
+                        <el-radio label="1">1次</el-radio>
+                        <el-radio label="2">2次</el-radio>
+                        <el-radio label="3">3次及以上</el-radio>
                     </el-radio-group>   
                 </div>
             </div>
@@ -57,13 +57,14 @@
         </div>
         <div class="b_btm">
             <div class="analyse_top">
-                <div class="analyse_top_left analyse_top_all inline_block">
+                <div class="analyse_top_left analyse_top_all inline_block" :data ="black_person">
                     <div class="analyse_top_name">Key Point</div>
                     <div class="analyse_top_content">
-                        <img src="../../assets/images/jinwang01.jpg" alt="用户照片">
+                        <!-- <img src="../../assets/images/jinwang01.jpg" alt="用户照片"> -->
+                        <img :src="black_person.url" alt="用户照片">
                         <div class="analyse_top_content_period">
-                            <div>日期: 周三/周四</div>
-                            <div>时间: 上午10点</div>
+                            <div>周期: {{black_person.comeWeek}}</div>
+                            <div>时间: {{black_person.comehour}}</div>
                         </div>
                     </div>
                 </div>
@@ -119,29 +120,13 @@ export default {
       userInfo:{},
       shoplistInfo:null,
       // 门店下拉选择框 s
-      options: [
+      storeOptions: [
         {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
+          value: "",
+          label: "全部门店"
         }
       ],
-      searChstore: "全部",
+      searChstore: "",
 
       // 门店下拉选择框 end
 
@@ -151,7 +136,7 @@ export default {
         valueSex: "ALL", //性别
         valueCount: "ALL" // 出现次数
       },
-
+      black_person: {},
       // 详情部分 top 部分 年龄图表 start
       resData: "",
       ageEcharts: {
@@ -582,7 +567,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: ["1次", "2次", "3次及以上"],
+            data: [],
             axisTick: {
               alignWithLabel: true
             },
@@ -626,36 +611,7 @@ export default {
                 barBorderRadius: 40
               }
             },
-            data: [
-              20,
-              52,
-              18,
-              55,
-              46,
-              35,
-              29,
-              50,
-              32,
-              38,
-              52,
-              18,
-              55,
-              46,
-              20,
-              52,
-              18,
-              55,
-              46,
-              35,
-              29,
-              50,
-              32,
-              38,
-              52,
-              18,
-              55,
-              46
-            ]
+            data: []
           }
         ]
       },
@@ -670,9 +626,23 @@ export default {
   mounted: function() {
     let _this = this;
     _this.userinfo = JSON.parse(sessionStorage.getItem("userinfo"));
-    _this.shoplistInfo = sessionStorage.getItem("shoplistInfo");
+    // _this.shoplistInfo = sessionStorage.getItem("shoplistInfo");
 
-    
+    // 获取门店数据
+    let storeInfo_list = JSON.parse(sessionStorage.getItem("storeInfo_list"));
+    let storeInfo_listJSON={
+        value: "",
+        label: ""  
+    };
+    for (let i=0; i<storeInfo_list.length; i++){
+     let storeCode=storeInfo_list[i].storeCode;
+     let storeName=storeInfo_list[i].storeName;
+     storeInfo_listJSON={
+        value: storeCode,
+        label: storeName  
+    }
+    _this.storeOptions.push(storeInfo_listJSON);
+    }
     //
     // _this.drawEcharts();
     _this.blackanalyse();
@@ -699,7 +669,6 @@ export default {
       }
       // 时间改变发起数据列表请求
     },
-
 
     getMyDate(str) {
       let _this = this;
@@ -780,12 +749,20 @@ export default {
         timeEnd = _this.top.valueTime[1];
       }
       console.log(_this.shoplistInfo);
+      let valueSex = '';
+      if (_this.top.valueSex != "ALL"){
+        let valueSex = _this.top.valueSex;
+      }
+      let valueCount = '';
+      if (_this.top.valueCount != "ALL"){
+        let valueCount = _this.top.valueCount;
+      }
       let json = {
-        // storeid: _this.shoplistInfo,
-        // sex: _this.top.valueSex,
-        // comeCnt: _this.top.valueCount,
-        // start_time: timeStart,
-        // end_time: timeEnd
+        storeid: _this.top.searChstore,
+        sex: valueSex,
+        comeCnt: valueCount,
+        start_time: timeStart,
+        end_time: timeEnd
       };
       let formdata = _this.$config.formData(json);
       _this.$axios
@@ -798,8 +775,13 @@ export default {
             List = data.data;
             console.log(res.data);
 
+            // 最黑的黑名单
+            _this.black_person = List.black_person;
+            
             // 年龄echarts
             let black_age = List.black_age;
+            _this.ageEcharts.xAxis[0].data=[];
+            _this.ageEcharts.series[0].data=[];            
             for (let j = 0; j < black_age.length; j++) {
               _this.ageEcharts.xAxis[0].data.push(black_age[j].age_groups);
               _this.ageEcharts.series[0].data.push(black_age[j].age_cnt) ;
@@ -807,6 +789,9 @@ export default {
 
             // 性别echarts
             let black_sex = List.black_sex;
+            _this.sexEcharts.legend.data= [];
+            _this.sexEcharts.series[0].data= [];
+            _this.sexEcharts.series[1].data= [];
             for (let i = 0; i < black_sex.length; i++) {
               let legendData  = black_sex[i].sex+'性';
               let sexEcharts_series_data = {
@@ -820,6 +805,8 @@ export default {
             
             // 时间 echarts
             let black_hour = List.black_hour;
+            _this.hourCountEcharts.xAxis.data=[];
+            _this.hourCountEcharts.series.data=[];
             for (let i = 0; i < black_hour.length; i++) {
 
               _this.hourCountEcharts.xAxis.data.push(black_hour[i].hour+'时');
@@ -829,9 +816,11 @@ export default {
 
             // 星期echarts
             let black_week = List.black_week;
+            _this.weekCountEcharts.xAxis[0].data=[];
+            _this.weekCountEcharts.series[0].data=[];
             for (let i = 0; i < black_week.length; i++) {
 
-              _this.weekCountEcharts.xAxis[0].data.push(black_week[i].day_of_week);
+              _this.weekCountEcharts.xAxis[0].data.push(black_week[i].day_of_week_name);
               _this.weekCountEcharts.series[0].data.push(black_week[i].dayofweek_cnt);
               // _this.sexEcharts.series[1].data.push(sexEcharts_series_data);
             }
@@ -839,10 +828,23 @@ export default {
 
             // 月份echarts
             let black_month = List.black_month;
+            _this.mouthCountEcharts.xAxis[0].data=[];
+            _this.mouthCountEcharts.series[0].data=[];
             for (let i = 0; i < black_month.length; i++) {
 
               _this.mouthCountEcharts.xAxis[0].data.push(black_month[i].month+'月');
               _this.mouthCountEcharts.series[0].data.push(black_month[i].month_cnt);
+              // _this.sexEcharts.series[1].data.push(sexEcharts_series_data);
+            }
+
+            // 次数echarts
+            let black_times = List.black_times;
+            _this.timesCountEcharts.xAxis[0].data=[];
+            _this.timesCountEcharts.series[0].data=[];
+            for (let i = 0; i < black_times.length; i++) {
+
+              _this.timesCountEcharts.xAxis[0].data.push(black_times[i].come_tag);
+              _this.timesCountEcharts.series[0].data.push(black_times[i].count);
               // _this.sexEcharts.series[1].data.push(sexEcharts_series_data);
             }
 
