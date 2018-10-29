@@ -194,9 +194,9 @@ export default {
     // 抓取照片-> 查询-浏览抓拍照片记录
     "usercomein_list" : baseUrl6 + '/api/usercomein/list', // 查询
     // 抓取照片-> 加入黑名单
-    "blacklist_add" : baseUrl6 + '/api/blacklist/add', // 添加到黑名单
+    "browse_blackAdd" : baseUrl6 + '/api/black/add', // 添加到黑名单
     // 抓取照片-> 删除照片
-    "usercomein_del" : baseUrl6 + '/api/usercomein/del', //删除照片
+    "browse_del" : baseUrl6 + '/api/black/del', //删除照片
     // 门店列表数据->存本地
     "storeInfo_list" : baseUrl6 + '/api/storeInfo/list',
     
@@ -212,7 +212,7 @@ export default {
     // "listFaceImgNames" : baseUrl5 + '/listFaceImgNames', //枚举会员的底库照片名称
     // "getFaceOneImg" : baseUrl5 + '/getFaceOneImg', //获取照片 单个人
     // "delFaceOneImg" : baseUrl5 + '/delFaceOneImg' , //删除照片
-    "register_list" : baseUrl4 + '/api/register/list', // 加入黑名单
+    "register_list" : baseUrl6 + '/api/register/list', // 加入黑名单
     
 
 }

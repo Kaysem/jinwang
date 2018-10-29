@@ -212,7 +212,7 @@ export default {
     // "listFaceImgNames" : baseUrl5 + '/listFaceImgNames', //枚举会员的底库照片名称
     // "getFaceOneImg" : baseUrl5 + '/getFaceOneImg', //获取照片 单个人
     // "delFaceOneImg" : baseUrl5 + '/delFaceOneImg' , //删除照片
-    "register_list" : baseUrl4 + '/api/register/list', // 加入黑名单
+    "register_list" : baseUrl6 + '/api/register/list', // 加入黑名单
     
 
 }

@@ -243,7 +243,9 @@ export default {
                 color: "#030303"
               }
             }
-          }
+          }, {
+            type: 'inside'
+        }
         ],
         grid: {
           left: "3%",
@@ -273,7 +275,7 @@ export default {
         },
         yAxis: [
           {
-            name: "总客流量 ( 单位 : 人 )",
+            name: "总客流量 ( 单位 : 人/次 )",
             type: "value",
             axisLine: {
               lineStyle: {
@@ -542,7 +544,7 @@ export default {
         },
         yAxis: [
           {
-            name: "顾客流量 ( 单位 : 人/当天 )",
+            name: "客流 (单位: 人/次/day)",
             type: "value",
             axisLine: {
               lineStyle: {
@@ -753,7 +755,7 @@ export default {
         },
         yAxis: [
           {
-            name: "顾客流量 ( 单位 : 人/当时 )",
+            name: "客流 (单位: 人/次/hour)",
             type: "value",
             axisLine: {
               lineStyle: {
@@ -1567,10 +1569,10 @@ export default {
             let List2 = [];
             List2 = data.data;
             console.log(List2)
-            // _this.passengerTypeDayEcharts.xAxis.data= [];
-            // _this.passengerTypeDayEcharts.series[0].data= [];
-            // _this.passengerTypeDayEcharts.series[1].data= [];
-            // _this.passengerTypeDayEcharts.series[2].data= [];
+            _this.passengerTypeDayEcharts.xAxis.data= [];
+            _this.passengerTypeDayEcharts.series[0].data= [];
+            _this.passengerTypeDayEcharts.series[1].data= [];
+            _this.passengerTypeDayEcharts.series[2].data= [];
             for (let i = 0; i < List2.length; i++) {
               // let xAxisValue2  = _this.getMyDate(parseInt(List2[i]["date"]));
               let xAxisValue2  = _this.getMyDate(parseInt(List2[i]["date"]));
@@ -1625,7 +1627,7 @@ export default {
             _this.passengerTypeHourEcharts.series[1].data= [];
             _this.passengerTypeHourEcharts.series[2].data= [];
             for (let i = 0; i < List3.length; i++) {
-              let xAxisValue3  = _this.getMyDate(parseInt(List3[i]["date"]))+' '+List3[i].hour+'时';
+              let xAxisValue3  = List3[i].hour+'时';
               let seriesVipcntData3  = List3[i].vipcnt;
               let seriesPayCntData3  = List3[i].paycnt;
               let seriesNopaycntData3  = List3[i].nopaycnt;

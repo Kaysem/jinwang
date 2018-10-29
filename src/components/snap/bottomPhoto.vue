@@ -164,11 +164,13 @@ export default {
             let formdata = _this.$config.formData(json); 
             _this.$axios.post(_this.$url.register_list,formdata).then((res)=>{
                 if( res.status == 200 ){
-                    _this.page.total = res.data.count ;
-                    _this.page.allPages = res.data.pages ;
-                     _this.page.currentPage = res.data.start ;
-                    let data = res.data;
-                    _this.list = res.data.datas ;
+                    let data = res.data.data;
+                    console.log(data)
+                    _this.page.total = data.count ;
+                    _this.page.allPages = data.pages ;
+                     _this.page.currentPage = data.start ;
+                    
+                    _this.list = data.datas ;
                     _this.$nextTick(()=>{  
                         _this.picMargin(); 
                     });

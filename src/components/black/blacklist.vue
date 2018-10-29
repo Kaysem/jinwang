@@ -285,6 +285,7 @@ export default {
         },
         yAxis: {
           type: "value",
+          max: "24",
           axisLine: {
             lineStyle: {
               type: "solid",
@@ -320,12 +321,12 @@ export default {
             type: "bar",
             stack: "总量",
             // color: "#5de3e1",
-            label: {
-              normal: {
-                show: true,
-                position: "top"
-              }
-            },
+            // label: {
+            //   normal: {
+            //     show: true,
+            //     position: "top"
+            //   }
+            // },
             itemStyle: {
               normal: {
                 color: "#5de3e1"

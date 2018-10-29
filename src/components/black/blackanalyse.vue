@@ -959,6 +959,11 @@ export default {
 
 /* 详情块css  start  */
 .analyse_top {
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-around;
+  flex-wrap: wrap;
   margin-top: 30px;
 }
 /* .analyse_top_left {
@@ -968,7 +973,7 @@ export default {
   margin: 0 106px;
 } */
 .analyse_top_all {
-  margin: 0 40px 20px;
+  /* margin: 0 2.5% 20px; */
 }
 /* .analyse_top_center div{
     float: left;
@@ -1019,6 +1024,11 @@ export default {
   border-radius: 20px;
 }
 .analyse_bottom {
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-around;
+  flex-wrap: wrap;
   margin-top: 40px;
 }
 
