@@ -745,20 +745,21 @@ export default {
         timeStart = _this.getMyDate((timestamp / 1000 - 15552000) * 1000);
         timeEnd = _this.getMyDate(timestamp);
       } else {
-        timeStart = _this.top.valueTime[0];
-        timeEnd = _this.top.valueTime[1];
+        timeStart = _this.top.valueTime[0].substr(0,10);
+        timeEnd = _this.top.valueTime[1].substr(0,10);
       }
-      console.log(_this.shoplistInfo);
+      console.log(_this.top.valueSex,_this.top.valueCount);
       let valueSex = '';
       if (_this.top.valueSex != "ALL"){
-        let valueSex = _this.top.valueSex;
+        valueSex = _this.top.valueSex;
       }
       let valueCount = '';
       if (_this.top.valueCount != "ALL"){
-        let valueCount = _this.top.valueCount;
+        valueCount = _this.top.valueCount;
       }
+      console.log(_this.searChstore,valueSex,valueCount)
       let json = {
-        storeid: _this.top.searChstore,
+        storeid: _this.searChstore,
         sex: valueSex,
         comeCnt: valueCount,
         start_time: timeStart,

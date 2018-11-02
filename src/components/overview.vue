@@ -1033,8 +1033,8 @@ export default {
         data.forEach(function(v, i, arr) {
           let val = {};
           val["money"] = v.amt_dy;
-          val["name"] = v.orderStoreName;
-          val["orderStore"] = v.orderStore;
+          val["name"] = v.storeName;
+          val["orderStore"] = v.storeCode;
           val["value"] = [v.lon, v.lat];
           data_arr.push(val);
         });

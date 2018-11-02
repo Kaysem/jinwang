@@ -344,7 +344,8 @@
     methods:{
       getAxios(){
         let _this= this;
-        let json = {'vid': _this.userinfo.store_root_id  };
+        // let json = {'vid': _this.userinfo.store_root_id  };
+        let json = {'vid': 0  };
           let formdata = _this.$config.formData(json); 
           _this.$axios.post( _this.$url.getVipDistribution ,formdata).then((res)=>{
             let b = (JSON.stringify(res.data) == "{}");

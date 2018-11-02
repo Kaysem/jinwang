@@ -861,6 +861,7 @@ export default {
           //     _this.tip.dialogVisible = false
           // }, 2000);
           _this.tip.title = "";
+          _this.state3 = "";
         })
         .catch(err => {
           _this.$message.error("请求失败，请稍后再试！");

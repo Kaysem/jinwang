@@ -114,7 +114,8 @@
       let name = this.$route.params.name?this.$route.params.name:sessionStorage.weizhi;
       sessionStorage.weizhi = name;
       _this.mapname = name;
-        let json = { 'vid': _this.userinfo.store_root_id , 'proc' :_this.mapname }
+        // let json = { 'vid': _this.userinfo.store_root_id , 'proc' :_this.mapname }
+        let json = { 'vid': 0 , 'proc' :_this.mapname }
         let formdata = _this.$config.formData(json); 
         _this.$axios.post( _this.$url.getVipProc ,formdata).then((res)=>{
             // 右侧数据

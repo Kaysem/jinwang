@@ -125,7 +125,7 @@ export default {
         age: {
           startAge: "1",
           endAge: "99"
-        },
+        }
         // kind: "按时间" //位置按时不需要
       },
 
@@ -243,9 +243,10 @@ export default {
                 color: "#030303"
               }
             }
-          }, {
-            type: 'inside'
-        }
+          },
+          {
+            type: "inside"
+          }
         ],
         grid: {
           left: "3%",
@@ -255,7 +256,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          interval: 'auto',
+          interval: "auto",
           boundaryGap: false,
           // data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
           data: [],
@@ -267,7 +268,7 @@ export default {
             }
           },
           axisLabel: {
-            interval:'auto',// 设置坐标轴刻度数据自适应
+            interval: "auto", // 设置坐标轴刻度数据自适应
             textStyle: {
               color: "#fff"
             }
@@ -293,6 +294,10 @@ export default {
           {
             name: "支付率 ( 单位 : % )",
             type: "value",
+            splitLine: {
+              //网格线
+              show: false
+            },
             axisLine: {
               lineStyle: {
                 type: "solid",
@@ -314,8 +319,9 @@ export default {
             type: "line",
             stack: "总量1",
             smooth: true, //这个是把线变成曲线
-            areaStyle: { normal: {
-              // 颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+            areaStyle: {
+              normal: {
+                // 颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
                 color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
                   {
                     offset: 0,
@@ -330,7 +336,8 @@ export default {
                     color: "rgba(112,73,240,0)"
                   }
                 ])
-            } },
+              }
+            },
             yAxisIndex: 0,
             itemStyle: {
               normal: {
@@ -348,7 +355,7 @@ export default {
             type: "line",
             stack: "总量2",
             smooth: true, //这个是把线变成曲线
-            
+
             yAxisIndex: 0,
             itemStyle: {
               normal: {
@@ -378,7 +385,7 @@ export default {
               }
             },
             // data: [820, 982, 791, 534, 1190, 530, 310]
-            data:[]
+            data: []
           },
           {
             name: "支付率",
@@ -395,7 +402,7 @@ export default {
               }
             },
             // data: [65, 99, 18, 87, 91, 57, 69]
-            data:[]
+            data: []
           }
         ]
       },
@@ -514,9 +521,10 @@ export default {
                 color: "#030303"
               }
             }
-          }, {
-            type: 'inside'
-        }
+          },
+          {
+            type: "inside"
+          }
         ],
         grid: {
           left: "3%",
@@ -536,10 +544,10 @@ export default {
             }
           },
           axisLabel: {
-            interval:'auto',// 设置坐标轴刻度数据自适应
+            interval: "auto", // 设置坐标轴刻度数据自适应
             textStyle: {
               color: "#fff"
-            },
+            }
           }
         },
         yAxis: [
@@ -726,9 +734,10 @@ export default {
                 color: "#030303"
               }
             }
-          }, {
-            type: 'inside'
-        }
+          },
+          {
+            type: "inside"
+          }
         ],
         grid: {
           left: "3%",
@@ -750,7 +759,7 @@ export default {
           axisLabel: {
             textStyle: {
               color: "#fff"
-            },
+            }
           }
         },
         yAxis: [
@@ -877,7 +886,8 @@ export default {
             }
           }
         ],
-        series: [{
+        series: [
+          {
             name: "直接访问",
             type: "bar",
             barWidth: "30%",
@@ -886,7 +896,7 @@ export default {
                 barBorderRadius: 40
               }
             },
-            data: [],
+            data: []
             // data: [
             //   20,
             //   52,
@@ -917,7 +927,8 @@ export default {
             //   55,
             //   46
             // ]
-          }]
+          }
+        ]
       },
 
       // 详情部分 bottom 部分 月份图表 start
@@ -939,13 +950,13 @@ export default {
         xAxis: [
           {
             type: "category",
-            data:[],
+            data: [],
             // data: ["7月", "8月", "9月"],
             axisTick: {
               alignWithLabel: true
             },
             axisLabel: {
-              formatter: "{value}月",
+              formatter: "{value}月"
             },
             axisLine: {
               lineStyle: {
@@ -987,7 +998,7 @@ export default {
                 barBorderRadius: 40
               }
             },
-            data: [],
+            data: []
             // data: [
             //   20,
             //   52,
@@ -1024,7 +1035,7 @@ export default {
 
       // 详情部分 bottom 部分 类型图表 start
       typeEcharts: {
-        color: [ "#4b77e5","#f1bd2a", "#d780f0"],
+        color: ["#4b77e5", "#f1bd2a", "#d780f0"],
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b}: {c} ({d}%)",
@@ -1038,7 +1049,7 @@ export default {
           orient: "horizontal",
           x: "right",
           // data: ["VIP顾客", "消费顾客", "未消费顾客"],
-          data:[],
+          data: [],
           textStyle: {
             color: "#fff"
           }
@@ -1064,10 +1075,9 @@ export default {
               }
             },
             data: []
-              // { value: 1335, name: "VIP顾客" },
-              // { value: 1910, name: "消费顾客" },
-              // { value: 310, name: "未消费顾客" }
-            
+            // { value: 1335, name: "VIP顾客" },
+            // { value: 1910, name: "消费顾客" },
+            // { value: 310, name: "未消费顾客" }
           },
           {
             name: "访问来源",
@@ -1146,7 +1156,7 @@ export default {
 
       // 详情部分 bottom 部分 性别图表 start
       sexEcharts: {
-        color: [  "#d780f0","#4b77e5"],
+        color: ["#d780f0", "#4b77e5"],
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b}: {c} ({d}%)",
@@ -1160,7 +1170,7 @@ export default {
           orient: "horizontal",
           x: "right",
           // data: ["VIP顾客", "消费顾客", "未消费顾客"],
-          data:[],
+          data: [],
           textStyle: {
             color: "#fff"
           }
@@ -1186,10 +1196,9 @@ export default {
               }
             },
             data: []
-              // { value: 1335, name: "VIP顾客" },
-              // { value: 1910, name: "消费顾客" },
-              // { value: 310, name: "未消费顾客" }
-            
+            // { value: 1335, name: "VIP顾客" },
+            // { value: 1910, name: "消费顾客" },
+            // { value: 310, name: "未消费顾客" }
           },
           {
             name: "访问来源",
@@ -1246,8 +1255,8 @@ export default {
             },
             labelLine: {
               normal: {
-                length: 20,
-                length2: 50
+                length: 25,
+                length2: 60
                 // lineStyle: {
                 //     color: '#333'
                 // }
@@ -1268,7 +1277,7 @@ export default {
 
       // 详情部分 bottom 部分 性格图表 start
       traitEcharts: {
-        color: [  "#d780f0","#4b77e5"],
+        color: ["#d780f0", "#4b77e5"],
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b}: {c} ({d}%)",
@@ -1282,7 +1291,7 @@ export default {
           orient: "horizontal",
           x: "right",
           // data: ["VIP顾客", "消费顾客", "未消费顾客"],
-          data:[],
+          data: [],
           textStyle: {
             color: "#fff"
           }
@@ -1308,10 +1317,9 @@ export default {
               }
             },
             data: []
-              // { value: 1335, name: "VIP顾客" },
-              // { value: 1910, name: "消费顾客" },
-              // { value: 310, name: "未消费顾客" }
-            
+            // { value: 1335, name: "VIP顾客" },
+            // { value: 1910, name: "消费顾客" },
+            // { value: 310, name: "未消费顾客" }
           },
           {
             name: "访问来源",
@@ -1434,18 +1442,13 @@ export default {
         oHour = oDate.getHours(),
         oMin = oDate.getMinutes(),
         oSen = oDate.getSeconds(),
-        oTime =
-          oYear +
-          "-" +
-          _this.getzf(oMonth) +
-          "-" +
-          _this.getzf(oDay) 
-          // " " +
-          // _this.getzf(oHour) +
-          // ":" +
-          // _this.getzf(oMin) +
-          // ":" +
-          // _this.getzf(oSen); //最后拼接时间
+        oTime = oYear + "-" + _this.getzf(oMonth) + "-" + _this.getzf(oDay);
+      // " " +
+      // _this.getzf(oHour) +
+      // ":" +
+      // _this.getzf(oMin) +
+      // ":" +
+      // _this.getzf(oSen); //最后拼接时间
       return oTime;
     },
     //补0操作
@@ -1456,10 +1459,10 @@ export default {
       return num;
     },
 
-  /**
+    /**
      *  获取客流分析数据
      *   */
-    getPassenger () {
+    getPassenger() {
       let _this = this;
       // console.log(_this.$route.params.storeCode);
       let timestamp = new Date().getTime(); //当前时间
@@ -1472,21 +1475,26 @@ export default {
         timeStart = _this.getMyDate((timestamp / 1000 - 15552000) * 1000);
         timeEnd = _this.getMyDate(timestamp);
       } else {
-        timeStart = _this.top.valueTime[0];
-        timeEnd = _this.top.valueTime[1];
+        timeStart = _this.top.valueTime[0].substr(0,10);
+        timeEnd = _this.top.valueTime[1].substr(0,10);
       }
-      console.log(timeStart,timeEnd);
-      let top_valueSex = '';
-      if (_this.top.valueSex != "ALL") {
+      console.log(timeStart, timeEnd);
+      let top_valueSex = "";
+      if (_this.top.valueSex == "ALL") {
+        top_valueSex = "男','女";
+      }else {
         top_valueSex = _this.top.valueSex;
       }
-      let top_valueMemtype = '';
+      let top_valueMemtype = "";
       if (_this.top.valueMemtype != "ALL") {
         top_valueMemtype = _this.top.valueMemtype;
       }
       console.log(_this.$route.params.storeCode);
-      sessionStorage.setItem('sid', JSON.stringify(_this.$route.params.storeCode))
-      let storeCode = JSON.parse(sessionStorage.getItem('sid'));
+      sessionStorage.setItem(
+        "sid",
+        JSON.stringify(_this.$route.params.storeCode)
+      );
+      let storeCode = JSON.parse(sessionStorage.getItem("sid"));
       let json = {
         sid: storeCode,
         sex: top_valueSex,
@@ -1514,23 +1522,29 @@ export default {
           if (res.status == 200) {
             let data = res.data;
             console.log(data);
-            
+
             // _this.passengerCountEcharts.series.data = data.start;
             let List1 = [];
             List1 = data.data;
-            _this.passengerCountEcharts.xAxis.data=[];
-            _this.passengerCountEcharts.series[0].data=[];
-            _this.passengerCountEcharts.series[1].data=[];
-            _this.passengerCountEcharts.series[2].data=[];
+            _this.passengerCountEcharts.xAxis.data = [];
+            _this.passengerCountEcharts.series[0].data = [];
+            _this.passengerCountEcharts.series[1].data = [];
+            _this.passengerCountEcharts.series[2].data = [];
             for (let i = 0; i < List1.length; i++) {
-              let xAxisValue1  = _this.getMyDate(parseInt(List1[i]["ds"]));
-              let seriesFlowCntData1  = List1[i].flowCnt;
-              let seriesPayCntData1  = List1[i].payCnt;
-              let seriesPayRateData1  = List1[i].payRate;
+              let xAxisValue1 = _this.getMyDate(parseInt(List1[i]["ds"]));
+              let seriesFlowCntData1 = List1[i].flowCnt;
+              let seriesPayCntData1 = List1[i].payCnt;
+              let seriesPayRateData1 = List1[i].payRate*100;
               _this.passengerCountEcharts.xAxis.data.push(xAxisValue1);
-              _this.passengerCountEcharts.series[0].data.push(seriesFlowCntData1);
-              _this.passengerCountEcharts.series[1].data.push(seriesPayCntData1);
-              _this.passengerCountEcharts.series[2].data.push(seriesPayRateData1);
+              _this.passengerCountEcharts.series[0].data.push(
+                seriesFlowCntData1
+              );
+              _this.passengerCountEcharts.series[1].data.push(
+                seriesPayCntData1
+              );
+              _this.passengerCountEcharts.series[2].data.push(
+                seriesPayRateData1
+              );
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
@@ -1539,12 +1553,14 @@ export default {
         })
         .catch(err => {
           _this.$message("请求出错，请稍后重试！");
-      });
-      let top_valueSex2 = '';
+        });
+      let top_valueSex2 = "";
       if (_this.top.valueSex == "ALL") {
         top_valueSex2 = "男','女";
+      }else {
+        top_valueSex2 = _this.top.valueSex;
       }
-      let top_valueMemtype2 = '';
+      let top_valueMemtype2 = "";
       if (_this.top.valueMemtype != "ALL") {
         top_valueMemtype2 = _this.top.valueMemtype;
       }
@@ -1565,24 +1581,30 @@ export default {
           console.log("日期客流返回成功");
           if (res.status == 200) {
             let data = res.data;
-            console.log(data)
+            console.log(data);
             let List2 = [];
             List2 = data.data;
-            console.log(List2)
-            _this.passengerTypeDayEcharts.xAxis.data= [];
-            _this.passengerTypeDayEcharts.series[0].data= [];
-            _this.passengerTypeDayEcharts.series[1].data= [];
-            _this.passengerTypeDayEcharts.series[2].data= [];
+            console.log(List2);
+            _this.passengerTypeDayEcharts.xAxis.data = [];
+            _this.passengerTypeDayEcharts.series[0].data = [];
+            _this.passengerTypeDayEcharts.series[1].data = [];
+            _this.passengerTypeDayEcharts.series[2].data = [];
             for (let i = 0; i < List2.length; i++) {
               // let xAxisValue2  = _this.getMyDate(parseInt(List2[i]["date"]));
-              let xAxisValue2  = _this.getMyDate(parseInt(List2[i]["date"]));
-              let seriesVipcntData2  = List2[i].vipcnt;
-              let seriesPayCntData2  = List2[i].paycnt;
-              let seriesNopaycntData2  = List2[i].nopaycnt;
+              let xAxisValue2 = _this.getMyDate(parseInt(List2[i]["date"]));
+              let seriesVipcntData2 = List2[i].vipcnt;
+              let seriesPayCntData2 = List2[i].paycnt;
+              let seriesNopaycntData2 = List2[i].nopaycnt;
               _this.passengerTypeDayEcharts.xAxis.data.push(xAxisValue2);
-              _this.passengerTypeDayEcharts.series[0].data.push(seriesVipcntData2);
-              _this.passengerTypeDayEcharts.series[1].data.push(seriesPayCntData2);
-              _this.passengerTypeDayEcharts.series[2].data.push(seriesNopaycntData2);
+              _this.passengerTypeDayEcharts.series[0].data.push(
+                seriesVipcntData2
+              );
+              _this.passengerTypeDayEcharts.series[1].data.push(
+                seriesPayCntData2
+              );
+              _this.passengerTypeDayEcharts.series[2].data.push(
+                seriesNopaycntData2
+              );
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
@@ -1592,12 +1614,14 @@ export default {
         .catch(err => {
           _this.$message("请求出错，请稍后重试！");
         });
-      
-      let top_valueSex3 = '';
+
+      let top_valueSex3 = "";
       if (_this.top.valueSex == "ALL") {
         top_valueSex3 = "男','女";
+      }else {
+        top_valueSex3 = _this.top.valueSex;
       }
-      let top_valueMemtype3 = '';
+      let top_valueMemtype3 = "";
       if (_this.top.valueMemtype != "ALL") {
         top_valueMemtype3 = _this.top.valueMemtype;
       }
@@ -1618,24 +1642,35 @@ export default {
           console.log("时间客流返回成功");
           if (res.status == 200) {
             let data = res.data;
-            console.log(data)
+            console.log(data);
             let List3 = [];
             List3 = data.data;
-            console.log(List3)
-            _this.passengerTypeHourEcharts.xAxis.data= [];
-            _this.passengerTypeHourEcharts.series[0].data= [];
-            _this.passengerTypeHourEcharts.series[1].data= [];
-            _this.passengerTypeHourEcharts.series[2].data= [];
+            console.log(List3);
+            _this.passengerTypeHourEcharts.xAxis.data = [];
+            _this.passengerTypeHourEcharts.series[0].data = [];
+            _this.passengerTypeHourEcharts.series[1].data = [];
+            _this.passengerTypeHourEcharts.series[2].data = [];
             for (let i = 0; i < List3.length; i++) {
-              let xAxisValue3  = List3[i].hour+'时';
-              let seriesVipcntData3  = List3[i].vipcnt;
-              let seriesPayCntData3  = List3[i].paycnt;
-              let seriesNopaycntData3  = List3[i].nopaycnt;
-              console.log('===='+xAxisValue3,seriesVipcntData3,seriesPayCntData3,seriesNopaycntData3)
+              let xAxisValue3 = List3[i].hour + "时";
+              let seriesVipcntData3 = List3[i].vipcnt;
+              let seriesPayCntData3 = List3[i].paycnt;
+              let seriesNopaycntData3 = List3[i].nopaycnt;
+              console.log(
+                "====" + xAxisValue3,
+                seriesVipcntData3,
+                seriesPayCntData3,
+                seriesNopaycntData3
+              );
               _this.passengerTypeHourEcharts.xAxis.data.push(xAxisValue3);
-              _this.passengerTypeHourEcharts.series[0].data.push(seriesVipcntData3);
-              _this.passengerTypeHourEcharts.series[1].data.push(seriesPayCntData3);
-              _this.passengerTypeHourEcharts.series[2].data.push(seriesNopaycntData3);
+              _this.passengerTypeHourEcharts.series[0].data.push(
+                seriesVipcntData3
+              );
+              _this.passengerTypeHourEcharts.series[1].data.push(
+                seriesPayCntData3
+              );
+              _this.passengerTypeHourEcharts.series[2].data.push(
+                seriesNopaycntData3
+              );
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
@@ -1646,11 +1681,28 @@ export default {
           _this.$message("请求出错，请稍后重试！");
         });
 
-      
-      
+
+      let top_valueSex4 = "";
+      if (_this.top.valueSex != "ALL") {
+        top_valueSex4 = _this.top.valueSex;
+      }
+      let top_valueMemtype4 = "";
+      if (_this.top.valueMemtype != "ALL") {
+        top_valueMemtype4 = _this.top.valueMemtype;
+      }
+      let json4 = {
+        sid: storeCode,
+        sex: top_valueSex4,
+        sa: _this.top.age.startAge,
+        ea: _this.top.age.endAge,
+        memtype: top_valueMemtype4,
+        st: timeStart,
+        et: timeEnd
+      };
+      let formdata4 = _this.$config.formData(json4);
       // 客流报表->年龄组统计
       _this.$axios
-        .post(_this.$url.flow_byAgeCnt, formdata)
+        .post(_this.$url.flow_byAgeCnt, formdata4)
         .then(res => {
           if (res.status == 200) {
             let data = res.data;
@@ -1659,29 +1711,27 @@ export default {
             let List4 = [];
             List4 = data.data;
             console.log(List4);
-            _this.ageEcharts.xAxis[0].data= [];
-            _this.ageEcharts.series[0].data= [];
+            _this.ageEcharts.xAxis[0].data = [];
+            _this.ageEcharts.series[0].data = [];
             for (let i = 0; i < List4.length; i++) {
-              let xAxisValue4  = List4[i].age_groups;
-              let seriesCntData4  = List4[i].cnt;
+              let xAxisValue4 = List4[i].age_groups;
+              let seriesCntData4 = List4[i].cnt;
               _this.ageEcharts.xAxis[0].data.push(xAxisValue4);
               _this.ageEcharts.series[0].data.push(seriesCntData4);
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
             });
-            
           }
         })
         .catch(err => {
           _this.$message("请求出错，请稍后重试！");
         });
       // _this.byAgeCnt();
-      
-      
+
       // 客流报表->月份组统计
       _this.$axios
-        .post(_this.$url.flow_byMonthCnt, formdata)
+        .post(_this.$url.flow_byMonthCnt, formdata4)
         .then(res => {
           console.log("月份返回成功");
           if (res.status == 200) {
@@ -1691,11 +1741,11 @@ export default {
             let List5 = [];
             List5 = data.data;
             console.log(List5);
-            _this.mouthCountEcharts.xAxis[0].data= [];
-            _this.mouthCountEcharts.series[0].data= [];
+            _this.mouthCountEcharts.xAxis[0].data = [];
+            _this.mouthCountEcharts.series[0].data = [];
             for (let i = 0; i < List5.length; i++) {
-              let xAxisValue5  = List5[i].month;
-              let seriesCntData5  = List5[i].cnt;
+              let xAxisValue5 = List5[i].month;
+              let seriesCntData5 = List5[i].cnt;
               _this.mouthCountEcharts.xAxis[0].data.push(xAxisValue5);
               _this.mouthCountEcharts.series[0].data.push(seriesCntData5);
             }
@@ -1708,41 +1758,37 @@ export default {
           _this.$message("请求出错，请稍后重试！");
         });
 
-      
-      
-      
       // 客流报表->会员类型统计
       _this.$axios
-        .post(_this.$url.flow_byMemtypeCnt, formdata)
+        .post(_this.$url.flow_byMemtypeCnt, formdata4)
         .then(res => {
           console.log("会员类型返回成功");
           if (res.status == 200) {
-           let data = res.data;
+            let data = res.data;
             console.log(res);
             // _this.passengerCountEcharts.series.data = data.start;
             let List6 = [];
             List6 = data.data;
             console.log(List6);
-            _this.typeEcharts.legend.data= [];
-            _this.typeEcharts.series[0].data= [];
-            _this.typeEcharts.series[1].data= [];
+            _this.typeEcharts.legend.data = [];
+            _this.typeEcharts.series[0].data = [];
+            _this.typeEcharts.series[1].data = [];
             for (let i = 0; i < List6.length; i++) {
               // // let legend6  = List6[i].memtype;
               // let seriesvalueData6  = List6[i].cnt;
-              let seriesnameData6  = List6[i].memtype;
+              let seriesnameData6 = List6[i].memtype;
               let typeEcharts_series_data = {
                 value: List6[i].cnt,
-                name : List6[i].memtype
+                name: List6[i].memtype
               };
               _this.typeEcharts.legend.data.push(seriesnameData6);
               _this.typeEcharts.series[0].data.push(typeEcharts_series_data);
               _this.typeEcharts.series[1].data.push(typeEcharts_series_data);
-
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
             });
-            console.log(_this.typeEcharts.series[0].data)
+            console.log(_this.typeEcharts.series[0].data);
             // console.log(_this.typeEcharts.series[0].data[i].name)
           }
         })
@@ -1750,12 +1796,9 @@ export default {
           _this.$message("请求出错，请稍后重试！");
         });
 
-      
-      
-      
       // 客流报表->会员性格统计
       _this.$axios
-        .post(_this.$url.flow_byTraitCnt, formdata)
+        .post(_this.$url.flow_byTraitCnt, formdata4)
         .then(res => {
           console.log("性格返回成功");
           if (res.status == 200) {
@@ -1764,21 +1807,20 @@ export default {
             let List7 = [];
             List7 = data.data;
             console.log(List7);
-            _this.traitEcharts.legend.data= [];
-            _this.traitEcharts.series[0].data= [];
-            _this.traitEcharts.series[1].data= [];
+            _this.traitEcharts.legend.data = [];
+            _this.traitEcharts.series[0].data = [];
+            _this.traitEcharts.series[1].data = [];
             for (let i = 0; i < List7.length; i++) {
               // // let legend6  = List6[i].memtype;
               // let seriesvalueData6  = List6[i].cnt;
-              let seriesnameData7  = List7[i].sex;
+              let seriesnameData7 = List7[i].tag_feelCosume;
               let traitEcharts_series_data = {
                 value: List7[i].cnt,
-                name : List7[i].sex
+                name: List7[i].tag_feelCosume
               };
               _this.traitEcharts.legend.data.push(seriesnameData7);
               _this.traitEcharts.series[0].data.push(traitEcharts_series_data);
               _this.traitEcharts.series[1].data.push(traitEcharts_series_data);
-
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
@@ -1789,12 +1831,9 @@ export default {
           _this.$message("请求出错，请稍后重试！");
         });
 
-      
-      
-      
       // 客流报表->会员性别统计
       _this.$axios
-        .post(_this.$url.flow_bySexCnt, formdata)
+        .post(_this.$url.flow_bySexCnt, formdata4)
         .then(res => {
           console.log("性别返回成功");
           if (res.status == 200) {
@@ -1809,15 +1848,14 @@ export default {
             for (let i = 0; i < List8.length; i++) {
               // // let legend6  = List6[i].memtype;
               // let seriesvalueData6  = List6[i].cnt;
-              let seriesnameData8  = List8[i].sex;
+              let seriesnameData8 = List8[i].sex;
               let sexEcharts_series_data = {
                 value: List8[i].cnt,
-                name : List8[i].sex
+                name: List8[i].sex
               };
               _this.sexEcharts.legend.data.push(seriesnameData8);
               _this.sexEcharts.series[0].data.push(sexEcharts_series_data);
               _this.sexEcharts.series[1].data.push(sexEcharts_series_data);
-
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
@@ -1827,58 +1865,59 @@ export default {
         .catch(err => {
           _this.$message("请求出错，请稍后重试！");
         });
-        
     },
-    
-      
 
-    drawEcharts () {
+    drawEcharts() {
       let _this = this;
       _this.myChart1 = _this.$echarts.init(
-      document.getElementById("passengerCountEcharts")
-    );
-    _this.myChart1.setOption(_this.passengerCountEcharts);
+        document.getElementById("passengerCountEcharts")
+      );
+      _this.myChart1.setOption(_this.passengerCountEcharts);
 
-    _this.myChart2 = _this.$echarts.init(
-      document.getElementById("passengerTypeDayEcharts")
-    );
-    _this.myChart2.setOption(_this.passengerTypeDayEcharts);
+      _this.myChart2 = _this.$echarts.init(
+        document.getElementById("passengerTypeDayEcharts")
+      );
+      _this.myChart2.setOption(_this.passengerTypeDayEcharts);
 
-    _this.myChart3 = _this.$echarts.init(
-      document.getElementById("passengerTypeHourEcharts")
-    );
-    _this.myChart3.setOption(_this.passengerTypeHourEcharts);
+      _this.myChart3 = _this.$echarts.init(
+        document.getElementById("passengerTypeHourEcharts")
+      );
+      _this.myChart3.setOption(_this.passengerTypeHourEcharts);
 
-    _this.myChart4 = _this.$echarts.init(document.getElementById("ageEcharts"));
-    _this.myChart4.setOption(_this.ageEcharts);
+      _this.myChart4 = _this.$echarts.init(
+        document.getElementById("ageEcharts")
+      );
+      _this.myChart4.setOption(_this.ageEcharts);
 
-    _this.myChart5 = _this.$echarts.init(
-      document.getElementById("mouthCountEcharts")
-    );
-    _this.myChart5.setOption(_this.mouthCountEcharts);
+      _this.myChart5 = _this.$echarts.init(
+        document.getElementById("mouthCountEcharts")
+      );
+      _this.myChart5.setOption(_this.mouthCountEcharts);
 
-    _this.myChart6 = _this.$echarts.init(
-      document.getElementById("typeEcharts")
-    );
-    _this.myChart6.setOption(_this.typeEcharts);
+      _this.myChart6 = _this.$echarts.init(
+        document.getElementById("typeEcharts")
+      );
+      _this.myChart6.setOption(_this.typeEcharts);
 
-    _this.myChart7 = _this.$echarts.init(document.getElementById("sexEcharts"));
-    _this.myChart7.setOption(_this.sexEcharts);
+      _this.myChart7 = _this.$echarts.init(
+        document.getElementById("sexEcharts")
+      );
+      _this.myChart7.setOption(_this.sexEcharts);
 
-    _this.myChart8 = _this.$echarts.init(
-      document.getElementById("traitEcharts")
-    );
-    _this.myChart8.setOption(_this.traitEcharts);
+      _this.myChart8 = _this.$echarts.init(
+        document.getElementById("traitEcharts")
+      );
+      _this.myChart8.setOption(_this.traitEcharts);
 
-    window.addEventListener("resize", () => {
-      _this.myChart1.resize();
-      _this.myChart2.resize();
-      _this.myChart3.resize();
-      _this.myChart4.resize();
-      _this.myChart6.resize();
-      _this.myChart7.resize();
-      _this.myChart8.resize();
-    });
+      window.addEventListener("resize", () => {
+        _this.myChart1.resize();
+        _this.myChart2.resize();
+        _this.myChart3.resize();
+        _this.myChart4.resize();
+        _this.myChart6.resize();
+        _this.myChart7.resize();
+        _this.myChart8.resize();
+      });
     }
   }
 };
