@@ -33,7 +33,7 @@
                     <el-radio label="ALL">全部</el-radio>
                     <el-radio label="VIP顾客">VIP</el-radio>
                     <el-radio label="消费顾客">消费顾客</el-radio>
-                    <el-radio label="未消费顾客">未消费顾客</el-radio>
+                    <el-radio label="非消费顾客">未消费顾客</el-radio>
                 </el-radio-group>
             </div>
             <div class="top_content inline_block age">
@@ -501,7 +501,7 @@ export default {
               type: "png",
               lang: ["点击本地保存"],
               backgroundColor: "#313856",
-              name: "总客流量与支付客流量对比图"
+              name: "按日期统计顾客类型客流对比图"
             }
           }
         },
@@ -639,7 +639,7 @@ export default {
             fontSize: 12,
             color: "#fff"
           },
-          data: ["VIP顾客", "消费顾客", "非消费顾客"]
+          data: []
         },
         toolbox: {
           show: true,
@@ -714,7 +714,7 @@ export default {
               type: "png",
               lang: ["点击本地保存"],
               backgroundColor: "#313856",
-              name: "总客流量与支付客流量对比图"
+              name: "按时间统计顾客类型客流对比图"
             }
           }
         },
@@ -897,36 +897,6 @@ export default {
               }
             },
             data: []
-            // data: [
-            //   20,
-            //   52,
-            //   18,
-            //   55,
-            //   46,
-            //   35,
-            //   29,
-            //   50,
-            //   32,
-            //   38,
-            //   52,
-            //   18,
-            //   55,
-            //   46,
-            //   20,
-            //   52,
-            //   18,
-            //   55,
-            //   46,
-            //   35,
-            //   29,
-            //   50,
-            //   32,
-            //   38,
-            //   52,
-            //   18,
-            //   55,
-            //   46
-            // ]
           }
         ]
       },
@@ -1035,7 +1005,7 @@ export default {
 
       // 详情部分 bottom 部分 类型图表 start
       typeEcharts: {
-        color: ["#4b77e5", "#f1bd2a", "#d780f0"],
+        color: ["#f1bd2a",  "#d780f0", "#4b77e5"],
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b}: {c} ({d}%)",
@@ -1376,8 +1346,8 @@ export default {
             },
             labelLine: {
               normal: {
-                length: 35,
-                length2: 60
+                length: 30,
+                length2: 50
                 // lineStyle: {
                 //     color: '#333'
                 // }
@@ -1458,7 +1428,58 @@ export default {
       }
       return num;
     },
+    drawEcharts() {
+      let _this = this;
+      _this.myChart1 = _this.$echarts.init(
+        document.getElementById("passengerCountEcharts")
+      );
+      _this.myChart1.setOption(_this.passengerCountEcharts);
 
+      _this.myChart2 = _this.$echarts.init(
+        document.getElementById("passengerTypeDayEcharts")
+      );
+      _this.myChart2.setOption(_this.passengerTypeDayEcharts);
+
+      _this.myChart3 = _this.$echarts.init(
+        document.getElementById("passengerTypeHourEcharts")
+      );
+      _this.myChart3.setOption(_this.passengerTypeHourEcharts);
+
+      _this.myChart4 = _this.$echarts.init(
+        document.getElementById("ageEcharts")
+      );
+      _this.myChart4.setOption(_this.ageEcharts);
+
+      _this.myChart5 = _this.$echarts.init(
+        document.getElementById("mouthCountEcharts")
+      );
+      _this.myChart5.setOption(_this.mouthCountEcharts);
+
+      _this.myChart6 = _this.$echarts.init(
+        document.getElementById("typeEcharts")
+      );
+      _this.myChart6.setOption(_this.typeEcharts);
+
+      _this.myChart7 = _this.$echarts.init(
+        document.getElementById("sexEcharts")
+      );
+      _this.myChart7.setOption(_this.sexEcharts);
+
+      _this.myChart8 = _this.$echarts.init(
+        document.getElementById("traitEcharts")
+      );
+      _this.myChart8.setOption(_this.traitEcharts);
+
+      window.addEventListener("resize", () => {
+        _this.myChart1.resize();
+        _this.myChart2.resize();
+        _this.myChart3.resize();
+        _this.myChart4.resize();
+        _this.myChart6.resize();
+        _this.myChart7.resize();
+        _this.myChart8.resize();
+      });
+    },  
     /**
      *  获取客流分析数据
      *   */
@@ -1480,9 +1501,7 @@ export default {
       }
       console.log(timeStart, timeEnd);
       let top_valueSex = "";
-      if (_this.top.valueSex == "ALL") {
-        top_valueSex = "男','女";
-      }else {
+      if (_this.top.valueSex != "ALL") {
         top_valueSex = _this.top.valueSex;
       }
       let top_valueMemtype = "";
@@ -1516,7 +1535,7 @@ export default {
 
       // 客流报表->总客流+支付客流+支付率
       _this.$axios
-        .post(_this.$url.exec_flowAllPay, formdata)
+        .post(_this.$url.flow_flowAllPay, formdata)
         .then(res => {
           console.log("总客流量返回成功");
           if (res.status == 200) {
@@ -1596,15 +1615,24 @@ export default {
               let seriesPayCntData2 = List2[i].paycnt;
               let seriesNopaycntData2 = List2[i].nopaycnt;
               _this.passengerTypeDayEcharts.xAxis.data.push(xAxisValue2);
-              _this.passengerTypeDayEcharts.series[0].data.push(
-                seriesVipcntData2
-              );
-              _this.passengerTypeDayEcharts.series[1].data.push(
-                seriesPayCntData2
-              );
-              _this.passengerTypeDayEcharts.series[2].data.push(
-                seriesNopaycntData2
-              );
+
+              if (_this.top.valueMemtype == 'ALL'){
+                  _this.passengerTypeDayEcharts.series[0].data.push(seriesVipcntData2);
+                  _this.passengerTypeDayEcharts.series[1].data.push(seriesPayCntData2);
+                  _this.passengerTypeDayEcharts.series[2].data.push(seriesNopaycntData2);
+                  _this.passengerTypeDayEcharts.legend.data=["VIP顾客", "消费顾客", "非消费顾客"]
+              }else if(_this.top.valueMemtype == 'VIP顾客'){
+                  _this.passengerTypeDayEcharts.series[0].data.push(seriesVipcntData2);
+                  _this.passengerTypeDayEcharts.legend.data=["VIP顾客"]
+              }else if(_this.top.valueMemtype == '消费顾客'){
+                  _this.passengerTypeDayEcharts.series[1].data.push(seriesPayCntData2);
+                  _this.passengerTypeDayEcharts.legend.data=["消费顾客"]
+              }else if(_this.top.valueMemtype == '非消费顾客'){
+                  _this.passengerTypeDayEcharts.series[2].data.push(seriesNopaycntData2);
+                  _this.passengerTypeDayEcharts.legend.data=["非消费顾客"]
+              }
+
+              
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
@@ -1662,15 +1690,22 @@ export default {
                 seriesNopaycntData3
               );
               _this.passengerTypeHourEcharts.xAxis.data.push(xAxisValue3);
-              _this.passengerTypeHourEcharts.series[0].data.push(
-                seriesVipcntData3
-              );
-              _this.passengerTypeHourEcharts.series[1].data.push(
-                seriesPayCntData3
-              );
-              _this.passengerTypeHourEcharts.series[2].data.push(
-                seriesNopaycntData3
-              );
+              if (_this.top.valueMemtype == 'ALL'){
+                  _this.passengerTypeHourEcharts.series[0].data.push(seriesVipcntData3);
+                  _this.passengerTypeHourEcharts.series[1].data.push(seriesPayCntData3);
+                  _this.passengerTypeHourEcharts.series[2].data.push(seriesNopaycntData3);
+                  _this.passengerTypeHourEcharts.legend.data=["VIP顾客", "消费顾客", "非消费顾客"]
+              }else if(_this.top.valueMemtype == 'VIP顾客'){
+                  _this.passengerTypeHourEcharts.series[0].data.push(seriesVipcntData3);
+                  _this.passengerTypeHourEcharts.legend.data=["VIP顾客"]
+              }else if(_this.top.valueMemtype == '消费顾客'){
+                  _this.passengerTypeHourEcharts.series[1].data.push(seriesPayCntData3);
+                  _this.passengerTypeHourEcharts.legend.data=["消费顾客"]
+              }else if(_this.top.valueMemtype == '非消费顾客'){
+                  _this.passengerTypeHourEcharts.series[2].data.push(seriesNopaycntData3);
+                  _this.passengerTypeHourEcharts.legend.data=["非消费顾客"]
+              }
+              
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
@@ -1813,14 +1848,18 @@ export default {
             for (let i = 0; i < List7.length; i++) {
               // // let legend6  = List6[i].memtype;
               // let seriesvalueData6  = List6[i].cnt;
-              let seriesnameData7 = List7[i].tag_feelCosume;
-              let traitEcharts_series_data = {
-                value: List7[i].cnt,
-                name: List7[i].tag_feelCosume
-              };
+              console.log(!(List7[i].tag_feelCosume === null));
+              if(!(List7[i].tag_feelCosume === null)) {
+                let seriesnameData7 = List7[i].tag_feelCosume;
+                let traitEcharts_series_data = {
+                  value: List7[i].cnt,
+                  name: List7[i].tag_feelCosume
+                };
               _this.traitEcharts.legend.data.push(seriesnameData7);
               _this.traitEcharts.series[0].data.push(traitEcharts_series_data);
               _this.traitEcharts.series[1].data.push(traitEcharts_series_data);
+              }
+              
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
@@ -1828,6 +1867,7 @@ export default {
           }
         })
         .catch(err => {
+          console.log(err);
           _this.$message("请求出错，请稍后重试！");
         });
 
@@ -1866,59 +1906,6 @@ export default {
           _this.$message("请求出错，请稍后重试！");
         });
     },
-
-    drawEcharts() {
-      let _this = this;
-      _this.myChart1 = _this.$echarts.init(
-        document.getElementById("passengerCountEcharts")
-      );
-      _this.myChart1.setOption(_this.passengerCountEcharts);
-
-      _this.myChart2 = _this.$echarts.init(
-        document.getElementById("passengerTypeDayEcharts")
-      );
-      _this.myChart2.setOption(_this.passengerTypeDayEcharts);
-
-      _this.myChart3 = _this.$echarts.init(
-        document.getElementById("passengerTypeHourEcharts")
-      );
-      _this.myChart3.setOption(_this.passengerTypeHourEcharts);
-
-      _this.myChart4 = _this.$echarts.init(
-        document.getElementById("ageEcharts")
-      );
-      _this.myChart4.setOption(_this.ageEcharts);
-
-      _this.myChart5 = _this.$echarts.init(
-        document.getElementById("mouthCountEcharts")
-      );
-      _this.myChart5.setOption(_this.mouthCountEcharts);
-
-      _this.myChart6 = _this.$echarts.init(
-        document.getElementById("typeEcharts")
-      );
-      _this.myChart6.setOption(_this.typeEcharts);
-
-      _this.myChart7 = _this.$echarts.init(
-        document.getElementById("sexEcharts")
-      );
-      _this.myChart7.setOption(_this.sexEcharts);
-
-      _this.myChart8 = _this.$echarts.init(
-        document.getElementById("traitEcharts")
-      );
-      _this.myChart8.setOption(_this.traitEcharts);
-
-      window.addEventListener("resize", () => {
-        _this.myChart1.resize();
-        _this.myChart2.resize();
-        _this.myChart3.resize();
-        _this.myChart4.resize();
-        _this.myChart6.resize();
-        _this.myChart7.resize();
-        _this.myChart8.resize();
-      });
-    }
   }
 };
 </script>
@@ -2102,9 +2089,16 @@ export default {
   margin-top: 21px;
   margin-bottom: 42px;
 }
+.passenger_bottom {
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-around;
+  flex-wrap: wrap;
+}
 .passenger_bottom_content {
   display: inline-block;
-  margin: 0 40px;
+  /* margin: 0 40px; */
 }
 .passenger_bottom_content_name {
   margin: 0 0 22px 14px;

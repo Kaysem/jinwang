@@ -92,7 +92,7 @@ export default {
     "getStoreByRole" : baseUrl + '/getStoreByRole', //门店概览列表2  role_rank != 0
 
     //门店信息->客流报表
-    "exec_flowAllPay" : baseUrl5 + '/exec/flowAllPay', // 客流报表->总客流+支付客流+支付率
+    "flow_flowAllPay" : baseUrl5 + '/flow/flowAllPay', // 客流报表->总客流+支付客流+支付率
     "exec_flowTrendDate" : baseUrl5 + '/exec/flowTrendDate', // 客流报表->客流日期趋势
     "exec_flowTrendTime" : baseUrl5 + '/exec/flowTrendTime', // 客流报表->客流时间趋势
     "flow_byAgeCnt" : baseUrl5 + '/flow/byAgeCnt', // 客流报表->年龄组统计
