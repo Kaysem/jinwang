@@ -236,8 +236,8 @@ export default {
       center: {
         cnt: "", //正在监控的订单
         amt: [], //今日销售总额
-        profit: [], //利润  作废
-        profit_rate: [], //利润率  作废
+        // profit: [], //利润  作废
+        // profit_rate: [], //利润率  作废
         amt_rate: "", // 昨日同比
         perSale: "", //客单价
         echartsData: [],
@@ -698,22 +698,22 @@ export default {
             _this.center.amt = _this
               .RetainedDecimalPlaces(data.amt, 0)
               .split("");
-            _this.center.profit = _this
-              .RetainedDecimalPlaces(data.profit, 0)
-              .split("");
-            _this.center.profit_rate = data.profit_rate.toString().split("");
+            // _this.center.profit = _this
+            //   .RetainedDecimalPlaces(data.profit, 0)
+            //   .split("");
+            // _this.center.profit_rate = data.profit_rate.toString().split("");
           } else {
             _this.center.cnt = "";
             _this.center.amt = [];
-            _this.center.profit = [];
-            _this.center.profit_rate = [];
+            // _this.center.profit = [];
+            // _this.center.profit_rate = [];
           }
         })
         .catch(() => {
           _this.center.cnt = "";
           _this.center.amt = [];
-          _this.center.profit = [];
-          _this.center.profit_rate = [];
+          // _this.center.profit = [];
+          // _this.center.profit_rate = [];
         });
       _this.$axios
         .post(_this.$url.seeMemCount, formdata)
@@ -783,7 +783,7 @@ export default {
         .post(_this.$url.getAllYibiaoPan, formdata1)
         .then(res => {
           if (res.status == 200) {
-            let data = res.data;
+            let data = res.data.data;
             _this.center.amt_rate = _this
               .RetainedDecimalPlaces(data[0]["amt_rate"], 0)
               .split("");

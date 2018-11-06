@@ -64,7 +64,6 @@
                 //     "address": "北京市朝阳区朝外大街16号楼1层",
                 //     "tel": "010-3948764"
                 // },
-               
             ],
             menuList:[],
             menuoperate: [], //页面操作
@@ -126,6 +125,7 @@
             _this.menuoperate.forEach(function(v,i,arr){
                 if( v == 7 ){
                     //可以点击
+                    console.log(item.storeCode,item.vendorId);
                     _this.$router.push({ name: 'Passenger',params:{storeCode:item.storeCode}});
                     let obj = item.storeCode;
                     sessionStorage.removeItem("shoplistInfo");

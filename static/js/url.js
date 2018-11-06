@@ -21,9 +21,11 @@
 // // 本地 end
 
 // 金王  改接口
-const baseUrl = 'http://jinwang2.umessage.com.cn/api/ckdxh';  //  //本地部署
+// const baseUrl = 'http://jinwang2.umessage.com.cn/api/ckdxh';  //  //本地部署
 const baseUrl2 = 'http://jinwang1.umessage.com.cn/master'; //本 //本地部署  //权限和其他俩各不同
-const baseUrl3 =  'http://jinwang3.umessage.com.cn/api/exec';  //  //本地部署
+// const baseUrl3 =  'http://jinwang3.umessage.com.cn/api/exec';  //  //本地部署
+const baseUrl = 'http://face.umessage.com.cn/api/ckdxh';  //  //本地部署
+const baseUrl3 =  'http://face.umessage.com.cn/api/exec';  //  //本地部署
 
 // 金王
 // const baseUrl4 = '= 'http://face.umessage.com.cn';  ';  //贺月杰 线上

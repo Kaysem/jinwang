@@ -148,7 +148,7 @@ export default {
             fontSize: 12,
             color: "#fff"
           },
-          data: ["总客流量", "支付客流量", "支付率"]
+          data: []
         },
         toolbox: {
           show: true,
@@ -969,36 +969,6 @@ export default {
               }
             },
             data: []
-            // data: [
-            //   20,
-            //   52,
-            //   18,
-            //   55,
-            //   46,
-            //   35,
-            //   29,
-            //   50,
-            //   32,
-            //   38,
-            //   52,
-            //   18,
-            //   55,
-            //   46,
-            //   20,
-            //   52,
-            //   18,
-            //   55,
-            //   46,
-            //   35,
-            //   29,
-            //   50,
-            //   32,
-            //   38,
-            //   52,
-            //   18,
-            //   55,
-            //   46
-            // ]
           }
         ]
       },
@@ -1490,13 +1460,28 @@ export default {
       let timeStart = "";
       let timeEnd = "";
       if (_this.top.valueTimeS == "threeMouth") {
-        timeStart = _this.getMyDate((timestamp / 1000 - 7776000) * 1000);
+        if (Date.parse(new Date((timestamp / 1000 - 7776000) * 1000)) > Date.parse(new Date("2018-10-01 00:00:00"))){
+          timeStart = _this.getMyDate((timestamp / 1000 - 7776000) * 1000);
+        }else {
+          timeStart = '2018-10-01'
+        }
+        // timeStart = _this.getMyDate((timestamp / 1000 - 7776000) * 1000);
         timeEnd = _this.getMyDate(timestamp);
       } else if (_this.top.valueTimeS == "sixMouth") {
-        timeStart = _this.getMyDate((timestamp / 1000 - 15552000) * 1000);
+        if (Date.parse(new Date((timestamp / 1000 - 15552000) * 1000)) > Date.parse(new Date("2018-10-01 00:00:00"))){
+          timeStart = _this.getMyDate((timestamp / 1000 - 15552000) * 1000);
+        }else {
+          timeStart = '2018-10-01'
+        }
+        // timeStart = _this.getMyDate((timestamp / 1000 - 15552000) * 1000);
         timeEnd = _this.getMyDate(timestamp);
       } else {
-        timeStart = _this.top.valueTime[0].substr(0,10);
+        if (Date.parse(new Date(_this.top.valueTime[0])) > Date.parse(new Date("2018-10-01 00:00:00"))){
+          timeStart = _this.top.valueTime[0].substr(0,10);
+        }else {
+          timeStart = '2018-10-01'
+        }
+        
         timeEnd = _this.top.valueTime[1].substr(0,10);
       }
       console.log(timeStart, timeEnd);
@@ -1524,15 +1509,7 @@ export default {
         et: timeEnd
       };
       let formdata = _this.$config.formData(json);
-      // dayHour[
-      //   {
-      //     day:"2018-10-04",
-      //     firstHour: 10,
-      //     hourArr:[10:11:41, 12:11:41, 16:11:41],
-      //     时间差值: 3
-      //   }
-      // ]
-
+      
       // 客流报表->总客流+支付客流+支付率
       _this.$axios
         .post(_this.$url.flow_flowAllPay, formdata)
@@ -1555,15 +1532,15 @@ export default {
               let seriesPayCntData1 = List1[i].payCnt;
               let seriesPayRateData1 = List1[i].payRate*100;
               _this.passengerCountEcharts.xAxis.data.push(xAxisValue1);
-              _this.passengerCountEcharts.series[0].data.push(
-                seriesFlowCntData1
-              );
-              _this.passengerCountEcharts.series[1].data.push(
-                seriesPayCntData1
-              );
-              _this.passengerCountEcharts.series[2].data.push(
-                seriesPayRateData1
-              );
+              _this.passengerCountEcharts.series[0].data.push(seriesFlowCntData1);
+              if(_this.top.valueSex == "ALL" && _this.top.valueMemtype == "ALL" && _this.top.age.startAge=="1"&& _this.top.age.endAge=="99"){
+                _this.passengerCountEcharts.series[1].data.push(seriesPayCntData1);
+                _this.passengerCountEcharts.series[2].data.push(seriesPayRateData1);
+                _this.passengerCountEcharts.legend.data = ["总客流量", "支付客流量", "支付率"]
+              }else {
+                _this.passengerCountEcharts.legend.data = ["总客流量"]
+              }
+              
             }
             _this.$nextTick(() => {
               _this.drawEcharts();
@@ -1571,6 +1548,7 @@ export default {
           }
         })
         .catch(err => {
+          console.log("总客流==",err)
           _this.$message("请求出错，请稍后重试！");
         });
       let top_valueSex2 = "";
@@ -1832,8 +1810,28 @@ export default {
         });
 
       // 客流报表->会员性格统计
+      let top_valueSex7 = "";
+      if (_this.top.valueSex != "ALL") {
+        top_valueSex7 = _this.top.valueSex;
+      }
+      let top_valueMemtype7 = "";
+      if (_this.top.valueMemtype != "ALL") {
+        top_valueMemtype7 = _this.top.valueMemtype;
+      }
+      let vendorId = JSON.parse(sessionStorage.getItem("userinfo")).store_root_id;
+      console.log(vendorId)
+      let json7 = {
+        vid: vendorId,
+        sex: top_valueSex7,
+        sa: _this.top.age.startAge,
+        ea: _this.top.age.endAge,
+        memtype: top_valueMemtype7,
+        st: timeStart,
+        et: timeEnd
+      };
+      let formdata7 = _this.$config.formData(json7);
       _this.$axios
-        .post(_this.$url.flow_byTraitCnt, formdata4)
+        .post(_this.$url.flow_byTraitCnt, formdata7)
         .then(res => {
           console.log("性格返回成功");
           if (res.status == 200) {
