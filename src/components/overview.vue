@@ -666,6 +666,7 @@ export default {
             _this.left_top.echartsData = data;
             _this.Left_Top(_this.left_top.echartsData);
           } else {
+            _this.$message.success("    暂无信息 ， 请及时接入相关数据 ! ");
             _this.left_top.echartsData = [];
             _this.Left_Top(_this.left_top.echartsData);
           }

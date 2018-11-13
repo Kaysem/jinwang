@@ -112,7 +112,7 @@
         </div>
         <div class="b_btm" v-else>
             <ul class="add_store clearfix">
-                <li class="active" @click.stop="ClickAddStore( $event  )">青岛一店</li>
+                <li class="active" @click.stop="ClickAddStore( $event  )" >{{this.top.storTab}}</li>
                 <!-- <li @click.stop="ClickAddStore( $event  )">二分店</li> -->
                 <!-- <li v-for=" ( item , index ) in btm.times.list" :class=" index === 0 ? 'active': '' " @click.stop="ClickAddStore( $event  )">
                     {{item.name}}
@@ -233,7 +233,7 @@
                     <p>小主,每次仅可勾选一张照片添加至黑名单哦!</p>
                 </div> 
             </div>
-            <div v-else-if ="tip.state === 'del' " >
+            <div v-else-if ="tip.state === 'del' " class="dialog_content_center">
                 <div class="dialog_content dialog_del_pic">
                     您即将删除照片，删除的照片不可恢复，谢谢！
                 </div>
@@ -297,7 +297,8 @@ export default {
         },
 
         // 门店下拉选择框 end
-        kind: "按时间" //位置按时不需要
+        kind: "按时间", //位置按时不需要
+        storTab: "全部门店"
       },
       page: {
         total: 0, //总条数
@@ -667,6 +668,16 @@ export default {
      */
     usercomein_list(p = 1) {
       let _this = this;
+
+      // 更改门店tab信息
+      console.log("所有选项",_this.top.storeOptions)
+      for (let i=0;i<_this.top.storeOptions.length;i++){
+        if(_this.top.searChstore == _this.top.storeOptions[i].value) {
+          _this.top.storTab = _this.top.storeOptions[i].label;
+        }
+      }
+      // 更改门店tab信息 end
+      
       let timestamp = new Date().getTime(); //当前时间
       let timeStart = "";
       let timeEnd = "";
@@ -761,7 +772,7 @@ export default {
         let flag = false;
         for (let i = 0; i < _this.btm.times.listContent.length; i++) {
           if (_this.btm.times.listContent[i]["checked"] === true) {
-            console.log(_this.btm.times.listContent[i].repoName);
+            console.log("====",_this.btm.times.listContent[i].repoName);
             flag = true;
             checked_sum = checked_sum + 1;
             // 获取到已被选中的照片 客户人员类型
@@ -851,15 +862,14 @@ export default {
           if (res.status == 200) {
             _this.$message.success("添加成功！");
             _this.tip.dialogVisible = false;
+            // _this.$nextTick(() => {
+              _this.usercomein_list();
+            // });
           } else {
             _this.$message.error("添加失败, 请稍后重试！");
             _this.tip.dialogVisible = false;
           }
-          // 添加 强制使弹框隐藏
-          // clearTimeout(setTimeout);
-          // let timeOut = setTimeout(() => {
-          //     _this.tip.dialogVisible = false
-          // }, 2000);
+          
           _this.tip.title = "";
           _this.state3 = "";
         })
@@ -1098,7 +1108,7 @@ export default {
 }
 .add_store > li {
   float: left;
-  width: 90px;
+  /* width: 90px; */
   color: #c5c5c5;
   padding: 5px 5px 10px 0px;
   margin-right: 10px;
@@ -1305,7 +1315,7 @@ inline_block {
   margin-right: 22px;
 }
 /* .el-dialog__body {
-        height: 200px;
+       padding: 15px 87px 1px;
     } */
 .el-dialog__body .el-input__inner {
   width: 310px;
@@ -1316,5 +1326,8 @@ inline_block {
 .add_pages .el-pagination {
   text-align: right;
   padding: 2px 0;
+}
+.el-dialog__body .dialog_content_center {
+  margin:0 0 0 70px;
 }
 </style>

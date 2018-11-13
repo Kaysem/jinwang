@@ -30,7 +30,7 @@ const baseUrl3 =  'http://face.umessage.com.cn/api/exec';  //  //本地部署
 // 金王
 // const baseUrl4 = '= 'http://face.umessage.com.cn';  ';  //贺月杰 线上
 const baseUrl6 = 'http://face.umessage.com.cn';    //贺月杰  本地测试 抓拍照片
-const baseUrl4 = 'http://jinwang4.umessage.com.cn/api/index'; // PHP后台 黑名单模块
+const baseUrl4 = 'http://face.umessage.com.cn/api/index'; // PHP后台 黑名单模块
 
 // 金王  开发接口 start 
 const baseUrl5 =  'http://face.umessage.com.cn/api';  //吴新  客流分析模块
@@ -196,9 +196,9 @@ export default {
     // 抓取照片-> 查询-浏览抓拍照片记录
     "usercomein_list" : baseUrl6 + '/api/usercomein/list', // 查询
     // 抓取照片-> 加入黑名单
-    "browse_blackAdd" : baseUrl6 + '/api/black/add', // 添加到黑名单
+    "browse_blackAdd" : baseUrl4 + '/add', // 添加到黑名单
     // 抓取照片-> 删除照片
-    "browse_del" : baseUrl6 + '/api/black/del', //删除照片
+    "browse_del" : baseUrl6 + '/api/usercomein/del', //删除照片
     // 门店列表数据->存本地
     "storeInfo_list" : baseUrl6 + '/api/storeInfo/list',
     

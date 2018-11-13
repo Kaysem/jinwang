@@ -114,7 +114,7 @@
                                           >
                                           <el-table-column
                                           label="最近出现时间"
-                                          prop="lastdate"
+                                          prop="lastDate"
                                           sortable
                                           >
                                           </el-table-column>
@@ -125,7 +125,7 @@
                                           </el-table-column>
                                           <el-table-column
                                           label="出现次数"
-                                          prop="comeCnt"
+                                          prop="times"
                                           sortable
                                           >
                                           </el-table-column>
@@ -505,6 +505,13 @@ export default {
     handleLook(index, row, e) {
       let _this = this;
       _this.bigShow = false;
+
+      // 先清空缓存
+      _this.black_analyseEcharts.xAxis.data=[];
+      _this.black_analyseEcharts.series[0].data=[];
+      _this.black_analyseEcharts.series[1].data=[];
+      hourArr=[];
+      
       //发送ajax请求获取 黑名单个人次数列表数据
       _this.Dialog.find.row = row;
       let json = {
@@ -524,12 +531,12 @@ export default {
             let List = [];
             List = data.data;
             console.log(List);
-            _this.table.blacklist_find = List[0];
-            _this.table.blacklist_find_moreCount = List;
+            _this.table.blacklist_find = List;
+            _this.table.blacklist_find_moreCount = List.appearTimes;
 
             // 给echarts赋值
             let dayHourList = [];
-            dayHourList = List[0].dayHour;
+            dayHourList = List.dayHour;
             for (let i = 0; i < dayHourList.length; i++) {
               let xAxisValue = dayHourList[i].data;
               let seriesFuzhuData = dayHourList[i].firstHour;
@@ -547,7 +554,6 @@ export default {
               hourArr.push(str);
               
               // hourArr = tooltipFormatterData;
-              
             }
             console.log(hourArr)
             

@@ -61,7 +61,7 @@
                     <div class="analyse_top_name">Key Point</div>
                     <div class="analyse_top_content">
                         <!-- <img src="../../assets/images/jinwang01.jpg" alt="用户照片"> -->
-                        <img :src="black_person.url" alt="用户照片">
+                        <img :src="black_person.url" alt="最黑户照片">
                         <div class="analyse_top_content_period">
                             <div>周期: {{black_person.comeWeek}}</div>
                             <div>时间: {{black_person.comehour}}</div>

@@ -1821,6 +1821,7 @@ export default {
       let vendorId = JSON.parse(sessionStorage.getItem("userinfo")).store_root_id;
       console.log(vendorId)
       let json7 = {
+        sid: storeCode,
         vid: vendorId,
         sex: top_valueSex7,
         sa: _this.top.age.startAge,
