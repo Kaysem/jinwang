@@ -72,14 +72,6 @@ export default new Router({
       if( to.fullPath == '/snap/personal'  ){
         $("a[data-url='/snap/browse']").parent().parent().addClass('is-active'); 
       }
-    // if (saveposition) {
-    //   return saveposition
-    // } else {
-    //   return {
-    //     x: 0,
-    //     y: 0
-    //   }
-    // }
 
     if (to.hash) {
       return {

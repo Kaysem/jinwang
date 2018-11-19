@@ -30,7 +30,7 @@ const baseUrl3 =  'http://face.umessage.com.cn/api/exec';  //  //本地部署
 // 金王
 // const baseUrl4 = '= 'http://face.umessage.com.cn';  ';  //贺月杰 线上
 const baseUrl6 = 'http://face.umessage.com.cn';    //贺月杰  本地测试 抓拍照片
-const baseUrl4 = 'http://face.umessage.com.cn/api/index'; // PHP后台 黑名单模块
+const baseUrl4 = 'http://face.umessage.com.cn/api/index'; // 陈允文Java后台 黑名单模块
 
 // 金王  开发接口 start 
 const baseUrl5 =  'http://face.umessage.com.cn/api';  //吴新  客流分析模块
@@ -94,7 +94,7 @@ export default {
     "getStoreByRole" : baseUrl + '/getStoreByRole', //门店概览列表2  role_rank != 0
 
     //门店信息->客流报表
-    "flow_flowAllPay" : baseUrl5 + '/flow/flowAllPay', // 客流报表->总客流+支付客流+支付率
+    "flow_flowAllPay" : baseUrl5 + '/flow2/flowAllPay', // 客流报表->总客流+支付客流+支付率
     "exec_flowTrendDate" : baseUrl5 + '/exec/flowTrendDate', // 客流报表->客流日期趋势
     "exec_flowTrendTime" : baseUrl5 + '/exec/flowTrendTime', // 客流报表->客流时间趋势
     "flow_byAgeCnt" : baseUrl5 + '/flow/byAgeCnt', // 客流报表->年龄组统计

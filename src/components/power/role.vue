@@ -220,7 +220,6 @@
                                     </el-collapse-item>                           
                                 </el-collapse>
                             </div>
-
                     </div>
                     <div class="dialog_footer"  v-if="dialog.write.content.isdisabled == false">
                         <el-button class="gosure" size="small" type="primary" @click="Write_sure()">确 定</el-button>

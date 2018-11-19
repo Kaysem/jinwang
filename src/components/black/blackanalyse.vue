@@ -656,6 +656,15 @@ export default {
         }
         if (val != null && val.length != 0) {
           _this.top.valueTimeS = "custom";
+          let timestamp = _this.getDateTime(new Date().getTime()); //当前时间
+          console.log(_this.top.valueTime[1].substring(0,10),timestamp,_this.top.valueTime[1].substring(0,10) == timestamp.substring(0,10))
+          if (_this.top.valueTime[1].substring(0,10) == timestamp.substring(0,10)) {
+            _this.top.valueTime[1] = timestamp;
+          }else {
+            _this.top.valueTime[1] =_this.top.valueTime[1].substring(0,10) + " "+"23:59:59";
+          }
+        }else {
+          _this.top.valueTimeS = "threeMouth";
         }
       },
       deep: true
@@ -691,6 +700,29 @@ export default {
           // _this.getzf(oMin) +
           // ":" +
           // _this.getzf(oSen); //最后拼接时间
+      return oTime;
+    },
+    getDateTime(str) {
+      let _this = this;
+      var oDate = new Date(str),
+        oYear = oDate.getFullYear(),
+        oMonth = oDate.getMonth() + 1,
+        oDay = oDate.getDate(),
+        oHour = oDate.getHours(),
+        oMin = oDate.getMinutes(),
+        oSen = oDate.getSeconds(),
+        oTime =
+          oYear +
+          "-" +
+          _this.getzf(oMonth) +
+          "-" +
+          _this.getzf(oDay)+
+          " " +
+          _this.getzf(oHour) +
+          ":" +
+          _this.getzf(oMin) +
+          ":" +
+          _this.getzf(oSen); //最后拼接时间
       return oTime;
     },
     //补0操作
@@ -862,6 +894,15 @@ export default {
     }
   },
 
+  // valueTimeDate(){
+  //   let timestamp = _this.getDateTime(new Date().getTime()); //当前时间
+  //         console.log(_this.top.valueTime[1].substring(0,10),timestamp,_this.top.valueTime[1].substring(0,10) == timestamp.substring(0,10))
+  //         if (_this.top.valueTime[1].substring(0,10) == timestamp.substring(0,10)) {
+  //           _this.top.valueTime[1] = timestamp;
+  //         }else {
+  //           _this.top.valueTime[1] =_this.top.valueTime[1].substring(0,10) + " "+"23:59:59";
+  //         }
+  // }
 
 };
 </script>

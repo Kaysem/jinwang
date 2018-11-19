@@ -11,8 +11,9 @@
                 <div class="top_content timesearch">
                 <b>可选择时间：</b>
                 <el-radio-group v-model="top.valueTimeS" @change="changeTimes()">
-                    <el-radio label="half">最近半小时</el-radio>
-                    <el-radio label="hour">最近一小时</el-radio>
+                    <!-- <el-radio label="half">最近半小时</el-radio>
+                    <el-radio label="hour">最近一小时</el-radio> -->
+                    <el-radio label="ALL">全部</el-radio>
                     <el-radio class="custom" label="custom">自定义
                         <el-date-picker 
                             v-model="top.valueTime"
@@ -189,7 +190,7 @@ export default {
       userinfo: {},
       SearchInput: "",
       top: {
-        valueTimeS: "",
+        valueTimeS: "ALL",
         valueTime: [] //时间
       },
       table: {
@@ -388,12 +389,9 @@ export default {
       let timeStart = "";
       let timeEnd = "";
       console.log(_this.top.valueTimeS);
-      if (_this.top.valueTimeS == "half") {
-        timeStart = _this.getMyDate((timestamp / 1000 - 1800) * 1000);
-        timeEnd = _this.getMyDate(timestamp);
-      } else if (_this.top.valueTimeS == "hour") {
-        timeStart = _this.getMyDate((timestamp / 1000 - 3600) * 1000);
-        timeEnd = _this.getMyDate(timestamp);
+      if (_this.top.valueTimeS == "ALL") {
+        timeStart = "";
+        timeEnd = "";
       } else if (_this.top.valueTimeS && _this.top.valueTime != []) {
         timeStart = _this.top.valueTime[0];
         timeEnd = _this.top.valueTime[1];
@@ -631,6 +629,15 @@ export default {
         }
         if (val != [] && val != null && val.length != 0) {
           _this.top.valueTimeS = "custom";
+          let timestamp = _this.getMyDate(new Date().getTime()); //当前时间
+          console.log(_this.top.valueTime[1].substring(0,10),timestamp,_this.top.valueTime[1].substring(0,10) == timestamp.substring(0,10))
+          if (_this.top.valueTime[1].substring(0,10) == timestamp.substring(0,10)) {
+            _this.top.valueTime[1] = timestamp;
+          }else {
+            _this.top.valueTime[1] =_this.top.valueTime[1].substring(0,10) + " "+"23:59:59";
+          }
+        }else {
+          _this.top.valueTimeS = "ALL";
         }
         _this.getPics();
         console.log("先执行 小时");

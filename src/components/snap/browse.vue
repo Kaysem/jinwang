@@ -503,6 +503,15 @@ export default {
         }
         if (val != null && val.length != 0) {
           _this.top.valueTimeS = "custom";
+          let timestamp = _this.getMyDate(new Date().getTime()); //当前时间
+          console.log(_this.top.valueTime[1].substring(0,10),timestamp,_this.top.valueTime[1].substring(0,10) == timestamp.substring(0,10))
+          if (_this.top.valueTime[1].substring(0,10) == timestamp.substring(0,10)) {
+            _this.top.valueTime[1] = timestamp;
+          }else {
+            _this.top.valueTime[1] =_this.top.valueTime[1].substring(0,10) + " "+"23:59:59";
+          }
+        }else {
+          _this.top.valueTimeS = "half";
         }
       },
       deep: true
