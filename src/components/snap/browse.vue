@@ -25,7 +25,8 @@
                             type="datetimerange"
                             range-separator="至"
                             start-placeholder="开始日期"
-                            end-placeholder="结束日期">
+                            end-placeholder="结束日期"
+                            :picker-options="top.pickerOptions0">
                         </el-date-picker>
                     </el-radio>
                 </el-radio-group>
@@ -290,6 +291,11 @@ export default {
 
         valueTimeS: "half",
         valueTime: [], //时间
+        pickerOptions0: {
+          disabledDate(time) {
+            return time.getTime() > Date.now() - 8.64e6
+          }
+        },//限制时间选择
         valueSex: "ALL", //性别
         age: {
           startAge: "1",
@@ -510,8 +516,8 @@ export default {
           }else {
             _this.top.valueTime[1] =_this.top.valueTime[1].substring(0,10) + " "+"23:59:59";
           }
-        }else {
-          _this.top.valueTimeS = "half";
+        }else if(_this.top.valueTimeS == "custom"){
+          _this.$message.success("请选择时间!");
         }
       },
       deep: true
@@ -677,7 +683,10 @@ export default {
      */
     usercomein_list(p = 1) {
       let _this = this;
-
+      //时间未选择的时候提示选择时间
+      if(_this.top.valueTimeS =="custom" && _this.top.valueTime.length == 0){
+        _this.$message.warning("请选择时间!");
+      }
       // 更改门店tab信息
       console.log("所有选项",_this.top.storeOptions)
       for (let i=0;i<_this.top.storeOptions.length;i++){

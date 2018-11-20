@@ -156,8 +156,11 @@
               <div class='content_main'>
                 <router-view/>
               </div>
+              <!-- <div class="el-footer">Copyright © 2018 <a href="http://www.umessage.com.cn"><u> 北京无限讯奇信息技术有限公司  </u></a> All rights reserved. <a href="http://www.miibeian.gov.cn/"><u>京ICP备06062094号</u></a></div> -->
             </el-main>
+            
       </el-container>
+      <el-footer>Copyright © 2018 <a href="http://www.umessage.com.cn"><u> 北京无限讯奇信息技术有限公司  </u></a> All rights reserved. <a href="http://www.miibeian.gov.cn/"><u>京ICP备06062094号</u></a></el-footer>
     </el-container>
   </div>
 </template>
@@ -423,6 +426,23 @@ export default {
 }
 .el-aside {
   position: relative;
+  
 }
-
+.el-footer {
+    width: 100%;
+    color: #878d99;
+    text-align: center;
+    line-height: 60px;
+    position: absolute;
+    bottom: -50px;
+    /* z-index: 1;  */
+}
+.el-footer a {
+  display: inline;
+   color: #878d99;
+}
+.el-footer a:hover {
+  display: inline;
+   color: #ccc;
+}
 </style>

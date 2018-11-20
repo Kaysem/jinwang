@@ -86,7 +86,7 @@ export default new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: resolve => require(['@/components/login'],resolve)
     },
     {
       path: '/resetpassword',

@@ -25,7 +25,8 @@
                             type="datetimerange"
                             range-separator="至"
                             start-placeholder="开始日期"
-                            end-placeholder="结束日期">
+                            end-placeholder="结束日期"
+                            :picker-options="top.pickerOptions0">
                         </el-date-picker>
                     </el-radio>
                 </el-radio-group>
@@ -134,7 +135,12 @@ export default {
         valueTimeS: "threeMouth",
         valueTime: [], //时间
         valueSex: "ALL", //性别
-        valueCount: "ALL" // 出现次数
+        valueCount: "ALL", // 出现次数
+        pickerOptions0: {
+          disabledDate(time) {
+            return time.getTime() > Date.now() - 8.64e6
+          }
+        },//限制时间选择
       },
       black_person: {},
       // 详情部分 top 部分 年龄图表 start
@@ -663,8 +669,8 @@ export default {
           }else {
             _this.top.valueTime[1] =_this.top.valueTime[1].substring(0,10) + " "+"23:59:59";
           }
-        }else {
-          _this.top.valueTimeS = "threeMouth";
+        }else if(_this.top.valueTimeS == "custom"){
+          _this.$message.success("请选择时间!");
         }
       },
       deep: true
@@ -767,6 +773,10 @@ export default {
     */
    blackanalyse (){
       let _this = this;
+      //时间未选择的时候提示选择时间
+      if(_this.top.valueTimeS =="custom" && _this.top.valueTime.length == 0){
+        _this.$message.warning("请选择时间!");
+      }
       let timestamp = new Date().getTime(); //当前时间
       let timeStart = "";
       let timeEnd = "";

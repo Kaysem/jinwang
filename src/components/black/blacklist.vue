@@ -21,7 +21,8 @@
                             type="datetimerange"
                             range-separator="至"
                             start-placeholder="开始日期"
-                            end-placeholder="结束日期">
+                            end-placeholder="结束日期"
+                            :picker-options="top.pickerOptions0">
                         </el-date-picker>
                     </el-radio>
                 </el-radio-group>
@@ -191,7 +192,12 @@ export default {
       SearchInput: "",
       top: {
         valueTimeS: "ALL",
-        valueTime: [] //时间
+        valueTime: [], //时间
+        pickerOptions0: {
+          disabledDate(time) {
+            return time.getTime() > Date.now() - 8.64e6
+          }
+        },
       },
       table: {
         tableData: [],
@@ -384,6 +390,10 @@ export default {
     //请求列表
     getPics(n = 1) {
       let _this = this;
+      //时间未选择的时候提示选择时间
+      if(_this.top.valueTimeS =="custom" && _this.top.valueTime.length == 0){
+        _this.$message.warning("请选择时间!");
+      }
       // console.log(_this.userinfo);
       let timestamp = new Date().getTime(); //当前时间
       let timeStart = "";
