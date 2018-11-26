@@ -748,6 +748,12 @@ export default {
           // _this.$message("请求出错，请稍后重试！");
           _this.btm.times.listContent = [];
         });
+
+        // 定时刷新抓取照片 
+        // clearTimeout(timeOut);
+        // var timeOut = setTimeout(() => {
+        //     _this.usercomein_list();
+        // }, 60000);
     },
     /**
      * 删除

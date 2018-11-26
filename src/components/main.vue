@@ -432,10 +432,20 @@ export default {
     width: 100%;
     color: #878d99;
     text-align: center;
-    line-height: 60px;
+    line-height: 80px;
     position: absolute;
     bottom: -50px;
-    /* z-index: 1;  */
+    /* z-index: 10;  */
+}
+@-moz-document url-prefix() {
+  .el-footer {
+    width: 100%;
+    color: #878d99;
+    text-align: center;
+    line-height: 50px;
+    position: relative;
+    bottom: -50px;
+  }
 }
 .el-footer a {
   display: inline;

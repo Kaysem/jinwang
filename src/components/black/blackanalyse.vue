@@ -144,7 +144,7 @@ export default {
       },
       black_person: {},
       // 详情部分 top 部分 年龄图表 start
-      resData: "",
+      // resData: "",
       ageEcharts: {
         color: ["#547ee6"],
         tooltip: {
