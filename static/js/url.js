@@ -36,7 +36,7 @@ const baseUrl4 = 'http://face.umessage.com.cn/api/index'; // 陈允文Java后台
 const baseUrl5 =  'http://face.umessage.com.cn/api';  //吴新  客流分析模块
 // const baseUrl5 =  'http://172.16.29.18:56765/api/flow';  //吴新
 // const baseUrl6 =  'http://172.16.29.18:56765/api/exec';  //吴新
-
+const baseURL7 = 'http://172.16.22.130:8888/api'; // 顾客中心
 
 // 金王  开发接口 end 
 
@@ -56,17 +56,18 @@ export default {
     
 
     //顾客中心
-    "getMemInfo": baseUrl+'/getMemInfo',   //单个用户
-    "getLine1": baseUrl+'/getLine1', //单折线图
-    "getPie": baseUrl+'/getPie', //饼图
-    "getBar": baseUrl+'/getBar', //柱状图
-    // "monthSort": baseUrl+'/monthSort', //月度消费排名  作废
-    "getMsg": baseUrl+'/getMsg',//提示  （没变）
-    // "getTicketInfo" : baseUrl + '/getTicketInfo',// 消费小票
-    "getTicketinfo" : baseUrl3 + '/getTicketinfo',// 消费小票 2018-07-19更改小票接口
+    "portrait" : baseURL7+'/vipUserCenter/portrait', //顾客中心
+    // "getMemInfo": baseUrl+'/getMemInfo',   //单个用户
+    // "getLine1": baseUrl+'/getLine1', //单折线图
+    // "getPie": baseUrl+'/getPie', //饼图
+    // "getBar": baseUrl+'/getBar', //柱状图
+    // // "monthSort": baseUrl+'/monthSort', //月度消费排名  作废
+    // "getMsg": baseUrl+'/getMsg',//提示  （没变）
+    // // "getTicketInfo" : baseUrl + '/getTicketInfo',// 消费小票
+    // "getTicketinfo" : baseUrl3 + '/getTicketinfo',// 消费小票 2018-07-19更改小票接口
 
-    "getMonthReport": baseUrl3+'/getMonthReport', //月度消费排名  新的
-    "getYearReport" : baseUrl3 + '/getYearReport',// 年度消费排名
+    // "getMonthReport": baseUrl3+'/getMonthReport', //月度消费排名  新的
+    // "getYearReport" : baseUrl3 + '/getYearReport',// 年度消费排名
 
     //数据概览页面  仪表盘
     "getStoreMapSaleData" : baseUrl + '/getStoreMapSaleData', //店铺地图
