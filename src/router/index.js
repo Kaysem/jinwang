@@ -66,9 +66,9 @@ export default new Router({
       if( to.fullPath == '/userpicture'){
         $("a[data-url='/shoplist']").parent().parent().addClass('is-active');
       }
-      if( to.fullPath== '/usercenter'){
-        $("a[data-url='/shoplist']").parent().parent().removeClass('is-active'); 
-      }
+      // if( to.fullPath== '/usercenter'){
+      //   $("a[data-url='/shoplist']").parent().parent().removeClass('is-active'); 
+      // }
       if( to.fullPath == '/snap/personal'  ){
         $("a[data-url='/snap/browse']").parent().parent().addClass('is-active'); 
       }

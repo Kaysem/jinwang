@@ -57,6 +57,8 @@ export default {
 
     //顾客中心
     "portrait" : baseURL7+'/vipUserCenter/portrait', //顾客中心
+    "orderDetail":  baseURL7+'/vipUserCenter/orderDetail', // 小票
+
     // "getMemInfo": baseUrl+'/getMemInfo',   //单个用户
     // "getLine1": baseUrl+'/getLine1', //单折线图
     // "getPie": baseUrl+'/getPie', //饼图

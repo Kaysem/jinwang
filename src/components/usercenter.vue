@@ -2,8 +2,8 @@
 <template>
   <div id="usercenter">
     <div class="US_search">
-      <el-input v-model="USinput" placeholder="请输入会员id" @keyup.enter.native="enter_search()"></el-input>
-      <el-button class="USsearch_btn" @click="enter_search()">查询</el-button>
+      <el-input v-model="USinput" placeholder="请输入会员id" @keyup.enter.native="vipInfoSearch()"></el-input>
+      <el-button class="USsearch_btn" @click="vipInfoSearch()">查询</el-button>
     </div>
     <div class="top_content clearfix" v-model="vipInfo">
       <div class="fl t_c_l">
@@ -46,13 +46,13 @@
           </el-col>
           <el-col :span="4">
             <p>微信号：</p>
-            <p class="infoTip num">{{vipInfo.xingzuo}}</p>
+            <p class="infoTip num">{{vipInfo.unionid}}</p>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="3">
             <p>会员时长：</p>
-            <p class="infoTip">{{vipInfo.xingzuo}}</p>
+            <p class="infoTip">距今 {{vipInfo.creatdata_diff}} 天</p>
           </el-col>
           <el-col :span="6">
             <p>入住会员时间：</p>
@@ -60,11 +60,11 @@
           </el-col>
           <el-col :span="7">
             <p>最后一次到店时间：</p>
-            <p class="infoTip num">{{vipInfo.last_visit_date}}（距今 15 天）</p>
+            <p class="infoTip num">{{vipInfo.last_visit_date}}（距今 {{vipInfo.last_visit_date_diff}} 天）</p>
           </el-col>
           <el-col :span="8">
             <p>地址：</p>
-            <p class="infoTip">{{vipInfo.native_city}}</p>
+            <p class="infoTip">{{vipInfo.native_place}}{{vipInfo.native_city}}</p>
           </el-col>
         </el-row>
       </div>
@@ -80,9 +80,9 @@
             <div>
               <img src="../assets/images/RFM_icon.png" class="RFM_icon">
               <p>RFM评分 ：{{RFMAnalyze.rfm}}</p>
-              <p>活跃度高、消费能力高</p>
-              <p>忠诚度较高,属于高价值顾客</p>
-              <p>对产品及服务要求高,需要重点提供优质服务</p>
+              <p>{{RFMAnalyze.one}}</p>
+              <p>{{RFMAnalyze.two}}</p>
+              <p>{{RFMAnalyze.three}}</p>
             </div>
           </div>
         </div>
@@ -91,60 +91,33 @@
         <el-carousel height="390px" loop="true" class="el_carousel__indicators" v-model="recommendProduct">
           <el-carousel-item>
               <h2>推荐商品</h2>
-              <ul class="recommend1">
+              <ul class="recommend1" v-if="is_recommendProduct">
                 <li>
                   <span><img src="..\assets\images\top1.png" alt=""></span>
-                  <span>伊丽莎白雅顿Elizabeth Arden金胶	</span>
-                  <span>¥ 360</span>
+                  <span>{{recommendProduct.rec_product[0].name}}</span>
+                  <span>¥ {{recommendProduct.rec_product[0].price}}</span>
                 </li>
                 <li>
                     <span><img src="..\assets\images\top2.png" alt=""></span>
-                    <span>伊丽莎白雅顿Elizabeth Arden金胶	</span>
-                    <span>¥ 360</span></li>
+                    <span>{{recommendProduct.rec_product[1].name}}</span>
+                    <span>¥ {{recommendProduct.rec_product[1].price}}</span></li>
                 <li>
                   <span><img src="..\assets\images\top3.png" alt=""></span>
-                  <span>伊丽莎白雅顿Elizabeth Arden金胶	</span>
-                  <span>¥ 360</span>
+                  <span>{{recommendProduct.rec_product[2].name}}</span>
+                  <span>¥ {{recommendProduct.rec_product[2].price}}</span>
                 </li>
                 <li>
                   <span>4</span>
-                  <span>伊丽莎白雅顿Elizabeth Arden金胶	</span>
-                  <span>¥ 360</span>
+                  <span>{{recommendProduct.rec_product[3].name}}</span>
+                  <span>¥ {{recommendProduct.rec_product[3].price}}</span>
                 </li>
                 <li>
                   <span>5</span>
-                  <span>伊丽莎白雅顿Elizabeth Arden金胶	</span>
-                  <span>¥ 360</span>
+                  <span>{{recommendProduct.rec_product[4].name}}</span>
+                  <span>¥ {{recommendProduct.rec_product[4].price}}</span>
                 </li>
               </ul>
-          </el-carousel-item>
-          <el-carousel-item>
-            <h2>推荐商品</h2>
-            <ul class="recommend2">
-                <li>
-                  <span>6</span>
-                  <span>伊丽莎白雅顿Elizabeth Arden金胶	</span>
-                  <span>¥ 360</span>
-                </li>
-                <li><span>7</span>
-                    <span>伊丽莎白雅顿Elizabeth Arden金胶	</span>
-                    <span>¥ 360</span></li>
-                <li>
-                  <span>8</span>
-                  <span>伊丽莎白雅顿Elizabeth Arden金胶	</span>
-                  <span>¥ 360</span>
-                </li>
-                <li>
-                  <span>9</span>
-                  <span>伊丽莎白雅顿Elizabeth Arden金胶	</span>
-                  <span>¥ 360</span>
-                </li>
-                <li>
-                  <span>10</span>
-                  <span>伊丽莎白雅顿Elizabeth Arden金胶	</span>
-                  <span>¥ 360</span>
-                </li>
-              </ul>
+              <div class="recommend0">暂无数据</div>
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -154,53 +127,54 @@
         <el-radio-group v-model="top.valueTimeS" @change="changeTimes()">
           <el-radio label="threeMouth">最近三个月</el-radio>
           <el-radio class="custom" label="custom">自定义
-            <el-date-picker
-              v-model="top.valueTime"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              type="datetimerange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              :picker-options="top.pickerOptions0"
-            ></el-date-picker>
+                        <el-date-picker 
+                            v-model="top.valueTime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            type="datetimerange"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            :picker-options="top.pickerOptions0">
+                        </el-date-picker>
+                    </el-radio>
           </el-radio>
         </el-radio-group>
       </div>
-      <div class="c_row">
+      <div class="c_row" v-model="userBuyThings">
         <el-row>
           <el-col :span="4">
             <p class="c_tips">￥
-              <span class="c_tips_num">12.485</span>
+              <span class="c_tips_num">{{userBuyThings.pay_sum}}</span>
             </p>
             <p>总消费</p>
           </el-col>
           <el-col :span="4">
             <p class="c_tips">￥
-              <span class="c_tips_num">3.265</span>
+              <span class="c_tips_num">{{userBuyThings.pay_average}}</span>
             </p>
             <p>平均消费</p>
           </el-col>
           <el-col :span="4">
             <p class="c_tips">
-              <span class="c_tips_num">32</span>件
+              <span class="c_tips_num">{{userBuyThings.skumun_cnt}}</span>件
             </p>
             <p>购买件数</p>
           </el-col>
           <el-col :span="4">
             <p class="c_tips">
-              <span class="c_tips_num">30</span>次
+              <span class="c_tips_num">{{userBuyThings.come_cnt}}</span>次
             </p>
             <p>到店次数</p>
           </el-col>
           <el-col :span="4">
             <p class="c_tips">
-              <span class="c_tips_num">32</span>次
+              <span class="c_tips_num">{{userBuyThings.pay_cnt}}</span>次
             </p>
             <p>购买次数</p>
           </el-col>
           <el-col :span="4">
             <p class="c_tips">
-              <span class="c_tips_num">80</span>%
+              <span class="c_tips_num">{{userBuyThings.rate}}</span>
             </p>
             <p>购买率</p>
           </el-col>
@@ -265,9 +239,10 @@
     </div>
     <div class="power_box">
       <div class="chart_powerEcharts">
-        <div id="chart_power"></div>
+        <div id="chart_power" @click="mousedown()"></div>
       </div>
-      <div class="receipt">
+      <div class="receipt0" v-if="is_saleOrderDetail">暂无消费小票数据</div>
+      <div class="receipt" v-else>
         <div class="receipt_top">
           <div class="receipt_top_left">
             <p>店号: 101177</p>
@@ -312,17 +287,22 @@
 </template>
 
 <script>
+let Xindex = "";
+let XdataName = "";
 export default {
   name: "usercenter",
   data() {
     return {
       // memNumber: "", //记录用户编码id ，更改时间的时候传入
-      USinput: "",
+      USinput: "11312753",
       userinfo: {},
       vipInfo: {},  // 会员信息
       RFMAnalyze: {}, //顾客RFM模型分析
       recommendProduct: {}, // 推荐商品
+      is_recommendProduct:false,
       favoriteProduct: {}, // 行为习惯
+      userBuyThings: {}, // 消费情况分析
+      is_saleOrderDetail: true,
       top: {
         valueTimeS: "threeMouth",
         valueTime: [], //时间
@@ -334,7 +314,6 @@ export default {
       }, // 时间单选框操作
 
       chart_kind: {
-        option: {
           title: {
             text: "常买商品",
             textStyle: { color: "#444444", fontWeight: "700", fontSize: 20 },
@@ -356,8 +335,7 @@ export default {
             z: 22
           },
           label: { normal: { show: true, position: "top" } },
-          xAxis: [
-            {
+          xAxis: {
               type: "category",
               gridIndex: 0,
               axisTick: { show: false },
@@ -365,8 +343,7 @@ export default {
               axisLine: { lineStyle: { color: "#4080ff" } },
               axisLabel: { textStyle: { color: "#4080ff" } },
               data: [] //name值
-            }
-          ],
+          },
           yAxis: [
             {
               type: "value",
@@ -383,7 +360,6 @@ export default {
               itemStyle: { normal: { color: "#4080ff", barBorderRadius: 10 } },
               data: [] //数值
             }
-        }
       },
       // 顾客消费记录表
       chart_power: {
@@ -395,7 +371,10 @@ export default {
           left: "center"
         },
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
+          formatter:function(params){
+            return XdataName = params[0].name;                 
+          }
         },
         legend: {
           data: ["单次单价", "购买件数"],
@@ -433,7 +412,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+          data: [],
           axisLine: { lineStyle: { color: "#4080ff" } },
           axisLabel: { textStyle: { color: "#4080ff" } },
         },
@@ -447,16 +426,16 @@ export default {
           {
             name: "单次单价",
             type: "line",
-            stack: "总量",
+            stack: "单次单价",
             smooth: true, //这个是把线变成曲线
-            data: [120, -132, -101, 134, 90, 230, 210]
+            data: []
           },
           {
             name: "购买件数",
             type: "line",
-            stack: "总量",
+            stack: "购买件数",
             smooth: true, //这个是把线变成曲线
-            data: [220, -182, -191, 234, 290, 330, 310]
+            data: []
           }
         ]
       },
@@ -475,8 +454,7 @@ export default {
           bottom: "15%",
           containLabel: true
         },
-        xAxis: [
-          {
+        xAxis: {
             type: "category",
             data: ["活跃度", "忠诚度", "消费能力"],
             // data: [],
@@ -494,10 +472,8 @@ export default {
             //   interval:0,
             //   rotate:40
             // },
-          }
-        ],
-        yAxis: [
-          {
+          },
+        yAxis: [{
             type: "value",
             axisLine: {
               lineStyle: {
@@ -515,14 +491,13 @@ export default {
                 color: "#d4daf8" // 设置刻度线颜色
               }
             }
-          }
-        ],
-        series: [
-          {
+        }],
+        series: {
             name: "直接访问",
             type: "bar",
             barWidth: "30%",
             barWidth: 20, //设置柱状宽度
+            data: [],
             itemStyle: {
               normal: {
                 barBorderRadius: 40,
@@ -532,16 +507,17 @@ export default {
                 }
               }
             },
-            data: [2, 3, 3]
           }
-        ]
       }
     };
+  },
+  beforeMount() {
+    let _this = this;
+    _this.vipInfoSearch();
   },
   mounted: function() {
     let _this = this;
     _this.drawEcharts();
-
     _this.userinfo = JSON.parse(sessionStorage.getItem("userinfo"));
   },
   watch: {
@@ -555,13 +531,7 @@ export default {
         }
         if (val != [] && val != null && val.length != 0) {
           _this.top.valueTimeS = "custom";
-          let timestamp = _this.getMyDate(new Date().getTime()); //当前时间
-          console.log(
-            _this.top.valueTime[1].substring(0, 10),
-            timestamp,
-            _this.top.valueTime[1].substring(0, 10) ==
-              timestamp.substring(0, 10)
-          );
+          let timestamp = _this.getDateTime(new Date().getTime()); //当前时间
           if (
             _this.top.valueTime[1].substring(0, 10) ==
             timestamp.substring(0, 10)
@@ -576,7 +546,7 @@ export default {
         }
       },
       deep: true
-    }
+    },
   },
   methods: {
     changeTimes() {
@@ -585,7 +555,7 @@ export default {
         _this.top.valueTime = [];
       }
     },
-        getMyDate(str) {
+    getMyDate(str) {
       let _this = this;
       var oDate = new Date(str),
         oYear = oDate.getFullYear(),
@@ -633,21 +603,11 @@ export default {
       }
       return num;
     },
-    enter_search() {
-      let _this = this;
-      if (_this.USinput == "" || _this.USinput == undefined) {
-        alert("请输入正确的会员id");
-      } else {
-        //发送请求  S
-        _this.vipInfo();
-        //发送请求 E
-      }
-    },
     drawEcharts() {
       let _this = this;
       let chart_kind = document.getElementById("chart_kind");
       _this.myChartKind = _this.$echarts.init(chart_kind);
-      _this.myChartKind.setOption(_this.chart_kind.option);
+      _this.myChartKind.setOption(_this.chart_kind);
 
       _this.myChart = _this.$echarts.init(
         document.getElementById("RFMEcharts")
@@ -664,35 +624,125 @@ export default {
     },
 
     // 发送请求 查询会员信息
-    vipInfo() {
+    vipInfoSearch() {
       let _this = this;
+      //时间未选择的时候提示选择时间
+      if(_this.top.valueTimeS =="custom" && _this.top.valueTime.length == 0){
+        _this.$message.warning("请选择时间!");
+      }
+      // console.log(_this.$route.params.storeCode);
+      let timestamp = new Date().getTime(); //当前时间
+      let timeStart = "";
+      let timeEnd = "";
+      if (_this.top.valueTimeS == "threeMouth") {
+        if (Date.parse(new Date((timestamp / 1000 - 7776000) * 1000)) > Date.parse(new Date("2018-10-01 00:00:00"))){
+          timeStart = _this.getMyDate((timestamp / 1000 - 7776000) * 1000);
+        }else {
+          timeStart = '2018-10-01'
+        }
+        // timeStart = _this.getMyDate((timestamp / 1000 - 7776000) * 1000);
+        timeEnd = _this.getMyDate(timestamp);
+      } else {
+        if (Date.parse(new Date(_this.top.valueTime[0])) > Date.parse(new Date("2018-10-01 00:00:00"))){
+          timeStart = _this.top.valueTime[0].substr(0,10);
+        }else {
+          timeStart = '2018-10-01'
+        }
+        
+        timeEnd = _this.top.valueTime[1].substr(0,10);
+      }
+      console.log(timeStart, timeEnd);
       let json = {
         vipID: _this.USinput,
+        start_time: timeStart,
+        end_time: timeEnd,
       };
       let formdata = _this.$config.formData(json);
-      _this.$axios
+      if (_this.USinput == "") {
+        alert("请输入正确的会员id");
+      } else {
+        //发送请求  S
+        _this.$axios
         .post(_this.$url.portrait, formdata)
         .then(res => {
           if (res.status == 200) {
             console.log(res)
             let data = res.data.data;
+            if(data.recommendProduct.rec_product.length != 0){
+              _this.recommendProduct = data.recommendProduct;
+              _this.is_recommendProduct = true;
+            }
             _this.vipInfo = data.vipInfo;
             _this.RFMAnalyze = data.RFMAnalyze;
-            _this.recommendProduct = data.recommendProduct;
             _this.favoriteProduct = data.favoriteProduct;
 
-            _this.chart_kind.option.xAxis.data = [];
-            _this.chart_kind.option.series.data =[];
+            //常购买商品echarts
+            _this.chart_kind.xAxis.data = [];
+            _this.chart_kind.series.data =[];
             for(let i=0; i<data.usedBuyProduct.length; i++) {
-              let fav_itemName = data.usedBuyProduct.fav_itemName[i];
-              let cnt = data.usedBuyProduct.cnt[i];
-              _this.chart_kind.option.xAxis.data.push(fav_itemName);
-              _this.chart_kind.option.series.data.push(cnt);
+              let fav_itemName = data.usedBuyProduct[i].fav_itemName;
+              let cnt = data.usedBuyProduct[i].cnt;
+              _this.chart_kind.xAxis.data.push(fav_itemName);
+              _this.chart_kind.series.data.push(cnt);
             }
+            // RFM图表
+            _this.RFMEcharts.series.data.push(Number(data.RFMAnalyze.hyd), Number(data.RFMAnalyze.zcd), Number(data.RFMAnalyze.xfnl));
+
+            // 消费情况分析
+            _this.userBuyThings = data.userBuyThings;
+
+            // 顾客消费记录echarts
+            _this.chart_power.xAxis.data=[];
+            _this.chart_power.series[0].data=[];
+            _this.chart_power.series[1].data=[];
+            for(let i=0; i<data.saleHistoryInfo.length; i++) {
+              let cnt_skuNum = data.saleHistoryInfo[i].cnt_skuNum;
+              let saleDate = data.saleHistoryInfo[i].saleDate;
+              let sum_realPayAmount = data.saleHistoryInfo[i].sum_realPayAmount;
+              _this.chart_power.xAxis.data.push(saleDate);
+              _this.chart_power.series[0].data.push(sum_realPayAmount);
+              _this.chart_power.series[1].data.push(cnt_skuNum);
+            }
+            console.log(_this.chart_power.xAxis.data,_this.chart_power.series[0].data,_this.chart_power.series[1].data)
+            _this.$nextTick(() => {
+              _this.drawEcharts();
+              _this.mousedown();
+            });
           }
         }).catch(err => {
           console.log("异常:",err);
         });
+    
+        //发送请求 E
+      }
+   },
+
+   //点击顾客消费echarts查询当天小票
+   mousedown () {
+      let _this = this;
+      if(_this.chart_power.xAxis.data== []){
+        _this.is_saleOrderDetail = true;
+        XdataName =_this.chart_power.xAxis.data[_this.chart_power.xAxis.data.length-1];
+      }else {
+        _this.is_saleOrderDetail = false;
+      }
+      let json = {
+        vipID: _this.USinput,
+        orderDate: XdataName
+      };
+      let formdata = _this.$config.formData(json);
+       //发送请求  S
+      _this.$axios
+      .post(_this.$url.orderDetail, formdata)
+      .then(res => {
+        if (res.status == 200) {
+          console.log(res)
+          let data = res.data.data;
+        }
+      }).catch(err => {
+        console.log("异常:",err);
+      });
+      XdataName ="";
     }
   }
 };
@@ -916,7 +966,7 @@ p:nth-child(5) {
 
 .center_box {
   height: 100%;
-  padding: 20px;
+  padding: 20px 20px 40px 20px;
   background-color: #f3f4fc;
   box-shadow: 0px 0px 16px 1px rgba(75, 98, 223, 0.19);
   border-radius: 14px;
@@ -950,6 +1000,7 @@ p:nth-child(5) {
 }
 .c_btm_right {
   width: 29%;
+  box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.1);
 }
 .c_btm_right p {
   color: #4080ff;
@@ -959,6 +1010,7 @@ p:nth-child(5) {
 }
 .c_btm_right .el-row {
   margin-bottom: 15px !important;
+  margin-left: 20px;
 }
 .c_btm_right .el-row:last-child {
   margin-bottom: 0px !important;
@@ -1026,8 +1078,21 @@ p:nth-child(5) {
   width: 29%;
   height: 100%;
   display: inline-block;
-  border: 1px solid #dfdff8;
+  /* border: 1px solid #dfdff8; */
   clear: both;
+  box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.1);
+}
+.receipt0 {
+  width: 29%;
+  height: 100%;
+  display: inline-block;
+  /* border: 1px solid #dfdff8; */
+  overflow: hidden;
+  font-size: 20px;
+  text-align: center;
+  font-weight: 700;
+  color: #ccc;
+  box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.1);
 }
 .receipt_top_left {
     /* width: 49%; */
@@ -1105,5 +1170,11 @@ p:nth-child(5) {
   font-size: 18px;
   text-align: center;
   color: #999999;
+}
+.recommend0 {
+  font-size: 20px;
+  margin: 20% auto;
+  font-weight: 700;
+  color: #ccc;
 }
 </style>
