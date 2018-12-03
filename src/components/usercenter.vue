@@ -242,46 +242,49 @@
         <div id="chart_power" @click="mousedown()"></div>
       </div>
       <div class="receipt0" v-if="is_saleOrderDetail">暂无消费小票数据</div>
-      <div class="receipt" v-else>
-        <div class="receipt_top">
-          <div class="receipt_top_left">
-            <p>店号: 101177</p>
-            <p>机号: 2938</p>
-            <p>日期: 2018-01-02</p>
+      <el-carousel height="390px" loop="false" class="receipt" v-else>
+        <el-carousel-item  v-for="item in saleOrderDetail">
+          <div class="receipt_top">
+            <div class="receipt_top_left">
+              <p>店号: {{item.orderStore}}</p>
+              <p>机号: {{item.posCode}}</p>
+              <p>日期: {{item.detailDate}}</p>
+            </div>
+            <div class="receipt_top_right">
+              <p>流水号: {{item.orderNo}}</p>
+              <p>收银员: {{item.cashier}}</p>
+              <p></p>
+            </div>
           </div>
-          <div class="receipt_top_right">
-            <p>流水号: 1929308489080</p>
-            <p>收银员: 2384</p>
-            <p></p>
+          <div class="receipt_table">
+            <el-table
+              style="width: 100%"
+              max-height="200"
+              :data="item.productList">
+              <el-table-column
+                prop="skuName"
+                label="商品名">
+              </el-table-column>
+              <el-table-column
+                prop="skuNum"
+                label="数量">
+              </el-table-column>
+              <el-table-column
+                prop="realPrice"
+                label="单价">
+              </el-table-column>
+              <el-table-column
+                prop="amount"
+                label="金额">
+              </el-table-column>
+            </el-table>
+            <div class="receipt_total">
+              <p>订单金额: ¥ {{item.orderAmount}}</p>
+              <p>实际支付: ¥ {{item.realPayAmount}}</p>
+            </div>
           </div>
-        </div>
-        <div class="receipt_table">
-          <el-table
-            style="width: 100%"
-            max-height="250">
-            <el-table-column
-              prop="date"
-              label="商品名">
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              label="数量">
-            </el-table-column>
-            <el-table-column
-              prop="province"
-              label="单价">
-            </el-table-column>
-            <el-table-column
-              prop="city"
-              label="金额">
-            </el-table-column>
-          </el-table>
-          <div class="receipt_total">
-            <p>订单金额: ¥ 258.00</p>
-            <p>实际支付: ¥ 258.00</p>
-          </div>
-        </div>
-      </div>
+          </el-carousel-item>
+        </el-carousel>
     </div>
   </div>
 </template>
@@ -303,6 +306,7 @@ export default {
       favoriteProduct: {}, // 行为习惯
       userBuyThings: {}, // 消费情况分析
       is_saleOrderDetail: true,
+      saleOrderDetail: {}, //小票信息
       top: {
         valueTimeS: "threeMouth",
         valueTime: [], //时间
@@ -711,6 +715,7 @@ export default {
           }
         }).catch(err => {
           console.log("异常:",err);
+          _this.is_recommendProduct = false;
         });
     
         //发送请求 E
@@ -722,8 +727,8 @@ export default {
       let _this = this;
       if(_this.chart_power.xAxis.data== []){
         _this.is_saleOrderDetail = true;
-        XdataName =_this.chart_power.xAxis.data[_this.chart_power.xAxis.data.length-1];
       }else {
+        XdataName =_this.chart_power.xAxis.data[_this.chart_power.xAxis.data.length-1];
         _this.is_saleOrderDetail = false;
       }
       let json = {
@@ -738,9 +743,11 @@ export default {
         if (res.status == 200) {
           console.log(res)
           let data = res.data.data;
+          _this.saleOrderDetail = data.saleOrderDetail;
         }
       }).catch(err => {
         console.log("异常:",err);
+        _this.is_saleOrderDetail = true;
       });
       XdataName ="";
     }
@@ -1028,6 +1035,9 @@ p:nth-child(5) {
   box-shadow: 0px 0px 16px 1px rgba(75, 98, 223, 0.19);
   border-radius: 14px;
   padding: 20px;
+}
+.power_box >>> .el-carousel__indicators {
+  text-align: center;
 }
 .chart_powerEcharts {
   width: 70%;
