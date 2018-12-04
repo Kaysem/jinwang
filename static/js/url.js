@@ -36,7 +36,7 @@ const baseUrl4 = 'http://face.umessage.com.cn/api/index'; // 陈允文Java后台
 const baseUrl5 =  'http://face.umessage.com.cn/api';  //吴新  客流分析模块
 // const baseUrl5 =  'http://172.16.29.18:56765/api/flow';  //吴新
 // const baseUrl6 =  'http://172.16.29.18:56765/api/exec';  //吴新
-const baseURL7 = 'http://172.16.22.130:8888/api'; // 顾客中心
+// const baseUrl7 = 'http://172.16.22.130:8888/api'; // 顾客中心 陈允文Java后台
 
 // 金王  开发接口 end 
 
@@ -56,8 +56,8 @@ export default {
     
 
     //顾客中心
-    "portrait" : baseURL7+'/vipUserCenter/portrait', //顾客中心
-    "orderDetail":  baseURL7+'/vipUserCenter/orderDetail', // 小票
+    "portrait" : baseUrl5+'/vipUserCenter/portrait', //顾客中心
+    "orderDetail":  baseUrl5+'/vipUserCenter/orderDetail', // 小票
 
     // "getMemInfo": baseUrl+'/getMemInfo',   //单个用户
     // "getLine1": baseUrl+'/getLine1', //单折线图

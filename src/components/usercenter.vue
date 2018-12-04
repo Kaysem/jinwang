@@ -8,7 +8,7 @@
     <div class="top_content clearfix" v-model="vipInfo">
       <div class="fl t_c_l">
         <div class="t_l_img">
-          <img src="../assets/images/a1.jpg" alt>
+          <img :src="vipInfo.headImg" alt>
         </div>
         <div id="vip_ico">
           <img src="../assets/images/vip.png" alt="VIP">
@@ -88,36 +88,28 @@
         </div>
       </div>
       <div class="center_top_box_right">
-        <el-carousel height="390px" loop="true" class="el_carousel__indicators" v-model="recommendProduct">
-          <el-carousel-item>
+        <div class="recommend0" v-if="is_recommendProduct == true">
+          <h2>推荐商品</h2>
+          <p>暂无更多数据</p>
+        </div>
+        <el-carousel height="390px" loop="true" class="el_carousel__indicators" v-model="recommendProduct" v-else>
+          <el-carousel-item v-for="(item_fenye, item_fenye_index) in recommendProduct.rec_product">
               <h2>推荐商品</h2>
-              <ul class="recommend1" v-if="is_recommendProduct">
-                <li>
-                  <span><img src="..\assets\images\top1.png" alt=""></span>
-                  <span>{{recommendProduct.rec_product[0].name}}</span>
-                  <span>¥ {{recommendProduct.rec_product[0].price}}</span>
+              <ul class="recommend1">
+                <li v-for="(item, index) in item_fenye" :key="index" v-if="item_fenye_index ==0">
+                  <span v-if="index == 0"><img src="..\assets\images\top1.png" alt=""></span>
+                  <span v-if="index == 1"><img src="..\assets\images\top2.png" alt=""></span>
+                  <span v-if="index == 2"><img src="..\assets\images\top3.png" alt=""></span>
+                  <span v-if="index >2">{{index +1}}</span>
+                  <span class="recommend1_name">{{item.name}}</span>
+                  <span>¥ {{item.price}}</span>
                 </li>
-                <li>
-                    <span><img src="..\assets\images\top2.png" alt=""></span>
-                    <span>{{recommendProduct.rec_product[1].name}}</span>
-                    <span>¥ {{recommendProduct.rec_product[1].price}}</span></li>
-                <li>
-                  <span><img src="..\assets\images\top3.png" alt=""></span>
-                  <span>{{recommendProduct.rec_product[2].name}}</span>
-                  <span>¥ {{recommendProduct.rec_product[2].price}}</span>
-                </li>
-                <li>
-                  <span>4</span>
-                  <span>{{recommendProduct.rec_product[3].name}}</span>
-                  <span>¥ {{recommendProduct.rec_product[3].price}}</span>
-                </li>
-                <li>
-                  <span>5</span>
-                  <span>{{recommendProduct.rec_product[4].name}}</span>
-                  <span>¥ {{recommendProduct.rec_product[4].price}}</span>
+                <li v-for="(item, index) in item_fenye" :key="index"  v-if="item_fenye_index ==1">
+                  <span>{{index +6}}</span>
+                  <span class="recommend1_name">{{item.name}}</span>
+                  <span>¥ {{item.price}}</span>
                 </li>
               </ul>
-              <div class="recommend0">暂无数据</div>
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -225,13 +217,13 @@
           <el-row>
             <el-col :span="12">买的最贵的商品价格：</el-col>
             <el-col :span="12">
-              <span class="c_b_tips">¥{{favoriteProduct.maxpay_mount}}元</span>
+              <span class="c_b_tips">¥{{favoriteProduct.mostexpensive_skuprice}}元</span>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">最大订单金额：</el-col>
             <el-col :span="12">
-              <span class="c_b_tips">¥{{favoriteProduct.mostexpensive_skuprice}}元</span>
+              <span class="c_b_tips">¥{{favoriteProduct.maxpay_mount}}元</span>
             </el-col>
           </el-row>
         </div>
@@ -241,8 +233,8 @@
       <div class="chart_powerEcharts">
         <div id="chart_power" @click="mousedown()"></div>
       </div>
-      <div class="receipt0" v-if="is_saleOrderDetail">暂无消费小票数据</div>
-      <el-carousel height="390px" loop="false" class="receipt" v-else>
+      <div class="receipt0" v-if="is_saleOrderDetail == true">暂无消费小票数据</div>
+      <el-carousel height="390px" :interval=0 class="receipt" v-else>
         <el-carousel-item  v-for="item in saleOrderDetail">
           <div class="receipt_top">
             <div class="receipt_top_left">
@@ -297,12 +289,12 @@ export default {
   data() {
     return {
       // memNumber: "", //记录用户编码id ，更改时间的时候传入
-      USinput: "11312753",
-      userinfo: {},
+      USinput: "",
+      // userinfo: {},
       vipInfo: {},  // 会员信息
       RFMAnalyze: {}, //顾客RFM模型分析
       recommendProduct: {}, // 推荐商品
-      is_recommendProduct:false,
+      is_recommendProduct:true,
       favoriteProduct: {}, // 行为习惯
       userBuyThings: {}, // 消费情况分析
       is_saleOrderDetail: true,
@@ -377,7 +369,12 @@ export default {
         tooltip: {
           trigger: "axis",
           formatter:function(params){
-            return XdataName = params[0].name;                 
+              XdataName = params[0].name;
+              let res='<div><p>时间：'+XdataName+'</p></div>' 
+              for(var i=0;i<params.length;i++){
+                res+='<p>'+ params[i].seriesName +' -> '+params[i].data+'</p>'
+              }
+            return res;
           }
         },
         legend: {
@@ -517,14 +514,22 @@ export default {
   },
   beforeMount() {
     let _this = this;
-    _this.vipInfoSearch();
+    // _this.vipInfoSearch();
   },
   mounted: function() {
     let _this = this;
-    _this.drawEcharts();
-    _this.userinfo = JSON.parse(sessionStorage.getItem("userinfo"));
+    // _this.drawEcharts();
+    _this.$message.success("请输入会员ID进行查询!");
+    // _this.userinfo = JSON.parse(sessionStorage.getItem("userinfo"));
   },
   watch: {
+    "top.valueTimeS": {
+      handler: function(val, oldval) {
+        let _this = this;
+        _this.vipInfoSearch();
+      },
+      deep: true
+    },
     "top.valueTime": {
       handler: function(val, oldval) {
         console.log(val);
@@ -639,19 +644,19 @@ export default {
       let timeStart = "";
       let timeEnd = "";
       if (_this.top.valueTimeS == "threeMouth") {
-        if (Date.parse(new Date((timestamp / 1000 - 7776000) * 1000)) > Date.parse(new Date("2018-10-01 00:00:00"))){
+        // if (Date.parse(new Date((timestamp / 1000 - 7776000) * 1000)) > Date.parse(new Date("2018-10-01 00:00:00"))){
           timeStart = _this.getMyDate((timestamp / 1000 - 7776000) * 1000);
-        }else {
-          timeStart = '2018-10-01'
-        }
+        // }else {
+        //   timeStart = '2018-10-01'
+        // }
         // timeStart = _this.getMyDate((timestamp / 1000 - 7776000) * 1000);
         timeEnd = _this.getMyDate(timestamp);
       } else {
-        if (Date.parse(new Date(_this.top.valueTime[0])) > Date.parse(new Date("2018-10-01 00:00:00"))){
+        // if (Date.parse(new Date(_this.top.valueTime[0])) > Date.parse(new Date("2018-10-01 00:00:00"))){
           timeStart = _this.top.valueTime[0].substr(0,10);
-        }else {
-          timeStart = '2018-10-01'
-        }
+        // }else {
+        //   timeStart = '2018-10-01'
+        // }
         
         timeEnd = _this.top.valueTime[1].substr(0,10);
       }
@@ -672,8 +677,15 @@ export default {
           if (res.status == 200) {
             console.log(res)
             let data = res.data.data;
-            if(data.recommendProduct.rec_product.length != 0){
+            // 先清空再赋值 start
+            _this.recommendProduct = {};
+            _this.vipInfo = {};
+            _this.RFMAnalyze = {};
+            _this.favoriteProduct = {};
+            if(data.recommendProduct.rec_product.length != 0 && data.recommendProduct.rec_product[0].length !=0){
               _this.recommendProduct = data.recommendProduct;
+              _this.is_recommendProduct = false;
+            }else {
               _this.is_recommendProduct = true;
             }
             _this.vipInfo = data.vipInfo;
@@ -690,9 +702,11 @@ export default {
               _this.chart_kind.series.data.push(cnt);
             }
             // RFM图表
+            _this.RFMEcharts.series.data=[];
             _this.RFMEcharts.series.data.push(Number(data.RFMAnalyze.hyd), Number(data.RFMAnalyze.zcd), Number(data.RFMAnalyze.xfnl));
 
             // 消费情况分析
+            _this.userBuyThings = {};
             _this.userBuyThings = data.userBuyThings;
 
             // 顾客消费记录echarts
@@ -715,7 +729,7 @@ export default {
           }
         }).catch(err => {
           console.log("异常:",err);
-          _this.is_recommendProduct = false;
+          _this.is_recommendProduct = true;
         });
     
         //发送请求 E
@@ -723,14 +737,22 @@ export default {
    },
 
    //点击顾客消费echarts查询当天小票
-   mousedown () {
+   mousedown() {
       let _this = this;
+      //  清空缓存数据
+      // _this.saleOrderDetail = {};
+      console.log(_this.chart_power.xAxis.data[_this.chart_power.xAxis.data.length-1]);
       if(_this.chart_power.xAxis.data== []){
         _this.is_saleOrderDetail = true;
-      }else {
-        XdataName =_this.chart_power.xAxis.data[_this.chart_power.xAxis.data.length-1];
+      }else if(XdataName == "" && _this.chart_power.xAxis.data.length !=0){
         _this.is_saleOrderDetail = false;
+        XdataName =_this.chart_power.xAxis.data[_this.chart_power.xAxis.data.length-1];
+      }else if(XdataName != "" && _this.chart_power.xAxis.data.length !=0){
+        _this.is_saleOrderDetail = false;
+      }else {
+        _this.is_saleOrderDetail = true;
       }
+      console.log("索引",XdataName)
       let json = {
         vipID: _this.USinput,
         orderDate: XdataName
@@ -740,16 +762,18 @@ export default {
       _this.$axios
       .post(_this.$url.orderDetail, formdata)
       .then(res => {
+        console.log("852",res)
         if (res.status == 200) {
           console.log(res)
           let data = res.data.data;
+          _this.saleOrderDetail = {};
           _this.saleOrderDetail = data.saleOrderDetail;
         }
+        XdataName ="";
       }).catch(err => {
         console.log("异常:",err);
         _this.is_saleOrderDetail = true;
       });
-      XdataName ="";
     }
   }
 };
@@ -993,7 +1017,7 @@ p:nth-child(5) {
 }
 .c_btm {
   margin: 0px 20px;
-  height: 357px;
+  height: 400px;
   font-size: 0;
 }
 .c_btm > div {
@@ -1153,38 +1177,40 @@ p:nth-child(5) {
   background-color: #f3f4fc;
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
 }
-.recommend1,.recommend2 {
+.recommend1 {
   width: 80%;
   margin: 20px 10%;
 }
-.recommend1 li,.recommend2 li {
+.recommend1 li {
   line-height: 60px;
 }
-.recommend1 li>span:nth-child(2),.recommend1 li>span:nth-child(3),.recommend2 li>span:nth-child(2),.recommend2 li>span:nth-child(3) {
+.recommend1 li>span:nth-child(2),.recommend1 li>span:nth-child(3) {
   font-weight: 700;
 }
-.recommend1 li:nth-child(3)>span:nth-child(1),.recommend1 li:nth-child(4)>span:nth-child(1),.recommend1 li:nth-child(5)>span:nth-child(1){
+.recommend1 li>span:nth-child(1){
   width: 22px;
   font-size: 18px;
   text-align: center;
   color: #999999;
 }
-.recommend1 li>span:nth-child(1),.recommend2 li>span:nth-child(1){
+.recommend1 li>span:nth-child(1){
   float: left;
 }
-.recommend1 li>span:nth-child(3),.recommend2 li>span:nth-child(3){
-  float: right;
+.recommend1_name {
+  width: 70%;
+  display: inline-block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
-.recommend2 li>span:nth-child(1){
-  width: 22px;
-  font-size: 18px;
-  text-align: center;
-  color: #999999;
+.recommend1 li>span:nth-child(3){
+  float: right;
 }
 .recommend0 {
   font-size: 20px;
   margin: 20% auto;
   font-weight: 700;
   color: #ccc;
+  text-align: center;
 }
 </style>
