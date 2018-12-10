@@ -2,7 +2,7 @@
 <template>
   <div id="usercenter">
     <div class="US_search">
-      <el-input v-model="USinput" placeholder="请输入会员id" @keyup.enter.native="vipInfoSearch()"></el-input>
+      <el-input v-model="USinput" placeholder="请输入会员ID或手机号" @keyup.enter.native="vipInfoSearch()"></el-input>
       <el-button class="USsearch_btn" @click="vipInfoSearch()">查询</el-button>
     </div>
     <div class="top_content clearfix" v-model="vipInfo">
@@ -59,7 +59,7 @@
             <p class="infoTip num">{{vipInfo.createDate}}</p>
           </el-col>
           <el-col :span="7">
-            <p>最后一次到店时间：</p>
+            <p>最近到店时间：</p>
             <p class="infoTip num">{{vipInfo.last_visit_date}}（距今 {{vipInfo.last_visit_date_diff}} 天）</p>
           </el-col>
           <el-col :span="8">
@@ -79,7 +79,9 @@
           <div class="center_top_box_left_content_content" v-model="RFMAnalyze">
             <div>
               <img src="../assets/images/RFM_icon.png" class="RFM_icon">
-              <p>RFM评分 ：{{RFMAnalyze.rfm}}</p>
+              <p>RFM评分 ：{{RFMAnalyze.rfm}} <el-tooltip class="item" effect="dark" content="备注:强＞一般＞弱" placement="top-start">
+      <i class="el-icon-info"></i>
+    </el-tooltip></p>
               <p>{{RFMAnalyze.one}}</p>
               <p>{{RFMAnalyze.two}}</p>
               <p>{{RFMAnalyze.three}}</p>
@@ -299,6 +301,7 @@ export default {
       userBuyThings: {}, // 消费情况分析
       is_saleOrderDetail: true,
       saleOrderDetail: {}, //小票信息
+      memno: "", // 保存会员ID  查询小票需要
       top: {
         valueTimeS: "threeMouth",
         valueTime: [], //时间
@@ -342,6 +345,7 @@ export default {
           },
           yAxis: [
             {
+              name: "单位:(件)",
               type: "value",
               axisTick: { show: false },
               splitLine: { show: true, lineStyle: { color: "#d4daf8" } },
@@ -417,16 +421,25 @@ export default {
           axisLine: { lineStyle: { color: "#4080ff" } },
           axisLabel: { textStyle: { color: "#4080ff" } },
         },
-        yAxis: {
+        yAxis: [{
+          name: "单位:(¥)",
           type: "value",
           splitLine: { show: true, lineStyle: { color: "#d4daf8" } },
           axisLine: { lineStyle: { color: "#4080ff" } },
           axisLabel: { textStyle: { color: "#4080ff" } }
         },
+        {
+          name: "单位:(件)",
+          type: "value",
+          splitLine: { show: false, lineStyle: { color: "#d4daf8" } },
+          axisLine: { lineStyle: { color: "#4080ff" } },
+          axisLabel: { textStyle: { color: "#4080ff" } }
+        }],
         series: [
           {
             name: "单次单价",
             type: "line",
+            yAxisIndex: 0,
             stack: "单次单价",
             smooth: true, //这个是把线变成曲线
             data: []
@@ -434,6 +447,7 @@ export default {
           {
             name: "购买件数",
             type: "line",
+            yAxisIndex: 1,
             stack: "购买件数",
             smooth: true, //这个是把线变成曲线
             data: []
@@ -713,6 +727,10 @@ export default {
             _this.chart_power.xAxis.data=[];
             _this.chart_power.series[0].data=[];
             _this.chart_power.series[1].data=[];
+            _this.memno = "";
+            if (data.saleHistoryInfo.length > 0) {
+              _this.memno = data.saleHistoryInfo[0].memno;
+            }
             for(let i=0; i<data.saleHistoryInfo.length; i++) {
               let cnt_skuNum = data.saleHistoryInfo[i].cnt_skuNum;
               let saleDate = data.saleHistoryInfo[i].saleDate;
@@ -752,28 +770,28 @@ export default {
       }else {
         _this.is_saleOrderDetail = true;
       }
-      console.log("索引",XdataName)
-      let json = {
-        vipID: _this.USinput,
-        orderDate: XdataName
-      };
-      let formdata = _this.$config.formData(json);
-       //发送请求  S
-      _this.$axios
-      .post(_this.$url.orderDetail, formdata)
-      .then(res => {
-        console.log("852",res)
-        if (res.status == 200) {
-          console.log(res)
-          let data = res.data.data;
-          _this.saleOrderDetail = {};
-          _this.saleOrderDetail = data.saleOrderDetail;
-        }
-        XdataName ="";
-      }).catch(err => {
-        console.log("异常:",err);
-        _this.is_saleOrderDetail = true;
-      });
+      if (_this.memno != "") {
+        let json = {
+          vipID: _this.memno,
+          orderDate: XdataName
+        };
+        console.log(_this.memno);
+        let formdata = _this.$config.formData(json);
+         //发送请求  S
+        _this.$axios
+        .post(_this.$url.orderDetail, formdata)
+        .then(res => {
+          if (res.status == 200) {
+            let data = res.data.data;
+            _this.saleOrderDetail = {};
+            _this.saleOrderDetail = data.saleOrderDetail;
+          }
+          XdataName ="";
+        }).catch(err => {
+          console.log("异常:",err);
+          _this.is_saleOrderDetail = true;
+        });
+      }
     }
   }
 };

@@ -78,7 +78,7 @@ export default {
         echartsData: [],
         option: {
           title: {
-            text: "门店销售排行榜",
+            text: "门店销售排行榜( 单位:元 )",
             textStyle: { color: "#fff", fontWeight: "bold", fontSize: 14 },
             top: "0%",
             left: "2.2%"
@@ -146,7 +146,7 @@ export default {
         echartsData: [],
         option: {
           title: {
-            text: "商品销售排行榜",
+            text: "商品销售排行榜( 单位:元)",
             textStyle: { color: "#fff", fontWeight: "bold", fontSize: 14 },
             top: "0%",
             left: "2.2%"
@@ -531,7 +531,7 @@ export default {
         echartsData: [],
         option: {
           title: {
-            text: "支付方式分类",
+            text: "支付方式分类( 单位:次数 )",
             left: "left",
             textStyle: { color: "#fff", fontWeight: "bold", fontSize: 14 }
           },

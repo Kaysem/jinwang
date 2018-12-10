@@ -92,7 +92,7 @@
                     ],
                     option: {
                         title: { 
-                            text: '今日客流转化情况', left: "center",
+                            text: '今日客流转化情况( 单位:人 )', left: "center",
                             textStyle: {"color": "#fff","fontWeight": "bold","fontSize": 14 },
                         },
                         tooltip: {
@@ -132,7 +132,7 @@
                         },
                         tooltip : { trigger: 'axis', formatter: "{b}: {c}"  },
                         yAxis: {  
-                            type: 'value', axisTick: {show: false },splitLine: {  show:false ,  }, nameTextStyle: {  color: ['#d7d7d7']    },  axisLine:{   lineStyle:{   color:'#d7d7d7',   width:1, }   }  
+                            name: '单位:( 人次 )',type: 'value', axisTick: {show: false },splitLine: {  show:false ,  }, nameTextStyle: {  color: ['#d7d7d7']    },  axisLine:{   lineStyle:{   color:'#d7d7d7',   width:1, }   }  
                         },
                         series: [{
                             name:'今日门店客流分时走势',  
@@ -163,7 +163,7 @@
                         },
                         tooltip : { trigger: 'axis', formatter: "{b}: {c}"  },
                         yAxis: {  
-                            type: 'value',axisTick: {show: false }, splitLine: {  show:false ,  }, nameTextStyle: {  color: ['#d7d7d7']    },  axisLine:{   lineStyle:{   color:'#d7d7d7',   width:1, }   }  
+                            name: '单位:( 人次 )',type: 'value',axisTick: {show: false }, splitLine: {  show:false ,  }, nameTextStyle: {  color: ['#d7d7d7']    },  axisLine:{   lineStyle:{   color:'#d7d7d7',   width:1, }   }  
                         },
                         series: [{
                             name:'今日新老客到店比例',  
@@ -203,7 +203,7 @@
                                 data : []
                         }],
                         yAxis : [ {
-                                type : 'value', axisTick: {show: false },  splitLine:{      show:false  }, axisLine: {    lineStyle: {        color: 'rgb(170,170,170)',    }},axisLabel: {    "textStyle": {  "color": '#d7d7d7',    }},
+                                name: '单位:( 元 )',type : 'value', axisTick: {show: false },  splitLine:{      show:false  }, axisLine: {    lineStyle: {        color: 'rgb(170,170,170)',    }},axisLabel: {    "textStyle": {  "color": '#d7d7d7',    }},
                         }],
                         series : [
                             {
@@ -232,30 +232,6 @@
                                 type: 'category', axisLine:{   lineStyle:{  color:'#d7d7d7',  width:1,   }  },axisTick: {show: false },
                                 axisLabel: {
                                         show: true,
-                                        // interval:0,
-                                        // formatter:function(params) {
-                                        //     var newParamsName = "";
-                                        //     var paramsNameNumber = params.length;
-                                        //     var provideNumber = 4;  //一行显示几个字
-                                        //     var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
-                                        //     if (paramsNameNumber > provideNumber) {
-                                        //         for (var p = 0; p < rowNumber; p++) {
-                                        //             var tempStr = "";
-                                        //             var start = p * provideNumber;
-                                        //             var end = start + provideNumber;
-                                        //             if (p == rowNumber - 1) {
-                                        //                 tempStr = params.substring(start, paramsNameNumber);
-                                        //             } else {
-                                        //                 tempStr = params.substring(start, end) + "\n";
-                                        //             }
-                                        //             newParamsName += tempStr;
-                                        //         }
-
-                                        //     } else {
-                                        //         newParamsName = params;
-                                        //     }
-                                        //     return newParamsName
-                                        // },
                                         textStyle: {
                                             color: '#fff' //文字颜色
                                         }
@@ -264,7 +240,7 @@
                             },
                             tooltip : { trigger: 'axis', },
                             yAxis: {  
-                                type: 'value', axisTick: {show: false },splitLine: {  show:false ,  }, nameTextStyle: {  color: ['#d7d7d7']    },  axisLine:{   lineStyle:{   color:'#d7d7d7',   width:1, }   }  
+                                name: '单位:( 元 )',type: 'value', axisTick: {show: false },splitLine: {  show:false ,  }, nameTextStyle: {  color: ['#d7d7d7']    },  axisLine:{   lineStyle:{   color:'#d7d7d7',   width:1, }   }  
                             },
                             series: [{
                                 name:'近7日销售金额趋势',  
@@ -295,7 +271,7 @@
                                 data: [], //name值
                             }],
                             yAxis: [
-                                { type: "value",axisTick: {show: false }, splitLine:{      show:false  }, axisLine: {    lineStyle: {        color: 'rgb(170,170,170)',    }},axisLabel: {    "textStyle": {  "color": '#d7d7d7',    }}}
+                                { name: '单位:( 人数 )',type: "value",axisTick: {show: false }, splitLine:{      show:false  }, axisLine: {    lineStyle: {        color: 'rgb(170,170,170)',    }},axisLabel: {    "textStyle": {  "color": '#d7d7d7',    }}}
                             ],
                             series: [{
                                     name: '',type: 'bar',barWidth: '30%',itemStyle: {    normal: {        barBorderRadius: 30,    }},
@@ -366,7 +342,7 @@
                 r_center: {
                     echartData: [{  value: "", name: '非会员' }, { value: "",  name: '会员' }], //放数据
                     option: {
-                        title: {text:'今日平均客单价', left:'center',textStyle:{    color:'#fff',    fontSize:14,    align:'center'},
+                        title: {text:'今日平均客单价( 单位:元 )', left:'center',textStyle:{    color:'#fff',    fontSize:14,    align:'center'},
                          subtext: '相差', itemGap: 55 , subtextStyle:{    color:'#5de4e1',    fontSize:12,    align:'center'} },
                         grid: {    left: '3%',   right: '4%',top: '50',  bottom: '3%',  containLabel: true  },  
                         legend: {
@@ -387,11 +363,11 @@
                         // { value: 120, name: '农夫山泉' },  { value: 50,  name: '蒙牛酸奶' }, { value: 440,  name: '加多宝' },  { value: 50,  name: 'aaa' },
                     ], //放数据
                     option: {
-                        title : {"text": "今日热卖商品top5","textStyle": {    "color": "#fff",    "fontWeight": "bold",    "fontSize": 14},"top": "0%","left": "center"},backgroundColor:"rgba(0,0,0,0)",color: ['#5ce3df'],
+                        title : {"text": "今日热卖商品top5 (单位:件)","textStyle": {    "color": "#fff",    "fontWeight": "bold",    "fontSize": 14},"top": "0%","left": "center"},backgroundColor:"rgba(0,0,0,0)",color: ['#5ce3df'],
                         tooltip: {trigger: 'axis',axisPointer: { type: 'line', lineStyle: { opacity: 0 }}},
                         grid: {left: '3%',right: '5%',bottom: '0%',top: '15%',containLabel: true,z: 22 },
                         label:{ normal:{     show: true,     position: 'right'}  },
-                        xAxis: [{ type: 'value', show:false,splitLine:{ show:false  } , axisLine:{show: false} ,  }],
+                        xAxis: [{ name: '单位:( 件 )',type: 'value', show:false,splitLine:{ show:false  } , axisLine:{show: false} ,  }],
                         yAxis: [{
                             type: "category",splitLine:{  show:false  }, axisLine: {  lineStyle: { color: 'rgb(170,170,170)', }},
                             axisLabel: { "textStyle": {  "color": '#d7d7d7',"fontSize": "10" } ,formatter: function(value) { if (value.length > 5) {  return value.substring(0, 4) + "..."; } else {  return value;  }}},

@@ -282,7 +282,7 @@ export default {
         },
         yAxis: [
           {
-            name: "总客流量 ( 单位 : 人/次 )",
+            name: "单位 : ( 人数 )",
             type: "value",
             axisLine: {
               lineStyle: {
@@ -558,7 +558,7 @@ export default {
         },
         yAxis: [
           {
-            name: "客流 (单位: 人/次/day)",
+            name: "单位: ( 人数 )",
             type: "value",
             axisLine: {
               lineStyle: {
@@ -770,7 +770,7 @@ export default {
         },
         yAxis: [
           {
-            name: "客流 (单位: 人/次/hour)",
+            name: "单位: ( 人数 )",
             type: "value",
             axisLine: {
               lineStyle: {
@@ -877,6 +877,7 @@ export default {
         ],
         yAxis: [
           {
+            name: '单位:( 人数 )',
             type: "value",
             axisLine: {
               lineStyle: {
@@ -949,6 +950,7 @@ export default {
         ],
         yAxis: [
           {
+            name: '单位:( 人数 )',
             type: "value",
             axisLine: {
               lineStyle: {
